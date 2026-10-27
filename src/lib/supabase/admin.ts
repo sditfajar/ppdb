@@ -16,7 +16,14 @@ import type { Database } from "./database.types";
  */
 export function createAdminClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const secretKey = process.env.SUPABASE_SECRET_KEY;
+  const rawSecret = process.env.SUPABASE_SECRET_KEY;
+  const legacySecret = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  // Resolusi tangguh: gunakan SUPABASE_SECRET_KEY jika bukan placeholder, fallback ke SUPABASE_SERVICE_ROLE_KEY
+  const secretKey =
+    rawSecret && rawSecret !== "sb_secret_your-secret-key-here"
+      ? rawSecret
+      : legacySecret;
 
   if (!url || !secretKey) {
     throw new Error(

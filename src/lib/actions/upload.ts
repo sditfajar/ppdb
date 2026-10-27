@@ -90,7 +90,7 @@ export async function requestUploadUrl(
       .createSignedUploadUrl(storagePath);
 
     if (error || !data) {
-      console.error("[STORAGE_UPLOAD] Gagal membuat signed upload url:", error?.message);
+      console.error("[STORAGE_UPLOAD] Gagal membuat signed upload url:", error?.message, error);
       return {
         success: false,
         message: "Layanan penyimpanan sementara tidak dapat dihubungi. Silakan coba beberapa saat lagi.",

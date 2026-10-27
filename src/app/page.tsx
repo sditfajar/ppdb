@@ -163,7 +163,7 @@ export default async function HomePage() {
           </div>
           <div className="flex items-center justify-between text-xs">
             <span className="text-muted">Transfer BSI a.n SDIT Fajar PPDB:</span>
-            <span className="font-bold text-accent tabular-nums text-sm">Rp 0</span>
+            <span className="font-bold text-accent tabular-nums text-sm">Rp 250.000</span>
           </div>
         </div>
 
