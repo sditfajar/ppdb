@@ -171,7 +171,7 @@ Sistem telah dilengkapi proteksi multi-lapis terhadap spam:
 ### 3.6 Kebijakan Content-Security-Policy (CSP)
 Sistem menerapkan CSP ketat di `next.config.ts`:
 - **`default-src 'self'`**: Semua resource hanya dimuat dari origin sendiri secara default.
-- **`script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com`**: Mengizinkan skrip bundel Next.js dan skrip widget Cloudflare Turnstile.
+- **`script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com`**: Mengizinkan skrip bundel Next.js dan skrip widget Cloudflare Turnstile. Di lingkungan pengembangan lokal (`NODE_ENV !== "production"`), nilai `'unsafe-eval'` disertakan secara kondisional karena dibutuhkan React/Turbopack untuk rekonstruksi callstack dan debugging; pada lingkungan produksi (`production`), `'unsafe-eval'` dinonaktifkan sepenuhnya untuk keamanan optimal.
 - **`style-src 'self' 'unsafe-inline'`**: Mengizinkan stylesheet Tailwind v4 dan inline CSS runtime.
 - **`img-src 'self' blob: data: https://*.supabase.co`**: Mengizinkan pratinjau bukti bayar lokal (`blob:`), SVG inline (`data:`), dan signed URL gambar Supabase Storage.
 - **`connect-src 'self' https://*.supabase.co https://challenges.cloudflare.com`**: Koneksi API/Storage Supabase dan validasi token Turnstile.
