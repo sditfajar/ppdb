@@ -95,19 +95,20 @@ Pada halaman detail pendaftar, terdapat tombol pintas **Hubungi via WhatsApp**:
   - **Jika Terverifikasi:** Berisi ucapan selamat, nomor registrasi siswa, dan arahan jadwal tes/observasi berikutnya.
   - **Jika Ditolak:** Berisi penjelasan alasan penolakan dan panduan konfirmasi ulang ke panitia.
 
-### 2.7 SOP Pencadangan Data Berkala (Ekspor CSV)
-Untuk menjaga keamanan data dari risiko kendala infrastruktur cloud, panitia **WAJIB** melakukan pencadangan data secara rutin:
-1. **Jadwal Ekspor:**
+### 2.7 SOP Pencadangan & Ekspor Data (Excel & PDF)
+Untuk keperluan pengolahan data spreadsheet dan arsip cetak rapat pleno, dasbor admin menyediakan dua pilihan ekspor:
+1. **Opsi Format Ekspor:**
+   - **Ekspor Excel (.xlsx):** Berkas spreadsheet resmi dengan header tebal berwarna hijau SDIT Fajar, lebar kolom otomatis, dan proteksi formula injection. Langsung dapat dibuka dan diolah di Microsoft Excel tanpa masalah encoding karakter atau angka telepon.
+   - **Ekspor PDF (.pdf):** Dokumen rekap pendaftaran formal berorientasi A4 Landscape lengkap dengan kop SDIT Fajar, status berwarna, dan nomor halaman yang siap langsung dicetak untuk rapat pleno panitia.
+   - *(Catatan: Endpoint `/admin/export?format=csv` tetap tersedia untuk kebutuhan script pencadangan CSV otomatis).*
+2. **Jadwal Pencadangan Disarankan:**
    - **Harian (Pukul 17:00 WIB)** saat periode gelombang pendaftaran sedang aktif.
-   - **Mingguan (Setiap hari Jumat)** saat periode pendaftaran normal.
-2. **Cara Mengunduh:**
-   - Di halaman `/admin`, sesuaikan filter bila perlu (atau biarkan default untuk mengunduh semua pendaftar).
-   - Klik tombol **Ekspor CSV** di kanan atas tabel.
-   - Berkas akan terunduh dengan format nama: `ppdb-[tahun_ajaran]-[tanggal].csv`.
-3. **Membuka File di Microsoft Excel Tanpa Rusak:**
-   - Berkas CSV sistem ini dibuat dengan standar encoding **UTF-8 with BOM**, sehingga karakter aksen nama Indonesia (seperti tanda petik, koma) dan nomor telepon (awalan `+62` atau `08`) tetap utuh tanpa menjadi notasi ilmiah.
-   - Cara aman membuka di Excel: Buka Excel -> Menu **Data** -> **From Text/CSV** -> Pilih file yang baru diunduh -> Pastikan *File Origin* adalah `65001: Unicode (UTF-8)` -> Klik **Load**.
-   - Simpan berkas hasil cadangan ke folder penyimpanan aman (Google Drive Panitia / Flashdisk terenkripsi).
+   - **Mingguan (Setiap hari Jumat)** saat periode pendaftaran reguler.
+3. **Cara Mengunduh:**
+   - Di halaman `/admin`, sesuaikan filter pencarian/status/gelombang bila perlu (atau biarkan default untuk mengunduh semua pendaftar).
+   - Klik tombol **Ekspor Excel** untuk analisis spreadsheet atau klik **Ekspor PDF** untuk arsip cetak dokumen.
+   - Berkas akan terunduh dengan format nama: `ppdb-[tahun_ajaran]-[tanggal].[xlsx|pdf]`.
+   - Simpan berkas hasil cadangan ke folder penyimpanan aman panitia (Google Drive Yayasan / Flashdisk terenkripsi).
 
 ---
 

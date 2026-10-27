@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
-import { Search, X, Filter, Download } from "lucide-react";
+import { Search, X, Filter, FileSpreadsheet, FileText } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
 export function AdminFilterBar() {
@@ -34,7 +34,7 @@ export function AdminFilterBar() {
       }
     });
 
-    // Selalu kembali ke halaman 1 saat filter berubah
+    // Reset pagination ke halaman 1 saat filter berubah
     params.delete("page");
 
     const queryString = params.toString();
@@ -65,8 +65,14 @@ export function AdminFilterBar() {
   if (currentQ) exportParams.set("q", currentQ);
   if (currentStatus && currentStatus !== "all") exportParams.set("status", currentStatus);
   if (currentWave && currentWave !== "all") exportParams.set("wave", currentWave);
-  const exportQuery = exportParams.toString();
-  const exportUrl = exportQuery ? `/admin/export?${exportQuery}` : "/admin/export";
+
+  const exportExcelParams = new URLSearchParams(exportParams);
+  exportExcelParams.set("format", "xlsx");
+  const exportExcelUrl = `/admin/export?${exportExcelParams.toString()}`;
+
+  const exportPdfParams = new URLSearchParams(exportParams);
+  exportPdfParams.set("format", "pdf");
+  const exportPdfUrl = `/admin/export?${exportPdfParams.toString()}`;
 
   return (
     <div className="flex flex-col gap-3 w-full bg-surface p-3.5 sm:p-4 rounded-card shadow-border">
@@ -140,16 +146,28 @@ export function AdminFilterBar() {
           </select>
         </div>
 
-        {/* Aksi Ekspor CSV & Reset Filter */}
-        <div className="flex items-center gap-2">
+        {/* Aksi Ekspor Excel, Ekspor PDF & Reset Filter */}
+        <div className="flex flex-wrap items-center gap-2">
+          {/* Tombol Ekspor Excel */}
           <a
-            href={exportUrl}
+            href={exportExcelUrl}
             download
-            className="inline-flex items-center justify-center gap-1.5 min-h-[38px] px-3 py-1 text-xs font-semibold rounded-control bg-accent/10 text-accent hover:bg-accent/20 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-            aria-label="Ekspor data pendaftar ke berkas CSV sesuai filter aktif"
+            className="inline-flex items-center justify-center gap-1.5 min-h-[38px] px-3 py-1 text-xs font-semibold rounded-control bg-emerald-600/10 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-600/20 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+            aria-label="Ekspor data pendaftar ke berkas Excel (.xlsx) sesuai filter aktif"
           >
-            <Download className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
-            <span>Ekspor CSV</span>
+            <FileSpreadsheet className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+            <span>Ekspor Excel</span>
+          </a>
+
+          {/* Tombol Ekspor PDF */}
+          <a
+            href={exportPdfUrl}
+            download
+            className="inline-flex items-center justify-center gap-1.5 min-h-[38px] px-3 py-1 text-xs font-semibold rounded-control bg-rose-500/10 text-rose-700 dark:text-rose-400 hover:bg-rose-500/20 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
+            aria-label="Ekspor rekap pendaftaran ke berkas PDF sesuai filter aktif"
+          >
+            <FileText className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+            <span>Ekspor PDF</span>
           </a>
 
           {hasActiveFilters && (
