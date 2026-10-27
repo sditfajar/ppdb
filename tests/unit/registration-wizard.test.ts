@@ -1,11 +1,8 @@
 import { describe, it, expect } from "vitest";
 import {
   studentSchema,
-  parentSchema,
   paymentSchema,
-  registrationSchema,
   ALLOWED_FILE_TYPES,
-  MAX_FILE_SIZE,
 } from "@/lib/validation/registration";
 import { getActiveWave, getWaveLabel } from "@/lib/wave";
 import { normalizeIdPhone, formatIdPhone } from "@/lib/phone";
