@@ -1,14 +1,26 @@
 "use client";
 
 import * as React from "react";
+import dynamic from "next/dynamic";
 import { useFormContext, Controller } from "react-hook-form";
 import { CreditCard, ShieldCheck, AlertCircle } from "lucide-react";
-import { Turnstile } from "@marsidev/react-turnstile";
 import { Checkbox } from "@/components/ui/Checkbox";
 import { UploadProof } from "@/components/registration/UploadProof";
 import { ReviewSummary } from "@/components/registration/ReviewSummary";
 import type { RegistrationFormData } from "@/lib/validation/registration";
 import type { PaymentSettings } from "@/lib/actions/registration-state";
+
+const Turnstile = dynamic(
+  () => import("@marsidev/react-turnstile").then((m) => m.Turnstile),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="h-[65px] flex items-center justify-center text-xs text-muted">
+        Memuat verifikasi keamanan...
+      </div>
+    ),
+  }
+);
 
 export interface StepPaymentProps {
   onEditStep: (stepNumber: number) => void;

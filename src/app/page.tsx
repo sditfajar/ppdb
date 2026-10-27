@@ -272,7 +272,7 @@ export default async function HomePage() {
             Daftarkan segera, dan jadilah bagian dari keluarga kami.
           </p>
           <p>Terima kasih, Wassalamualaikum Wr. Wb.</p>
-          <p className="text-[11px] text-muted/60 pt-4">
+          <p className="text-[11px] text-muted pt-4">
             © {new Date().getFullYear()} {SCHOOL_CONFIG.fullName}. All rights reserved.
           </p>
         </footer>

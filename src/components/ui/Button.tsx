@@ -41,7 +41,7 @@ export function Button({
   };
 
   const sizeStyles = {
-    sm: "h-9 min-h-[36px] text-sm gap-1.5 px-3",
+    sm: "h-9 min-h-[44px] sm:min-h-[36px] text-sm gap-1.5 px-3",
     md: "h-11 min-h-[44px] text-base gap-2 px-4",
     lg: "h-12 min-h-[48px] text-base gap-2.5 px-5",
   };

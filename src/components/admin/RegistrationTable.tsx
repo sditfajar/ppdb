@@ -82,11 +82,11 @@ export function RegistrationTable({
                 <td className="py-3.5 px-4 font-mono font-medium text-xs tabular-nums text-muted">
                   {item.reg_number}
                 </td>
-                <td className="py-3.5 px-4">
-                  <div className="font-semibold text-foreground text-pretty">
+                <td className="py-3.5 px-4 max-w-[240px]">
+                  <div className="font-semibold text-foreground text-pretty break-words">
                     {item.student_name}
                   </div>
-                  <div className="text-xs text-muted">
+                  <div className="text-xs text-muted truncate">
                     ({item.gender === "L" ? "Laki-laki" : "Perempuan"}
                     {item.student_nickname ? ` · "${item.student_nickname}"` : ""})
                   </div>
@@ -133,7 +133,7 @@ export function RegistrationTable({
             </div>
 
             <div className="flex flex-col gap-1">
-              <div className="font-semibold text-base text-foreground leading-snug">
+              <div className="font-semibold text-base text-foreground leading-snug break-words">
                 {item.student_name}
               </div>
               <div className="flex items-center gap-2 text-xs text-muted">

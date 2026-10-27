@@ -37,7 +37,7 @@ export function ReviewSummary({ data, onEditStep, className }: ReviewSummaryProp
             variant="ghost"
             size="sm"
             onClick={() => onEditStep(1)}
-            className="text-xs h-8 text-accent hover:text-accent/80 hover:bg-accent/10 px-2.5"
+            className="text-xs min-h-[44px] sm:min-h-[32px] sm:h-8 text-accent hover:text-accent/80 hover:bg-accent/10 px-2.5"
             aria-label="Ubah data calon siswa"
           >
             <Edit3 className="h-3.5 w-3.5 mr-1" />
@@ -112,7 +112,7 @@ export function ReviewSummary({ data, onEditStep, className }: ReviewSummaryProp
             variant="ghost"
             size="sm"
             onClick={() => onEditStep(2)}
-            className="text-xs h-8 text-accent hover:text-accent/80 hover:bg-accent/10 px-2.5"
+            className="text-xs min-h-[44px] sm:min-h-[32px] sm:h-8 text-accent hover:text-accent/80 hover:bg-accent/10 px-2.5"
             aria-label="Ubah data orang tua"
           >
             <Edit3 className="h-3.5 w-3.5 mr-1" />

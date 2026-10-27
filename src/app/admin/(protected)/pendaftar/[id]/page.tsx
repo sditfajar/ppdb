@@ -68,7 +68,7 @@ export default async function RegistrationDetailPage(props: PageProps) {
               </span>
               <StatusBadge status={reg.status} />
             </div>
-            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground text-balance mt-1">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground text-balance break-words mt-1">
               {reg.student_name}
             </h1>
             <p className="text-xs text-muted">
@@ -115,7 +115,7 @@ export default async function RegistrationDetailPage(props: PageProps) {
           <dl className="grid grid-cols-1 sm:grid-cols-2 gap-y-3.5 gap-x-4 text-xs sm:text-sm">
             <div>
               <dt className="text-muted text-xs">Nama Lengkap</dt>
-              <dd className="font-semibold text-foreground mt-0.5">{reg.student_name}</dd>
+              <dd className="font-semibold text-foreground break-words mt-0.5">{reg.student_name}</dd>
             </div>
             <div>
               <dt className="text-muted text-xs">Nama Panggilan</dt>

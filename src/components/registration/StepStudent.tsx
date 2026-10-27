@@ -185,7 +185,7 @@ export function StepStudent() {
                   min="0"
                   max="20"
                   placeholder="Ketik 0 jika anak tunggal"
-                  {...register("siblings_count")}
+                  {...register("siblings_count", { valueAsNumber: true })}
                   className="w-full sm:max-w-xs"
                 />
                 <span className="text-xs text-muted shrink-0">orang</span>
@@ -201,17 +201,17 @@ export function StepStudent() {
           error={errors.birth_order?.message}
         >
           {({ id, "aria-describedby": ariaDescribedby, "aria-invalid": ariaInvalid }) => (
-            <TextInput
-              id={id}
-              type="number"
-              min="1"
-              max="21"
-              placeholder="Contoh: 1"
-              {...register("birth_order")}
-              enterKeyHint="next"
-              aria-describedby={ariaDescribedby}
-              aria-invalid={ariaInvalid}
-            />
+              <TextInput
+                id={id}
+                type="number"
+                min="1"
+                max="21"
+                placeholder="Contoh: 1"
+                {...register("birth_order", { valueAsNumber: true })}
+                enterKeyHint="next"
+                aria-describedby={ariaDescribedby}
+                aria-invalid={ariaInvalid}
+              />
           )}
         </Field>
       </div>

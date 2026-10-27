@@ -16,13 +16,13 @@
 }
 
 :root {
-  /* Warna dalam OKLCH (tema terang default) */
+  /* Warna dalam OKLCH (tema terang default) - disesuaikan untuk WCAG AA contrast ratio >= 4.5:1 */
   --background: oklch(0.991 0 0);
   --foreground: oklch(0.173 0 0);
   --surface:    oklch(1 0 0);
-  --muted:      oklch(0.52 0 0);
-  --accent:     oklch(0.52 0.13 160);   /* hijau tenang khas SDIT */
-  --danger:     oklch(0.55 0.2 27);
+  --muted:      oklch(0.44 0 0);
+  --accent:     oklch(0.44 0.13 160);   /* hijau tenang khas SDIT, kontras >= 4.5:1 terhadap putih */
+  --danger:     oklch(0.52 0.2 27);
 
   /* Radius konsentris (jakub.kr) */
   --radius-control: 10px;
@@ -64,9 +64,9 @@
   --background: oklch(0.991 0 0);
   --foreground: oklch(0.173 0 0);
   --surface:    oklch(1 0 0);
-  --muted:      oklch(0.52 0 0);
-  --accent:     oklch(0.52 0.13 160);
-  --danger:     oklch(0.55 0.2 27);
+  --muted:      oklch(0.44 0 0);
+  --accent:     oklch(0.44 0.13 160);
+  --danger:     oklch(0.52 0.2 27);
   --shadow-border:
     0 0 0 1px rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.06), 0 2px 4px 0 rgb(0 0 0 / 0.04);
   --shadow-border-hover:

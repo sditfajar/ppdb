@@ -62,7 +62,7 @@ export function UploadProof({
     };
   }, []);
 
-  const activeError = externalError || internalError;
+  const activeError = internalError || externalError;
 
   const validateAndSetFile = (selectedFile: File) => {
     setInternalError(null);
@@ -226,7 +226,7 @@ export function UploadProof({
                 size="sm"
                 onClick={handleTriggerPicker}
                 disabled={disabled}
-                className="text-xs h-9 min-h-[36px]"
+                className="text-xs h-9 min-h-[44px] sm:min-h-[36px]"
               >
                 <RefreshCw className="h-3.5 w-3.5 mr-1.5" />
                 Ganti Foto
@@ -237,7 +237,7 @@ export function UploadProof({
                 size="sm"
                 onClick={handleRemove}
                 disabled={disabled}
-                className="text-xs h-9 min-h-[36px] text-danger hover:bg-danger/10"
+                className="text-xs h-9 min-h-[44px] sm:min-h-[36px] text-danger hover:bg-danger/10"
               >
                 <Trash2 className="h-3.5 w-3.5 mr-1.5" />
                 Hapus
