@@ -2,22 +2,47 @@
 
 import * as React from "react";
 import { useFormContext, Controller } from "react-hook-form";
-import { CreditCard, ShieldCheck } from "lucide-react";
+import { CreditCard, ShieldCheck, AlertCircle } from "lucide-react";
+import { Turnstile } from "@marsidev/react-turnstile";
 import { Checkbox } from "@/components/ui/Checkbox";
 import { UploadProof } from "@/components/registration/UploadProof";
 import { ReviewSummary } from "@/components/registration/ReviewSummary";
 import type { RegistrationFormData } from "@/lib/validation/registration";
+import type { PaymentSettings } from "@/lib/actions/registration-state";
 
 export interface StepPaymentProps {
   onEditStep: (stepNumber: number) => void;
   file: File | null;
   onFileSelect: (file: File | null) => void;
+  paymentSettings?: PaymentSettings;
+  onTurnstileSuccess: (token: string) => void;
+  onTurnstileExpire: () => void;
+  onTurnstileError: () => void;
+  turnstileError?: string | null;
+  uploadProgressText?: string | null;
+}
+
+/**
+ * Format nominal Rupiah
+ */
+function formatRupiah(amount: number): string {
+  return new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    minimumFractionDigits: 0,
+  }).format(amount);
 }
 
 export function StepPayment({
   onEditStep,
   file,
   onFileSelect,
+  paymentSettings,
+  onTurnstileSuccess,
+  onTurnstileExpire,
+  onTurnstileError,
+  turnstileError,
+  uploadProgressText,
 }: StepPaymentProps) {
   const {
     control,
@@ -27,6 +52,14 @@ export function StepPayment({
   } = useFormContext<RegistrationFormData>();
 
   const currentValues = getValues();
+
+  const siteKey =
+    process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || "1x00000000000000000000AA";
+
+  const bankName = paymentSettings?.bank || "Bank Syariah Indonesia (BSI)";
+  const accountNo = paymentSettings?.accountNo || "712-345-6789";
+  const accountName = paymentSettings?.accountName || "SDIT Fajar PPDB";
+  const amount = paymentSettings?.amount ?? 250000;
 
   return (
     <div className="space-y-6 text-left">
@@ -45,21 +78,23 @@ export function StepPayment({
         <div className="bg-muted/5 rounded-control p-3.5 space-y-2 border border-muted/15 text-xs">
           <div className="flex justify-between items-center">
             <span className="text-muted">Bank Tujuan:</span>
-            <span className="font-semibold text-foreground">Bank Syariah Indonesia (BSI)</span>
+            <span className="font-semibold text-foreground">{bankName}</span>
           </div>
           <div className="flex justify-between items-center">
             <span className="text-muted">Nomor Rekening:</span>
             <span className="font-mono font-bold text-foreground tabular-nums text-sm">
-              712-345-6789
+              {accountNo}
             </span>
           </div>
           <div className="flex justify-between items-center">
             <span className="text-muted">Atas Nama:</span>
-            <span className="font-medium text-foreground">SDIT Fajar PPDB</span>
+            <span className="font-medium text-foreground">{accountName}</span>
           </div>
           <div className="flex justify-between items-center pt-1 border-t border-muted/15">
             <span className="text-muted">Nominal Biaya:</span>
-            <span className="font-bold text-accent tabular-nums text-sm">Rp 250.000</span>
+            <span className="font-bold text-accent tabular-nums text-sm">
+              {formatRupiah(amount)}
+            </span>
           </div>
         </div>
       </div>
@@ -76,6 +111,14 @@ export function StepPayment({
           onFileSelect={onFileSelect}
           error={errors.payment_proof_file?.message as string | undefined}
         />
+
+        {/* Indikator Progres Indeterminate */}
+        {uploadProgressText && (
+          <div className="flex items-center gap-2 text-xs text-accent bg-accent/5 p-2.5 rounded-control border border-accent/20 animate-pulse">
+            <span className="h-2 w-2 rounded-full bg-accent animate-ping" />
+            <span className="font-medium">{uploadProgressText}</span>
+          </div>
+        )}
       </div>
 
       {/* 3. Ringkasan Isian */}
@@ -135,12 +178,27 @@ export function StepPayment({
         aria-hidden="true"
       />
 
-      {/* 6. Placeholder Cloudflare Turnstile (akan dihubungkan di Fase 4) */}
-      <div className="rounded-control bg-muted/5 border border-dashed border-muted/20 p-3 text-center text-xs text-muted">
-        <span className="inline-flex items-center gap-1.5 font-medium">
-          <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-          Perlindungan Keamanan Cloudflare Turnstile Aktif
-        </span>
+      {/* 6. Cloudflare Turnstile Widget */}
+      <div className="space-y-2">
+        <div className="flex justify-center my-2">
+          <Turnstile
+            siteKey={siteKey}
+            onSuccess={onTurnstileSuccess}
+            onExpire={onTurnstileExpire}
+            onError={onTurnstileError}
+            options={{
+              theme: "auto",
+              size: "normal",
+            }}
+          />
+        </div>
+
+        {turnstileError && (
+          <div className="flex items-center justify-center gap-1.5 text-xs text-danger text-center">
+            <AlertCircle className="h-3.5 w-3.5" />
+            <span>{turnstileError}</span>
+          </div>
+        )}
       </div>
     </div>
   );

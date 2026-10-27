@@ -25,6 +25,7 @@
   "type": "module",
   "dependencies": {
     "@hookform/resolvers": "6.0.0",
+    "@marsidev/react-turnstile": "1.6.3",
     "@supabase/ssr": "0.12.7",
     "@supabase/supabase-js": "2.118.0",
     "clsx": "2.1.1",

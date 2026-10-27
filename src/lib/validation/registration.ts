@@ -262,7 +262,7 @@ export const paymentSchema = z.object({
 });
 
 /**
- * Skema formulir registrasi gabungan (seluruh langkah)
+ * Skema formulir registrasi gabungan sisi klien (dengan objek File browser)
  */
 export const registrationSchema = baseStudentSchema
   .merge(parentSchema)
@@ -279,9 +279,58 @@ export const registrationSchema = baseStudentSchema
   });
 
 /**
+ * Validasi pembayaran dan bukti unggah di sisi server (tanpa objek File browser)
+ */
+export const serverPaymentProofSchema = z.object({
+  payment_proof_path: z
+    .string()
+    .trim()
+    .min(1, { message: "Path bukti pembayaran wajib diisi." })
+    .regex(
+      /^proofs\/\d{4}\/[0-9a-fA-F-]+\.(jpe?g|png|webp)$/,
+      { message: "Format path penyimpanan bukti pembayaran tidak valid." }
+    ),
+  payment_proof_mime: z.enum(ALLOWED_FILE_TYPES, {
+    message: "Format file bukti pembayaran tidak valid.",
+  }),
+  payment_proof_size: z
+    .number()
+    .int()
+    .positive({ message: "Ukuran bukti pembayaran tidak valid." })
+    .max(MAX_FILE_SIZE, { message: "Ukuran foto melebihi batas 5 MB." }),
+  consented: z.literal(true, {
+    message:
+      "Anda harus mencentang persetujuan kebenaran data dan pemrosesan untuk melanjutkan.",
+  }),
+  honeypot: z.string().optional().refine((val) => !val || val === "", {
+    message: "Spam detected.",
+  }),
+  turnstile_token: z
+    .string()
+    .min(1, { message: "Verifikasi keamanan Turnstile wajib dilengkapi." }),
+});
+
+/**
+ * Skema pendaftaran lengkap sisi server
+ */
+export const serverRegistrationSchema = baseStudentSchema
+  .merge(parentSchema)
+  .merge(serverPaymentProofSchema)
+  .superRefine((data, ctx) => {
+    if (data.birth_order > data.siblings_count + 1) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["birth_order"],
+        message: `Anak ke-${data.birth_order} tidak boleh melebihi jumlah saudara + 1 (maksimal ke-${data.siblings_count + 1}).`,
+      });
+    }
+  });
+
+/**
  * Ekspor tipe infer Zod
  */
 export type StudentFormData = z.infer<typeof studentSchema>;
 export type ParentFormData = z.infer<typeof parentSchema>;
 export type PaymentFormData = z.infer<typeof paymentSchema>;
 export type RegistrationFormData = z.infer<typeof registrationSchema>;
+export type ServerRegistrationInput = z.infer<typeof serverRegistrationSchema>;

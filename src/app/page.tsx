@@ -8,7 +8,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { SCHOOL_CONFIG } from "@/lib/config";
-import { getRegistrationState } from "@/lib/wave";
+import { getRegistrationState } from "@/lib/actions/registration-state";
 import { RegistrationWizard } from "@/components/registration/RegistrationWizard";
 import { Card } from "@/components/ui/Card";
 
@@ -55,8 +55,8 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const regState = getRegistrationState();
-  const { isOpen, wave, academicYear } = regState;
+  const regState = await getRegistrationState();
+  const { open: isOpen, wave, academicYear, payment } = regState;
 
   return (
     <div className="min-h-screen bg-background text-foreground pb-20">
@@ -109,9 +109,8 @@ export default async function HomePage() {
         >
           {/* Gelombang 1 */}
           <Card
-            className={`relative p-4 transition-all ${
-              wave === 1 ? "ring-2 ring-accent bg-accent/5" : "opacity-90"
-            }`}
+            className={`relative p-4 transition-all ${wave === 1 ? "ring-2 ring-accent bg-accent/5" : "opacity-90"
+              }`}
           >
             <div className="flex items-center justify-between mb-1.5">
               <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-foreground">
@@ -130,9 +129,8 @@ export default async function HomePage() {
 
           {/* Gelombang 2 */}
           <Card
-            className={`relative p-4 transition-all ${
-              wave === 2 ? "ring-2 ring-accent bg-accent/5" : "opacity-90"
-            }`}
+            className={`relative p-4 transition-all ${wave === 2 ? "ring-2 ring-accent bg-accent/5" : "opacity-90"
+              }`}
           >
             <div className="flex items-center justify-between mb-1.5">
               <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-foreground">
@@ -165,7 +163,7 @@ export default async function HomePage() {
           </div>
           <div className="flex items-center justify-between text-xs">
             <span className="text-muted">Transfer BSI a.n SDIT Fajar PPDB:</span>
-            <span className="font-bold text-accent tabular-nums text-sm">Rp 250.000</span>
+            <span className="font-bold text-accent tabular-nums text-sm">Rp 0</span>
           </div>
         </div>
 
@@ -264,7 +262,7 @@ export default async function HomePage() {
             className="animate-enter"
             style={{ "--stagger": 7 } as React.CSSProperties}
           >
-            <RegistrationWizard />
+            <RegistrationWizard paymentSettings={payment} />
           </div>
         )}
 
