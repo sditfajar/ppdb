@@ -206,7 +206,11 @@ export async function createRegistration(
         };
       }
 
-      console.error("[REGISTRATION_ACTION] Gagal menyimpan pendaftaran ke DB:", insertError);
+      console.error(
+        "[REGISTRATION_ACTION] Gagal menyimpan pendaftaran ke DB:",
+        insertError.code,
+        insertError.message
+      );
       return {
         success: false,
         message: "Terjadi kendala saat menyimpan pendaftaran ke database. Isian Anda aman, silakan coba lagi beberapa saat lagi.",
@@ -219,7 +223,10 @@ export async function createRegistration(
       id: inserted.id,
     };
   } catch (err) {
-    console.error("[REGISTRATION_ACTION] Kesalahan tak terduga:", err);
+    console.error(
+      "[REGISTRATION_ACTION] Kesalahan tak terduga:",
+      err instanceof Error ? err.message : "Unknown error"
+    );
     return {
       success: false,
       message: "Terjadi kesalahan sistem saat memproses formulir pendaftaran.",

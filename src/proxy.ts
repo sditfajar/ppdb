@@ -3,12 +3,19 @@ import { updateSession } from "@/lib/supabase/proxy";
 
 /**
  * Next.js 16 Proxy
- * Menjalankan sinkronisasi sesi Supabase dan proteksi rute admin lapis 1.
+ * Menjalankan sinkronisasi sesi Supabase, proteksi rute admin lapis 1,
+ * dan blokir rute pengembangan di lingkungan produksi.
  * Catatan: Ini BUKAN satu-satunya lapisan (requireAdmin tetap wajib di server components/actions).
  */
 export async function proxy(request: NextRequest) {
-  const { response, user } = await updateSession(request);
   const pathname = request.nextUrl.pathname;
+
+  // Proteksi rute /dev/* di produksi
+  if (pathname.startsWith("/dev") && process.env.NODE_ENV === "production") {
+    return new NextResponse("Not Found", { status: 404 });
+  }
+
+  const { response, user } = await updateSession(request);
 
   // Proteksi lapis 1: redirect /admin/* (kecuali /admin/login) ke /admin/login bila tidak ada sesi
   if (pathname.startsWith("/admin") && pathname !== "/admin/login") {

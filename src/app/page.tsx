@@ -8,6 +8,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { SCHOOL_CONFIG } from "@/lib/config";
+import { formatCurrency } from "@/lib/format";
 import { getRegistrationState } from "@/lib/actions/registration-state";
 import { RegistrationWizard } from "@/components/registration/RegistrationWizard";
 import { Card } from "@/components/ui/Card";
@@ -57,6 +58,12 @@ export const metadata: Metadata = {
 export default async function HomePage() {
   const regState = await getRegistrationState();
   const { open: isOpen, wave, academicYear, payment } = regState;
+  const bankLabel = payment?.bank
+    ? payment.bank.includes("(")
+      ? payment.bank.replace(/^.*\((.*)\).*$/, "$1")
+      : payment.bank
+    : "BSI";
+  const accountName = payment?.accountName || "SDIT Fajar PPDB";
 
   return (
     <div className="min-h-screen bg-background text-foreground pb-20">
@@ -161,9 +168,16 @@ export default async function HomePage() {
               Biaya Formulir Pendaftaran
             </h3>
           </div>
-          <div className="flex items-center justify-between text-xs">
-            <span className="text-muted">Transfer BSI a.n SDIT Fajar PPDB:</span>
-            <span className="font-bold text-accent tabular-nums text-sm">Rp 250.000</span>
+          <div className="flex items-center justify-between text-xs gap-2">
+            <span
+              className="text-muted truncate"
+              title={`Transfer ${payment?.bank || bankLabel} a.n ${accountName}:`}
+            >
+              Transfer {bankLabel} a.n {accountName}:
+            </span>
+            <span className="font-bold text-accent tabular-nums text-sm shrink-0">
+              {formatCurrency(payment?.amount ?? 250000)}
+            </span>
           </div>
         </div>
 

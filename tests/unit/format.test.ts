@@ -4,6 +4,7 @@ import {
   formatPhoneDisplay,
   formatFileSize,
   formatEducationLevel,
+  formatCurrency,
 } from "@/lib/format";
 
 describe("formatDateIndo", () => {
@@ -51,5 +52,24 @@ describe("formatEducationLevel", () => {
     expect(formatEducationLevel("sma_smk_ma")).toBe("SMA/SMK/MA Sederajat");
     expect(formatEducationLevel("d1_d3")).toBe("D1 / D2 / D3");
     expect(formatEducationLevel("s1_s3")).toBe("S1 / S2 / S3");
+  });
+});
+
+describe("formatCurrency", () => {
+  it("memformat angka nominal ke format Rupiah (IDR)", () => {
+    const formatted = formatCurrency(250000);
+    // Replace non-breaking space if present
+    const normalized = formatted.replace(/\s/g, " ");
+    expect(normalized).toBe("Rp 250.000");
+  });
+
+  it("menangani nominal lainnya", () => {
+    expect(formatCurrency(300000).replace(/\s/g, " ")).toBe("Rp 300.000");
+    expect(formatCurrency(0).replace(/\s/g, " ")).toBe("Rp 0");
+  });
+
+  it("menangani input null atau undefined", () => {
+    expect(formatCurrency(null)).toBe("-");
+    expect(formatCurrency(undefined)).toBe("-");
   });
 });

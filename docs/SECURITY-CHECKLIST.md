@@ -1,57 +1,26 @@
-# Laporan Audit Keamanan (Security Checklist)
-**Aplikasi:** PPDB Online SDIT Fajar  
-**Tanggal Verifikasi:** 27 Oktober 2026  
-**Status Audit:** **LULUS (100% Memenuhi Standar Keamanan PRD §10 & §11)**
+# Laporan Audit Keamanan Sistem (Security Checklist)
+## PPDB Online SDIT Fajar
+
+Dokumen audit ini merangkum pengujian dan verifikasi kontrol keamanan sistem sesuai spesifikasi PRD §10 dan Roadmap Fase 7 & 8.
 
 ---
 
-## Ringkasan Hasil Uji Nyata
+## 1. Matriks Hasil Audit Keamanan
 
-| Butir Pengujian | Target Standar | Status | Hasil Pengujian Nyata |
-|---|---|---|---|
-| **(a) Akses REST/Storage Kunci Publishable** | Anonim ditolak (0 record, tanpa list file) | **LULUS** | RLS deny-by-default aktif pada seluruh tabel (`registrations`, `admins`, `app_settings`) dan `storage.objects`. Kueri langsung oleh role `anon` menghasilkan 0 record dan operasi INSERT/UPDATE ditolak. |
-| **(b) Unggah Langsung Tanpa Token ke Storage** | Ditolak tanpa token unggah | **LULUS** | Tidak ada policy INSERT untuk publik pada `storage.objects`. Upaya POST/upload langsung ditolak. Unggah hanya dapat dilakukan ke path terotorisasi via signed upload token berumur pendek yang diterbitkan Server Action `requestUploadUrl`. |
-| **(c) Integritas Bundel Klien (No Secret Leaks)** | Kunci rahasia server tidak ada di JS klien | **LULUS** | Audit statis pada seluruh bundel JavaScript klien `.next/static/**/*.js` membuktikan string `SUPABASE_SECRET_KEY` dan `CRON_SECRET` **0 kecocokan** (tidak ada yang bocor). |
-| **(d) Proteksi Admin Berlapis** | Server Actions admin menolak tanpa sesi | **LULUS** | Diuji via unit test dan Playwright E2E. Setiap pemanggilan fungsi admin (`verifyRegistration`, `rejectRegistration`, `updateSettings`, ekspor CSV) memanggil `requireAdmin()` dan langsung menolak/mengalihkan ke `/admin/login` jika tidak ada cookie sesi admin. |
-| **(e) Kedaluwarsa Signed URL Bukti Bayar** | Signed URL berumur $\le 5$ menit (300 dtk) | **LULUS** | Parameter `createSignedUrl` pada endpoint detail pendaftar dan aksi admin diset tepat 300 detik. Setelah 300 detik, token otomatis kedaluwarsa oleh gateway Supabase Storage. |
-| **(f) Pencegahan Kebocoran PII di Log** | Tidak ada data sensitif di console/log | **LULUS** | Pemindaian seluruh kode sumber `src/` membuktikan `console.log` dan `console.error` tidak mencatat nama siswa, NIK, nomor HP, alamat, kata sandi, atau token pribadi. |
-| **(g) Header Keamanan HTTP** | Header proteksi standar terpasang | **LULUS** | `next.config.ts` memuat: `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, `X-Frame-Options: DENY`, dan `/admin` diberi meta `robots: { index: false, follow: false }`. |
-| **(h) Proteksi Formula CSV Injection** | Sel berawalan `= + - @ \t \r` dinetralkan | **LULUS** | Diuji via unit test `tests/unit/qa-edge-cases.test.ts` dan `tests/unit/csv.test.ts`. Formula seperti `=cmd|' /C calc'!A0`, `@SUM()`, `+123`, `-10` diberi prefix apostrof (`'`), sedangkan nilai tunggal `-` dipertahankan utuh sesuai AC-12. |
-| **(i) Sanitasi Pencarian Karakter Liar Admin** | Wildcard SQL & karakter injeksi dinetralkan | **LULUS** | Fungsi `sanitizePostgrestSearch` membersihkan `%`, `_`, `'`, `"`, `(`, `)`, koma, dan script tags sehingga pencarian admin aman dari PostgREST syntax injection. |
-
----
-
-## Rincian Verifikasi per Komponen
-
-### 1. Row Level Security & Akses Data (PRD §10, §11)
-- **Tabel `public.registrations`:**
-  - `anon`: Tidak memiliki policy sama sekali.
-  - `authenticated` (bukan admin): Ditolak oleh fungsi `is_admin()`.
-  - Penulisan formulir publik hanya dilakukan dari server (`src/lib/actions/registration.ts`) menggunakan klien admin `createAdminClient()` dengan `SUPABASE_SECRET_KEY` (`import "server-only"`).
-- **Tabel `public.admins`:**
-  - Hanya dapat dibaca oleh pengguna auth yang ID-nya tercatat dan cocok dengan `auth.uid()`.
-- **Tabel `public.app_settings`:**
-  - Hanya dapat diubah oleh administrator terdaftar.
-
-### 2. Bukti Pembayaran & Supabase Storage (PRD §8.3, §10)
-- **Bucket `payment-proofs`:**
-  - Parameter `public: false` (privat).
-  - Batas ukuran file: 5 MB (5.242.880 bytes).
-  - Tipe MIME yang diizinkan: `image/jpeg`, `image/png`, `image/webp`.
-- **Akses Pratinjau Admin:**
-  - Admin tidak mengakses URL permanen atau publik. Seluruh akses memanfaatkan `createSignedUrl(path, 300)` yang hanya aktif selama maksimal 5 menit.
-
-### 3. Proteksi Sesi Administrator Berlapis (PRD §10)
-- **Lapisan 1 (Edge Proxy - `src/proxy.ts`):** Mengintersepsi setiap permintaan ke `/admin/*` (kecuali `/admin/login`) dan mengarahkan ke `/admin/login` jika sesi Supabase tidak valid.
-- **Lapisan 2 (Server Component Layout - `src/app/admin/(protected)/layout.tsx`):** Memanggil `requireAdmin()` untuk mengecek sesi user di Supabase Auth dan tabel `public.admins`.
-- **Lapisan 3 (Server Actions - `src/lib/actions/admin.ts`):** Setiap aksi mutasi (`verifyRegistration`, `rejectRegistration`, `updateAdminNote`, `updateSettings`) memanggil `requireAdmin()` sebelum melakukan operasi database.
-
-### 4. Pencegahan Spam & Bot
-- **Cloudflare Turnstile:** Terpasang di klien via `@marsidev/react-turnstile` dan divalidasi ulang di server sebelum data registrasi atau upload URL disetujui.
-- **Honeypot:** Field tersembunyi `honeypot` mendeteksi bot pengisi form otomatis; submit ditolak seketika tanpa menyentuh database.
-- **In-Memory Rate Limiting:** Pembatasan frekuensi submit pendaftaran dan permintaan upload URL per alamat IP.
+| # | Item Kontrol Keamanan | Metode Verifikasi | Status | Hasil & Analisis |
+|---|---|---|:---:|---|
+| **a** | **Akses REST & Storage Langsung oleh Anonim Ditolak** | Pengujian PostgREST & Supabase SDK menggunakan Publishable Key | **LULUS** | RLS pada tabel `registrations`, `admins`, dan `app_settings` aktif tanpa policy untuk role `anon`. Query `SELECT`, `INSERT`, `UPDATE`, `DELETE` langsung menghasilkan respons kosong atau permission denied. Anonim juga tidak memiliki hak akses `list()` maupun `download()` ke bucket `payment-proofs`. |
+| **b** | **Unggah Berkas ke Bucket Tanpa Token Ditolak** | Pengujian HTTP upload langsung ke Supabase Storage tanpa upload token | **LULUS** | Bucket `payment-proofs` bersifat privat. Upload berkas dari browser wajib menggunakan token satu kali pakai yang dihasilkan dari `createSignedUploadUrl` di Server Action. Percobaan upload tanpa token ditolak dengan status HTTP 403 / 401. |
+| **c** | **Isolasi Kunci Secret (Tidak Ada Bocor ke Bundel Klien)** | Analisis build AST Next.js & pemeriksaan variabel bundel JS | **LULUS** | `SUPABASE_SECRET_KEY` diisolasi di lingkungan server menggunakan direktif `import "server-only"`. Variabel ini tidak pernah berawalan `NEXT_PUBLIC_` dan tidak ditemukan dalam bundel `.next/static`. |
+| **d** | **Proteksi Ganda Server Action & Rute Admin** | Pemanggilan Server Action admin tanpa sesi admin & pengujian proxy | **LULUS** | Semua Server Action admin (`verifyRegistration`, `rejectRegistration`, `revertToPending`, `updateSettings`, dll.) memanggil `requireAdmin()` yang memverifikasi keberadaan user di tabel `admins`. Proxy `src/proxy.ts` juga mengarahkan akses tak terautentikasi ke `/admin/login`. |
+| **e** | **Pembatasan Masa Berlaku Signed URL Bukti Bayar** | Inspeksi parameter masa berlaku signed URL pada detail pendaftar | **LULUS** | Gambar bukti bayar hanya disajikan lewat signed URL berumur 300 detik (5 menit). Tautan kedaluwarsa secara otomatis dan tidak dapat disebarluaskan secara publik. |
+| **f** | **Eliminasi Data Pribadi (PII) dari Log Server** | Audit pemanggilan `console.*` di seluruh direktori `src/` | **LULUS** | Semua error database dan sistem telah disanitasi: hanya mencatat error code dan pesan generik. Objek baris basis data yang memuat nama calon siswa, tanggal lahir, atau nomor telepon orang tua tidak dicetak ke stdout/stderr. |
+| **g** | **Penerapan Header Keamanan HTTP & CSP Ketat** | Pemeriksaan header respons di `next.config.ts` | **LULUS** | Header aktif: `Content-Security-Policy`, `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy`, dan `Strict-Transport-Security`. CSP membatasi skrip hanya ke origin dan Cloudflare Turnstile, serta membatasi connect-src ke Supabase dan Turnstile. |
+| **h** | **Pencegahan Injeksi Formula CSV (Formula Injection)** | Unit test `tests/unit/csv.test.ts` & audit modul `src/lib/csv.ts` | **LULUS** | Sel berawalan karakter berbahaya (`=`, `+`, `-`, `@`, `\t`, `\r`) otomatis dinetralkan dengan awalan tanda petik tunggal (`'`), kecuali nilai tunggal persis `"-"`. Berkas diekspor dengan UTF-8 BOM untuk kompatibilitas Excel yang aman. |
+| **i** | **Sanitasi Pencarian Admin dari Injeksi Filter PostgREST** | Unit test `tests/unit/admin-sanitize.test.ts` & audit `src/lib/sanitize.ts` | **LULUS** | Input kata kunci pencarian admin (`q`) disanitasi dari karakter khusus seperti koma, kurung buka/tutup, tanda persen, dan kutip sebelum dimasukkan ke dalam filter `or()` / `ilike()` PostgREST. |
 
 ---
 
-## Kesimpulan
-Sistem telah memenuhi seluruh kriteria keamanan yang diwajibkan oleh PRD. Tidak ditemukan celah kebocoran data anak, data bukti pembayaran tidak dapat diakses publik, dan autentikasi administrator terlindungi secara berlapis.
+## 2. Kesimpulan Keamanan
+
+Sistem PPDB Online SDIT Fajar telah memenuhi seluruh kriteria keamanan tingkat lanjut (defense-in-depth) yang disyaratkan dalam dokumen PRD dan siap untuk tahap peluncuran produksi.

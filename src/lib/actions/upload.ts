@@ -90,7 +90,7 @@ export async function requestUploadUrl(
       .createSignedUploadUrl(storagePath);
 
     if (error || !data) {
-      console.error("[STORAGE_UPLOAD] Gagal membuat signed upload url:", error?.message, error);
+      console.error("[STORAGE_UPLOAD] Gagal membuat signed upload url:", error?.message);
       return {
         success: false,
         message: "Layanan penyimpanan sementara tidak dapat dihubungi. Silakan coba beberapa saat lagi.",
@@ -106,7 +106,10 @@ export async function requestUploadUrl(
       },
     };
   } catch (err) {
-    console.error("[STORAGE_UPLOAD] Kesalahan tak terduga:", err);
+    console.error(
+      "[STORAGE_UPLOAD] Kesalahan tak terduga:",
+      err instanceof Error ? err.message : "Unknown error"
+    );
     return {
       success: false,
       message: "Terjadi kesalahan pada sistem saat mempersiapkan penyimpanan bukti bayar.",
