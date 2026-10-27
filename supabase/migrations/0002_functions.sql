@@ -32,11 +32,13 @@ begin
 end;
 $$;
 
+drop trigger if exists registrations_set_updated_at on public.registrations;
 create trigger registrations_set_updated_at
   before update on public.registrations
   for each row
   execute function public.set_updated_at();
 
+drop trigger if exists app_settings_set_updated_at on public.app_settings;
 create trigger app_settings_set_updated_at
   before update on public.app_settings
   for each row
@@ -89,6 +91,7 @@ begin
 end;
 $$;
 
+drop trigger if exists registrations_generate_reg_number on public.registrations;
 create trigger registrations_generate_reg_number
   before insert on public.registrations
   for each row

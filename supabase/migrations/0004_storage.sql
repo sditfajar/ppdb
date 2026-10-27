@@ -19,6 +19,7 @@ on conflict (id) do update set
 -- Role anon: TIDAK DIBERIKAN POLICY (upload hanya lewat signed URL yang dibuat server)
 -- Authenticated admin: Hanya SELECT (untuk generate signed download URL)
 
+drop policy if exists "Admins can view payment proofs" on storage.objects;
 create policy "Admins can view payment proofs"
   on storage.objects
   for select

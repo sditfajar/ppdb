@@ -1,12 +1,29 @@
 -- 0001_schema.sql
 -- Skema database PPDB Online SDIT Fajar (PRD §11)
 
--- 1. Enum Types
-create type public.registration_status as enum ('pending', 'verified', 'rejected');
-create type public.education_level as enum ('sd_mi', 'smp_mts', 'sma_smk_ma', 'd1_d3', 's1_s3');
+-- 1. Enum Types (Idempoten: dicek terlebih dahulu di katalog pg_type)
+do $$
+begin
+  if not exists (
+    select 1 from pg_type t 
+    join pg_namespace n on n.oid = t.typnamespace 
+    where t.typname = 'registration_status' and n.nspname = 'public'
+  ) then
+    create type public.registration_status as enum ('pending', 'verified', 'rejected');
+  end if;
+
+  if not exists (
+    select 1 from pg_type t 
+    join pg_namespace n on n.oid = t.typnamespace 
+    where t.typname = 'education_level' and n.nspname = 'public'
+  ) then
+    create type public.education_level as enum ('sd_mi', 'smp_mts', 'sma_smk_ma', 'd1_d3', 's1_s3');
+  end if;
+end
+$$;
 
 -- 2. Tabel Registrations
-create table public.registrations (
+create table if not exists public.registrations (
   id                  uuid primary key default gen_random_uuid(),
   reg_number          text not null unique,
   academic_year       text not null,                       -- contoh: '2026/2027'
@@ -57,24 +74,24 @@ create table public.registrations (
 
 -- Indeks unik parsial: satu pendaftaran aktif per siswa (nama + tanggal lahir) per tahun ajaran
 -- Mengizinkan siswa yang berstatus 'rejected' untuk mendaftar ulang
-create unique index registrations_active_unique
+create unique index if not exists registrations_active_unique
   on public.registrations (academic_year, lower(btrim(student_name)), birth_date)
   where status <> 'rejected';
 
 -- Indeks performa query filter admin
-create index registrations_status_created_idx
+create index if not exists registrations_status_created_idx
   on public.registrations (status, created_at desc);
 
-create index registrations_wave_idx
+create index if not exists registrations_wave_idx
   on public.registrations (academic_year, wave);
 
 -- 3. Tabel Admins (Role Tunggal)
-create table public.admins (
+create table if not exists public.admins (
   user_id uuid primary key references auth.users (id) on delete cascade
 );
 
 -- 4. Tabel App Settings (Singleton)
-create table public.app_settings (
+create table if not exists public.app_settings (
   id                  boolean primary key default true check (id),
   academic_year       text not null default '2026/2027',
   registration_open   boolean not null default true,
