@@ -1,12 +1,17 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import type { Database } from "./database.types";
+import type { User } from "@supabase/supabase-js";
 
 /**
  * Memperbarui sesi Supabase Auth pada level Proxy / Middleware Next.js.
  * Menjamin cookie auth tetap sinkron antara browser dan server.
+ * Mengembalikan objek response dan user terverifikasi (jika ada).
  */
-export async function updateSession(request: NextRequest) {
+export async function updateSession(request: NextRequest): Promise<{
+  response: NextResponse;
+  user: User | null;
+}> {
   let supabaseResponse = NextResponse.next({
     request,
   });
@@ -16,7 +21,7 @@ export async function updateSession(request: NextRequest) {
 
   // Jika env belum diset (mis. saat build atau init awal), teruskan tanpa error fatal
   if (!url || !publishableKey) {
-    return supabaseResponse;
+    return { response: supabaseResponse, user: null };
   }
 
   const supabase = createServerClient<Database>(url, publishableKey, {
@@ -39,7 +44,9 @@ export async function updateSession(request: NextRequest) {
   });
 
   // getUser() me-refresh token yang kedaluwarsa secara aman
-  await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  return supabaseResponse;
+  return { response: supabaseResponse, user };
 }
