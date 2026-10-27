@@ -1,7 +1,22 @@
 @import "tailwindcss";
 
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-danger: var(--danger);
+
+  --radius-control: var(--radius-control);
+  --radius-card: var(--radius-card);
+
+  --shadow-border: var(--shadow-border);
+  --shadow-border-hover: var(--shadow-border-hover);
+}
+
 :root {
-  /* Warna dalam OKLCH (tema terang) */
+  /* Warna dalam OKLCH (tema terang default) */
   --background: oklch(0.991 0 0);
   --foreground: oklch(0.173 0 0);
   --surface:    oklch(1 0 0);
@@ -32,6 +47,36 @@
     --shadow-border-hover: 0 0 0 1px rgb(255 255 255 / 0.12);
     --image-outline: rgb(255 255 255 / 0.1);
   }
+}
+
+/* Explicit class / data-theme overrides for testing and manual preview */
+[data-theme="dark"], .dark {
+  --background: oklch(0.173 0 0);     /* ≈ #101010 */
+  --foreground: oklch(0.96 0 0);
+  --surface:    oklch(0.21 0 0);
+  --muted:      oklch(0.7 0 0);
+  --shadow-border:       0 0 0 1px rgb(255 255 255 / 0.08);
+  --shadow-border-hover: 0 0 0 1px rgb(255 255 255 / 0.12);
+  --image-outline: rgb(255 255 255 / 0.1);
+}
+
+[data-theme="light"], .light {
+  --background: oklch(0.991 0 0);
+  --foreground: oklch(0.173 0 0);
+  --surface:    oklch(1 0 0);
+  --muted:      oklch(0.52 0 0);
+  --accent:     oklch(0.52 0.13 160);
+  --danger:     oklch(0.55 0.2 27);
+  --shadow-border:
+    0 0 0 1px rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.06), 0 2px 4px 0 rgb(0 0 0 / 0.04);
+  --shadow-border-hover:
+    0 0 0 1px rgb(0 0 0 / 0.08), 0 1px 2px -1px rgb(0 0 0 / 0.08), 0 2px 4px 0 rgb(0 0 0 / 0.06);
+  --image-outline: rgb(0 0 0 / 0.1);
+}
+
+@utility image-outline {
+  outline: 1px solid var(--image-outline);
+  outline-offset: -1px;
 }
 
 body {
