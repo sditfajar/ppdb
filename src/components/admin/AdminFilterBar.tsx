@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
-import { Search, X, Filter } from "lucide-react";
+import { Search, X, Filter, Download } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
 export function AdminFilterBar() {
@@ -59,6 +59,14 @@ export function AdminFilterBar() {
     setSearchVal("");
     router.push(pathname);
   };
+
+  // Buat URL ekspor yang meneruskan filter aktif saat ini
+  const exportParams = new URLSearchParams();
+  if (currentQ) exportParams.set("q", currentQ);
+  if (currentStatus && currentStatus !== "all") exportParams.set("status", currentStatus);
+  if (currentWave && currentWave !== "all") exportParams.set("wave", currentWave);
+  const exportQuery = exportParams.toString();
+  const exportUrl = exportQuery ? `/admin/export?${exportQuery}` : "/admin/export";
 
   return (
     <div className="flex flex-col gap-3 w-full bg-surface p-3.5 sm:p-4 rounded-card shadow-border">
@@ -132,18 +140,30 @@ export function AdminFilterBar() {
           </select>
         </div>
 
-        {/* Reset Filter */}
-        {hasActiveFilters && (
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            onClick={handleResetAll}
-            className="text-xs text-muted hover:text-foreground h-9 px-2.5"
+        {/* Aksi Ekspor CSV & Reset Filter */}
+        <div className="flex items-center gap-2">
+          <a
+            href={exportUrl}
+            download
+            className="inline-flex items-center justify-center gap-1.5 min-h-[38px] px-3 py-1 text-xs font-semibold rounded-control bg-accent/10 text-accent hover:bg-accent/20 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            aria-label="Ekspor data pendaftar ke berkas CSV sesuai filter aktif"
           >
-            Reset Filter
-          </Button>
-        )}
+            <Download className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+            <span>Ekspor CSV</span>
+          </a>
+
+          {hasActiveFilters && (
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={handleResetAll}
+              className="text-xs text-muted hover:text-foreground h-9 px-2.5"
+            >
+              Reset Filter
+            </Button>
+          )}
+        </div>
       </div>
     </div>
   );

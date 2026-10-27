@@ -13,11 +13,13 @@ import {
   saveAdminNote,
 } from "@/lib/actions/admin";
 import { RegistrationStatus } from "@/components/ui/StatusBadge";
+import { normalizeIdPhone } from "@/lib/phone";
 
 interface RegistrationDetailActionsProps {
   id: string;
   currentStatus: RegistrationStatus;
   currentAdminNote: string | null;
+  rejectionReason?: string | null;
   contactPhone: string;
   studentName: string;
   regNumber: string;
@@ -27,6 +29,7 @@ export function RegistrationDetailActions({
   id,
   currentStatus,
   currentAdminNote,
+  rejectionReason,
   contactPhone,
   studentName,
   regNumber,
@@ -144,18 +147,38 @@ export function RegistrationDetailActions({
     });
   };
 
-  // 5. Tautan WhatsApp Orang Tua
-  const cleanPhone = contactPhone.replace(/\D/g, "");
-  const waNumber = cleanPhone.startsWith("0")
-    ? "62" + cleanPhone.slice(1)
-    : cleanPhone;
-
-  const waMessage = encodeURIComponent(
-    `Assalamu'alaikum Warahmatullahi Wabarakatuh.\n\n` +
+  // 5. Tautan WhatsApp Orang Tua dengan Template Pesan Dinamis (PRD §8.5 & §14)
+  let rawWaMessage = "";
+  if (currentStatus === "verified") {
+    rawWaMessage =
+      `Assalamu'alaikum Warahmatullahi Wabarakatuh.\n\n` +
       `Bapak/Ibu wali dari calon siswa ananda *${studentName}* (No. Registrasi: *${regNumber}*),\n` +
-      `Kami dari Panitia PPDB SDIT Fajar ingin mengonfirmasi terkait pendaftaran ananda.`
-  );
-  const waUrl = `https://wa.me/${waNumber}?text=${waMessage}`;
+      `Alhamdulillah, berkas pendaftaran calon siswa di SDIT Fajar telah kami verifikasi dan dinyatakan LENGKAP.\n\n` +
+      `Informasi jadwal tahapan selanjutnya akan kami sampaikan lebih lanjut melalui kontak ini. Terima kasih atas kepercayaan Bapak/Ibu kepada SDIT Fajar.\n\n` +
+      `Wassalamu'alaikum Warahmatullahi Wabarakatuh.\n` +
+      `Panitia PPDB SDIT Fajar`;
+  } else if (currentStatus === "rejected") {
+    const reasonText = rejectionReason || "Berkas pendaftaran belum memenuhi persyaratan.";
+    rawWaMessage =
+      `Assalamu'alaikum Warahmatullahi Wabarakatuh.\n\n` +
+      `Bapak/Ibu wali dari calon siswa ananda *${studentName}* (No. Registrasi: *${regNumber}*),\n` +
+      `Kami menginformasikan bahwa berkas pendaftaran calon siswa ananda di SDIT Fajar belum dapat diverifikasi dengan alasan:\n` +
+      `"${reasonText}"\n\n` +
+      `Bapak/Ibu dapat memperbaiki data atau mendaftar kembali melalui website PPDB SDIT Fajar. Jika membutuhkan bantuan lebih lanjut, silakan balas pesan ini.\n\n` +
+      `Wassalamu'alaikum Warahmatullahi Wabarakatuh.\n` +
+      `Panitia PPDB SDIT Fajar`;
+  } else {
+    rawWaMessage =
+      `Assalamu'alaikum Warahmatullahi Wabarakatuh.\n\n` +
+      `Bapak/Ibu wali dari calon siswa ananda *${studentName}* (No. Registrasi: *${regNumber}*),\n` +
+      `Kami dari Panitia PPDB SDIT Fajar ingin mengonfirmasi terkait pendaftaran ananda yang saat ini sedang dalam proses verifikasi berkas.\n\n` +
+      `Jika ada data atau informasi yang perlu diperbarui, silakan hubungi kami melalui pesan ini.\n\n` +
+      `Wassalamu'alaikum Warahmatullahi Wabarakatuh.\n` +
+      `Panitia PPDB SDIT Fajar`;
+  }
+
+  const waNumber = normalizeIdPhone(contactPhone);
+  const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(rawWaMessage)}`;
 
   return (
     <div className="flex flex-col gap-6 w-full">

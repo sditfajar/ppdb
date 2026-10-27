@@ -46,6 +46,25 @@ Isi variabel lingkungan:
    pnpm build       # Production build
    ```
 
+## Pengujian Endpoint Cron Pembersihan File Yatim (Lokal)
+
+Endpoint cron `/api/cron/cleanup-orphans` membersihkan berkas di bucket `payment-proofs` yang berusia > 24 jam dan tidak dirujuk oleh tabel pendaftaran.
+
+1. **Uji akses dengan otorisasi valid (200 OK):**
+   ```bash
+   curl -i -H "Authorization: Bearer development-cron-secret-change-in-production" http://localhost:3000/api/cron/cleanup-orphans
+   ```
+
+2. **Uji penolakan akses tanpa secret (401 Unauthorized):**
+   ```bash
+   curl -i http://localhost:3000/api/cron/cleanup-orphans
+   ```
+
+3. **Uji penolakan dengan token yang salah (401 Unauthorized):**
+   ```bash
+   curl -i -H "Authorization: Bearer token-salah" http://localhost:3000/api/cron/cleanup-orphans
+   ```
+
 ## Struktur Proyek
 
 - `src/app/`: App Router Next.js (halaman publik & admin)

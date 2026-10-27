@@ -8,6 +8,8 @@ import {
   adminLoginSchema,
   rejectRegistrationSchema,
   adminNoteSchema,
+  settingsSchema,
+  type SettingsInput,
 } from "@/lib/validation/admin";
 
 export type AdminActionState = {
@@ -232,5 +234,54 @@ export async function saveAdminNote(
   return {
     success: true,
     message: "Catatan admin berhasil disimpan.",
+  };
+}
+
+/**
+ * Memperbarui pengaturan sistem PPDB (tahun ajaran, buka/tutup pendaftaran, info pembayaran).
+ * Dijalankan dengan sesi admin sehingga RLS 'Admins can update app settings' berlaku.
+ * Menggunakan revalidatePath agar langsung memengaruhi halaman publik dan admin.
+ */
+export async function updateSettings(
+  input: SettingsInput
+): Promise<AdminActionState> {
+  const { supabase } = await requireAdmin();
+
+  const parsed = settingsSchema.safeParse(input);
+  if (!parsed.success) {
+    return {
+      success: false,
+      error: parsed.error.issues[0]?.message || "Format data pengaturan tidak valid.",
+    };
+  }
+
+  const { error } = await supabase
+    .from("app_settings")
+    .update({
+      academic_year: parsed.data.academic_year,
+      registration_open: parsed.data.registration_open,
+      payment_amount: parsed.data.payment_amount,
+      payment_bank: parsed.data.payment_bank,
+      payment_account_no: parsed.data.payment_account_no,
+      payment_account_name: parsed.data.payment_account_name,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", true);
+
+  if (error) {
+    return {
+      success: false,
+      error: "Gagal menyimpan pengaturan: " + error.message,
+    };
+  }
+
+  // Revalidasi halaman publik (info dan wizard) serta seluruh halaman admin
+  revalidatePath("/", "layout");
+  revalidatePath("/admin", "layout");
+  revalidatePath("/admin/pengaturan");
+
+  return {
+    success: true,
+    message: "Pengaturan PPDB berhasil disimpan.",
   };
 }

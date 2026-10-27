@@ -98,6 +98,7 @@ export default async function RegistrationDetailPage(props: PageProps) {
         id={reg.id}
         currentStatus={reg.status}
         currentAdminNote={reg.admin_note}
+        rejectionReason={reg.rejection_reason}
         contactPhone={reg.contact_phone}
         studentName={reg.student_name}
         regNumber={reg.reg_number}
