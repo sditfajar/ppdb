@@ -78,7 +78,7 @@ export default async function Image() {
               color: "#ecfdf5",
             }}
           >
-            Penerimaan Peserta Didik Baru (PPDB)
+            Sistem Penerimaan Murid Baru (SPMB)
           </div>
           <h1
             style={{

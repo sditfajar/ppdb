@@ -74,10 +74,10 @@ function YoutubeIcon({ className }: { className?: string }) {
 
 export const metadata: Metadata = {
   title: `Pendaftaran Siswa Baru — ${SCHOOL_CONFIG.name}`,
-  description: `Formulir online Penerimaan Peserta Didik Baru (PPDB) ${SCHOOL_CONFIG.fullName} Tahun Ajaran ${SCHOOL_CONFIG.defaultAcademicYear}.`,
+  description: `Formulir online Sistem Penerimaan Murid Baru (SPMB) ${SCHOOL_CONFIG.fullName} Tahun Ajaran ${SCHOOL_CONFIG.defaultAcademicYear}.`,
 };
 
-export default async function PpdbPage() {
+export default async function SpmbPage() {
   const regState = await getRegistrationState();
   const { open: isOpen, wave, academicYear, payment } = regState;
   const bankLabel = payment?.bank
@@ -119,7 +119,7 @@ export default async function PpdbPage() {
           style={{ "--stagger": 1 } as React.CSSProperties}
         >
           <Sparkles className="h-3.5 w-3.5" />
-          <span>PPDB Online {SCHOOL_CONFIG.name}</span>
+          <span>SPMB Online {SCHOOL_CONFIG.name}</span>
         </div>
 
         <h1
@@ -140,7 +140,7 @@ export default async function PpdbPage() {
             Assalamualaikum Wr. Wb.
           </p>
           <p className="text-xs sm:text-sm text-muted text-pretty leading-relaxed">
-            Sehubungan telah dibukanya Penerimaan Peserta Didik Baru (PPDB) TP {academicYear}, silakan
+            Sehubungan telah dibukanya Sistem Penerimaan Murid Baru (SPMB) TP {academicYear}, silakan
             mengisi formulir pendaftaran di bawah ini secara bertahap.
           </p>
           <div className="pt-2 border-t border-muted/15">
@@ -239,7 +239,7 @@ export default async function PpdbPage() {
           style={{ "--stagger": 6 } as React.CSSProperties}
         >
           <p className="text-xs font-semibold text-foreground uppercase tracking-wider mb-2">
-            Butuh Bantuan? Hubungi WhatsApp Panitia PPDB
+            Butuh Bantuan? Hubungi WhatsApp Panitia SPMB
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
             <a
@@ -324,7 +324,7 @@ export default async function PpdbPage() {
               Pendaftaran Saat Ini Sedang Ditutup
             </h2>
             <p className="text-xs sm:text-sm text-muted text-pretty max-w-md mx-auto">
-              Penerimaan Peserta Didik Baru dibuka pada bulan September – Juni. Saat ini masa
+              Sistem Penerimaan Murid Baru dibuka pada bulan September – Juni. Saat ini masa
               pendaftaran telah berakhir atau sedang dipersiapkan untuk gelombang berikutnya.
             </p>
             <p className="text-xs text-muted">

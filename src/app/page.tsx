@@ -7,7 +7,7 @@ import { HomeScrollLock } from "@/components/home/HomeScrollLock";
 
 export const metadata: Metadata = {
   title: `Beranda — ${SCHOOL_CONFIG.name}`,
-  description: `Penerimaan Peserta Didik Baru (PPDB) ${SCHOOL_CONFIG.fullName}. Pendaftaran online siswa baru Tahun Ajaran ${SCHOOL_CONFIG.defaultAcademicYear}.`,
+  description: `Sistem Penerimaan Murid Baru (SPMB) ${SCHOOL_CONFIG.fullName}. Pendaftaran online siswa baru Tahun Ajaran ${SCHOOL_CONFIG.defaultAcademicYear}.`,
 };
 
 export default async function HomePage() {
@@ -15,7 +15,7 @@ export default async function HomePage() {
   const academicYear = regState.academicYear || SCHOOL_CONFIG.defaultAcademicYear;
 
   const waMessage = encodeURIComponent(
-    `Assalamualaikum Admin PPDB ${SCHOOL_CONFIG.name}, saya ingin konsultasi terkait Penerimaan Peserta Didik Baru (PPDB).`
+    `Assalamualaikum Admin PPDB ${SCHOOL_CONFIG.name}, saya ingin konsultasi terkait Sistem Penerimaan Murid Baru (SPMB).`
   );
   const waUrl = `https://wa.me/6287737860657?text=${waMessage}`;
 
@@ -39,7 +39,7 @@ export default async function HomePage() {
           style={{ "--stagger": 1 } as React.CSSProperties}
         >
           <Sparkles className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-          <span>PPDB Online {SCHOOL_CONFIG.name}</span>
+          <span>SPMB Online {SCHOOL_CONFIG.name}</span>
         </div>
 
         {/* Judul Hero */}
@@ -47,7 +47,7 @@ export default async function HomePage() {
           className="hero-title animate-enter font-bold tracking-tight text-foreground text-balance leading-tight text-[clamp(1.5rem,4.5vw,3rem)]"
           style={{ "--stagger": 2 } as React.CSSProperties}
         >
-          Penerimaan Peserta Didik Baru
+          Sistem Penerimaan Murid Baru
           <span className="block text-accent mt-1 text-[clamp(1.2rem,3.5vw,2.25rem)]">
             Tahun Ajaran {academicYear}
           </span>
@@ -61,16 +61,16 @@ export default async function HomePage() {
           Membina generasi Qur&apos;ani yang cerdas, berkarakter, dan berakhlak mulia bersama {SCHOOL_CONFIG.fullName}.
         </p>
 
-        {/* Tombol Aksi: Daftar PPDB & Konsultasi WhatsApp */}
+        {/* Tombol Aksi: Daftar SPMB & Konsultasi WhatsApp */}
         <div
           className="animate-enter pt-2 sm:pt-4 flex flex-col sm:flex-row items-center justify-center gap-2.5 sm:gap-4 w-full"
           style={{ "--stagger": 4 } as React.CSSProperties}
         >
           <Link
-            href="/ppdb"
+            href="/spmb"
             className="hero-cta-btn inline-flex items-center justify-center font-semibold bg-accent text-white rounded-control shadow-sm hover:opacity-95 active:scale-[0.98] transition-all h-11 sm:h-13 px-6 sm:px-8 text-sm sm:text-base focus-visible:ring-2 focus-visible:ring-accent outline-none w-full sm:w-auto"
           >
-            Daftar PPDB
+            Daftar SPMB
           </Link>
 
           <a

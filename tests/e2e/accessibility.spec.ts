@@ -18,8 +18,8 @@ test.describe("Audit Aksesibilitas WCAG 2.1 AA (Axe-Core)", () => {
     expect(seriousOrCritical, JSON.stringify(seriousOrCritical, null, 2)).toHaveLength(0);
   });
 
-  test("halaman formulir utama (/ppdb) bebas pelanggaran serious & critical", async ({ page }) => {
-    await page.goto("/ppdb");
+  test("halaman formulir utama (/spmb) bebas pelanggaran serious & critical", async ({ page }) => {
+    await page.goto("/spmb");
     await page.waitForSelector("h1");
     // Tunggu animasi masuk bertahap (stagger entrance) selesai sempurna
     await page.waitForTimeout(1200);

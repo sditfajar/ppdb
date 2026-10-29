@@ -65,8 +65,8 @@ test.describe("Halaman Beranda (Home) - Full Viewport & No-Scroll Guarantee", ()
       expect(scrollPos.x).toBe(0);
       expect(scrollPos.y).toBe(0);
 
-      // 4. Verifikasi tombol "Daftar PPDB" terlihat dan berada di dalam viewport
-      const ctaButton = page.getByRole("link", { name: "Daftar PPDB" });
+      // 4. Verifikasi tombol "Daftar SPMB" terlihat dan berada di dalam viewport
+      const ctaButton = page.getByRole("link", { name: "Daftar SPMB" });
       await expect(ctaButton).toBeVisible();
       await expect(ctaButton).toBeInViewport();
 
@@ -120,15 +120,15 @@ test.describe("Halaman Beranda (Home) - Full Viewport & No-Scroll Guarantee", ()
     await expect(waButton).toHaveAttribute("rel", "noopener noreferrer");
   });
 
-  test("Klik tombol 'Daftar PPDB' mengarah ke rute /ppdb", async ({ page }) => {
+  test("Klik tombol 'Daftar SPMB' mengarah ke rute /spmb", async ({ page }) => {
     await page.goto("/");
     await page.waitForSelector("h1");
 
-    const ctaButton = page.getByRole("link", { name: "Daftar PPDB" });
-    await expect(ctaButton).toHaveAttribute("href", "/ppdb");
+    const ctaButton = page.getByRole("link", { name: "Daftar SPMB" });
+    await expect(ctaButton).toHaveAttribute("href", "/spmb");
 
     await ctaButton.click();
-    await expect(page).toHaveURL(/\/ppdb/);
+    await expect(page).toHaveURL(/\/spmb/);
     await expect(page.locator("h1")).toContainText(/Formulir Pendaftaran/i);
   });
 });

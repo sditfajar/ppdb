@@ -13,14 +13,14 @@ test.describe("Manajemen Tema (Terang / Gelap) & Penguncian Halaman", () => {
     await expect(toggle).toHaveCount(0);
   });
 
-  test("halaman formulir ('/ppdb') terkunci ke tema terang tanpa tombol toggle", async ({ page }) => {
-    await page.goto("/ppdb");
+  test("halaman formulir ('/spmb') terkunci ke tema terang tanpa tombol toggle", async ({ page }) => {
+    await page.goto("/spmb");
     await page.waitForSelector("h1");
 
     const htmlTheme = await page.locator("html").getAttribute("data-theme");
     expect(htmlTheme).toBe("light");
 
-    // Tombol toggle tidak boleh muncul di /ppdb
+    // Tombol toggle tidak boleh muncul di /spmb
     const toggle = page.locator("button[aria-label*='Ganti ke tema']");
     await expect(toggle).toHaveCount(0);
   });
@@ -79,8 +79,8 @@ test.describe("Manajemen Tema (Terang / Gelap) & Penguncian Halaman", () => {
     const themeInStorage = await page.evaluate(() => localStorage.getItem("theme"));
     expect(themeInStorage).toBe("dark");
 
-    // Pindah ke formulir /ppdb: tetap tema terang dan localStorage tidak berubah
-    await page.goto("/ppdb");
+    // Pindah ke formulir /spmb: tetap tema terang dan localStorage tidak berubah
+    await page.goto("/spmb");
     await page.waitForSelector("h1");
     await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
 
@@ -101,11 +101,11 @@ test.describe("Manajemen Tema (Terang / Gelap) & Penguncian Halaman", () => {
     // Tetap harus default terang
     await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
 
-    // Halaman / dan /ppdb juga tetap terang
+    // Halaman / dan /spmb juga tetap terang
     await page.goto("/");
     await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
 
-    await page.goto("/ppdb");
+    await page.goto("/spmb");
     await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
   });
 });

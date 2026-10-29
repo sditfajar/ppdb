@@ -136,7 +136,7 @@ export default async function BerhasilPage({ params }: BerhasilPageProps) {
 
         {/* Footer Kecil */}
         <p className="text-center text-xs text-muted">
-          Penerimaan Peserta Didik Baru (PPDB) {SCHOOL_CONFIG.fullName}
+          Sistem Penerimaan Murid Baru (SPMB) {SCHOOL_CONFIG.fullName}
         </p>
       </div>
     </main>

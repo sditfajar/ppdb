@@ -34,7 +34,7 @@ describe("Metadata & SEO Configuration (Fase 8)", () => {
     expect(robotsConfig.sitemap).toContain("/sitemap.xml");
   });
 
-  it("sitemap.ts mendaftarkan rute utama '/' dan rute pendaftaran '/ppdb'", () => {
+  it("sitemap.ts mendaftarkan rute utama '/' dan rute pendaftaran '/spmb'", () => {
     const sitemapEntries = sitemap();
     expect(Array.isArray(sitemapEntries)).toBe(true);
     expect(sitemapEntries.length).toBe(2);
@@ -45,11 +45,11 @@ describe("Metadata & SEO Configuration (Fase 8)", () => {
     expect(rootEntry.changeFrequency).toBe("daily");
     expect(rootEntry.lastModified).toBeInstanceOf(Date);
 
-    const ppdbEntry = sitemapEntries[1];
-    expect(ppdbEntry.url).toMatch(/\/ppdb$/);
-    expect(ppdbEntry.priority).toBe(0.9);
-    expect(ppdbEntry.changeFrequency).toBe("daily");
-    expect(ppdbEntry.lastModified).toBeInstanceOf(Date);
+    const spmbEntry = sitemapEntries[1];
+    expect(spmbEntry.url).toMatch(/\/spmb$/);
+    expect(spmbEntry.priority).toBe(0.9);
+    expect(spmbEntry.changeFrequency).toBe("daily");
+    expect(spmbEntry.lastModified).toBeInstanceOf(Date);
   });
 
   it("layout.tsx mengonfigurasi icons menuju /favicon.ico", () => {

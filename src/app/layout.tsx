@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     template: "%s | SDIT Fajar",
   },
   description:
-    "Penerimaan Peserta Didik Baru (PPDB) SDIT Fajar. Formulir pendaftaran siswa baru online, cepat, transparan, dan aman.",
+    "Sistem Penerimaan Murid Baru (SPMB) SDIT Fajar. Formulir pendaftaran siswa baru online, cepat, transparan, dan aman.",
   applicationName: "PPDB Online SDIT Fajar",
   keywords: [
     "PPDB SDIT Fajar",
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "PPDB Online — SDIT Fajar",
     description:
-      "Penerimaan Peserta Didik Baru (PPDB) SDIT Fajar. Daftarkan putra-putri Anda secara online dengan mudah dan aman.",
+      "Sistem Penerimaan Murid Baru (SPMB) SDIT Fajar. Daftarkan putra-putri Anda secara online dengan mudah dan aman.",
     url: "/",
     siteName: "PPDB SDIT Fajar",
     locale: "id_ID",
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "PPDB Online — SDIT Fajar",
     description:
-      "Penerimaan Peserta Didik Baru (PPDB) SDIT Fajar. Pendaftaran online mudah dan aman.",
+      "Sistem Penerimaan Murid Baru (SPMB) SDIT Fajar. Pendaftaran online mudah dan aman.",
   },
   robots: {
     index: true,
@@ -84,7 +84,7 @@ export default function RootLayout({
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var p=window.location.pathname;var clean=p.length>1&&p.endsWith('/')?p.slice(0,-1):p;var isLocked=clean===''||clean==='/'||clean==='/ppdb'||clean.indexOf('/ppdb/')===0;var theme='light';if(!isLocked){var stored=localStorage.getItem('theme');if(stored==='dark'||stored==='light'){theme=stored;}}var root=document.documentElement;root.setAttribute('data-theme',theme);if(theme==='dark'){root.classList.add('dark');root.classList.remove('light');root.style.colorScheme='dark';}else{root.classList.add('light');root.classList.remove('dark');root.style.colorScheme='light';}}catch(e){}})();`,
+            __html: `(function(){try{var p=window.location.pathname;var clean=p.length>1&&p.endsWith('/')?p.slice(0,-1):p;var isLocked=clean===''||clean==='/'||clean==='/spmb'||clean.indexOf('/spmb/')===0||clean==='/ppdb'||clean.indexOf('/ppdb/')===0;var theme='light';if(!isLocked){var stored=localStorage.getItem('theme');if(stored==='dark'||stored==='light'){theme=stored;}}var root=document.documentElement;root.setAttribute('data-theme',theme);if(theme==='dark'){root.classList.add('dark');root.classList.remove('light');root.style.colorScheme='dark';}else{root.classList.add('light');root.classList.remove('dark');root.style.colorScheme='light';}}catch(e){}})();`,
           }}
         />
       </head>

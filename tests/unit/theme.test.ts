@@ -6,22 +6,26 @@ import { isLightLockedPath, LIGHT_LOCKED_PATHS, THEME_STORAGE_KEY } from "@/lib/
 describe("Theme Management - Path Locking & Logic", () => {
   it("mendefinisikan LIGHT_LOCKED_PATHS dan THEME_STORAGE_KEY secara konsisten", () => {
     expect(LIGHT_LOCKED_PATHS).toContain("/");
-    expect(LIGHT_LOCKED_PATHS).toContain("/ppdb");
+    expect(LIGHT_LOCKED_PATHS).toContain("/spmb");
     expect(THEME_STORAGE_KEY).toBe("theme");
   });
 
-  it("isLightLockedPath mengidentifikasi rute terkunci terang ('/' dan '/ppdb/*')", () => {
+  it("isLightLockedPath mengidentifikasi rute terkunci terang ('/' dan '/spmb/*')", () => {
     // Root
     expect(isLightLockedPath("/")).toBe(true);
 
-    // /ppdb dan variasinya
+    // /spmb dan variasinya
+    expect(isLightLockedPath("/spmb")).toBe(true);
+    expect(isLightLockedPath("/spmb/")).toBe(true);
+    expect(isLightLockedPath("/spmb/formulir")).toBe(true);
+    expect(isLightLockedPath("/spmb/step/1")).toBe(true);
+
+    // /ppdb dan variasinya (kompatibilitas redirect)
     expect(isLightLockedPath("/ppdb")).toBe(true);
     expect(isLightLockedPath("/ppdb/")).toBe(true);
-    expect(isLightLockedPath("/ppdb/formulir")).toBe(true);
-    expect(isLightLockedPath("/ppdb/step/1")).toBe(true);
   });
 
-  it("isLightLockedPath tidak mengunci rute selain '/' dan '/ppdb/*'", () => {
+  it("isLightLockedPath tidak mengunci rute selain '/' dan '/spmb/*'", () => {
     expect(isLightLockedPath("/admin")).toBe(false);
     expect(isLightLockedPath("/admin/")).toBe(false);
     expect(isLightLockedPath("/admin/login")).toBe(false);

@@ -559,7 +559,7 @@ Gaya: hangat, jelas, sopan, tidak bertele-tele. Tombol berupa kata kerja ("Lanju
 > **FORMULIR PENDAFTARAN SISWA BARU SEKOLAH DASAR ISLAM TERPADU FAJAR — TAHUN PENGAJARAN: {tahun_ajaran}**
 >
 > Assalamualaikum wr.wb
-> Sehubungan telah dibukanya Penerimaan Peserta Didik Baru (PPDB) TP {tahun_ajaran}. Bagi pendaftar, silakan mengisi link pendaftaran di bawah ini. Pastikan data yang Bapak/Ibu isi sesuai dengan pendaftar yaitu (Nama Siswa, Nama Ortu) dan yang lainnya.
+> Sehubungan telah dibukanya Sistem Penerimaan Murid Baru (SPMB) TP {tahun_ajaran}. Bagi pendaftar, silakan mengisi link pendaftaran di bawah ini. Pastikan data yang Bapak/Ibu isi sesuai dengan pendaftar yaitu (Nama Siswa, Nama Ortu) dan yang lainnya.
 >
 > **CATATAN**
 > - PENDAFTARAN GELOMBANG 1 : September – Februari
