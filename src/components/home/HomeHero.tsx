@@ -15,6 +15,29 @@ interface HomeHeroProps {
   academicYear?: string;
 }
 
+const TRUST_BADGES = [
+  {
+    icon: BadgeCheck,
+    color: "text-[#F97316]",
+    label: "Akreditasi A Unggul",
+  },
+  {
+    icon: BookOpen,
+    color: "text-[#10B981]",
+    label: "Tahfidz Metode Mutqin",
+  },
+  {
+    icon: Sprout,
+    color: "text-[#1D4ED8]",
+    label: "Pendidikan Karakter Adab",
+  },
+  {
+    icon: Trophy,
+    color: "text-[#F97316]",
+    label: "50+ Prestasi Kota & Provinsi",
+  },
+];
+
 export function HomeHero({ academicYear = SCHOOL_CONFIG.defaultAcademicYear }: HomeHeroProps) {
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-[#DCE1FF]/30 via-[#FAF8FF] to-[#FAF8FF] pt-28 sm:pt-36 lg:pt-40 pb-12 lg:pb-20 px-4 sm:px-6">
@@ -28,7 +51,7 @@ export function HomeHero({ academicYear = SCHOOL_CONFIG.defaultAcademicYear }: H
         aria-hidden="true"
       />
 
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center relative z-10">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-8 lg:gap-12 items-center relative z-10">
         {/* Left Column: Headlines & CTAs */}
         <div className="lg:col-span-7 space-y-5 sm:space-y-6 text-center lg:text-left">
           {/* Floating Pill Tag */}
@@ -67,91 +90,120 @@ export function HomeHero({ academicYear = SCHOOL_CONFIG.defaultAcademicYear }: H
           </p>
 
           {/* CTA Action Buttons */}
-          <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3.5 sm:gap-4 pt-1 sm:pt-2">
+          <div className="flex items-center justify-center lg:justify-start gap-2.5 sm:gap-4 pt-1 sm:pt-2">
             <Link
               href="/spmb"
-              className="inline-flex items-center justify-center gap-2 px-7 sm:px-8 py-3.5 sm:py-4 rounded-full text-sm sm:text-base font-bold bg-[#F97316] text-[#0F172A] shadow-[0_5px_0_#9d4300] hover:brightness-105 active:translate-y-1 active:shadow-[0_2px_0_#9d4300] transition-all min-h-[48px]"
+              className="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-4 sm:px-8 py-3 sm:py-4 rounded-full text-xs sm:text-base font-bold bg-[#F97316] text-[#0F172A] shadow-[0_4px_0_#9d4300] sm:shadow-[0_5px_0_#9d4300] hover:brightness-105 active:translate-y-1 active:shadow-[0_2px_0_#9d4300] transition-all min-h-[44px] sm:min-h-[48px] whitespace-nowrap"
             >
               <span>Daftar SPMB Sekarang</span>
-              <ArrowRight className="w-5 h-5" />
+              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" />
             </Link>
 
             <a
               href="#profil-sekolah"
-              className="inline-flex items-center justify-center gap-2 px-6 sm:px-7 py-3.5 sm:py-4 rounded-full text-sm sm:text-base font-bold bg-white text-[#1D4ED8] shadow-sm border border-slate-200 hover:bg-slate-50 transition-colors min-h-[48px]"
+              className="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-4 sm:px-7 py-3 sm:py-4 rounded-full text-xs sm:text-base font-bold bg-white text-[#1D4ED8] shadow-sm border border-slate-200 hover:bg-slate-50 transition-colors min-h-[44px] sm:min-h-[48px] whitespace-nowrap"
             >
               <span>Profil Sekolah</span>
             </a>
           </div>
 
-          {/* Trust Badges Pill Row */}
-          <div className="pt-3 sm:pt-4 flex flex-wrap items-center justify-center lg:justify-start gap-2 sm:gap-2.5">
-            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white shadow-sm border border-slate-100 text-[#0F172A] text-xs font-semibold">
-              <BadgeCheck className="w-4 h-4 text-[#F97316]" />
-              Akreditasi A Unggul
-            </span>
-            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white shadow-sm border border-slate-100 text-[#0F172A] text-xs font-semibold">
-              <BookOpen className="w-4 h-4 text-[#10B981]" />
-              Tahfidz Metode Mutqin
-            </span>
-            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white shadow-sm border border-slate-100 text-[#0F172A] text-xs font-semibold">
-              <Sprout className="w-4 h-4 text-[#1D4ED8]" />
-              Pendidikan Karakter Adab
-            </span>
-            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white shadow-sm border border-slate-100 text-[#0F172A] text-xs font-semibold">
-              <Trophy className="w-4 h-4 text-[#F97316]" />
-              50+ Prestasi Kota &amp; Provinsi
-            </span>
+          {/* Trust Badges - Mobile: Single Row Flex with Slow Auto-scroll (Marquee) */}
+          <div className="pt-0.5 sm:hidden relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_16px,black_calc(100%-16px),transparent)]">
+            <div className="animate-marquee-slow flex items-center gap-2 py-0.5 select-none">
+              {TRUST_BADGES.map((badge, idx) => (
+                <span
+                  key={`badge-m1-${idx}`}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white shadow-sm border border-slate-100 text-[#0F172A] text-xs font-semibold shrink-0 whitespace-nowrap"
+                >
+                  <badge.icon className={`w-4 h-4 ${badge.color} shrink-0`} />
+                  {badge.label}
+                </span>
+              ))}
+              {/* Duplicate loop for seamless infinite scroll */}
+              {TRUST_BADGES.map((badge, idx) => (
+                <span
+                  key={`badge-m2-${idx}`}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white shadow-sm border border-slate-100 text-[#0F172A] text-xs font-semibold shrink-0 whitespace-nowrap"
+                  aria-hidden="true"
+                >
+                  <badge.icon className={`w-4 h-4 ${badge.color} shrink-0`} />
+                  {badge.label}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Trust Badges - Desktop & Tablet: Static Elegant Wrap */}
+          <div className="hidden sm:flex pt-4 flex-wrap items-center justify-center lg:justify-start gap-2 sm:gap-2.5">
+            {TRUST_BADGES.map((badge, idx) => (
+              <span
+                key={`badge-d-${idx}`}
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white shadow-sm border border-slate-100 text-[#0F172A] text-xs font-semibold"
+              >
+                <badge.icon className={`w-4 h-4 ${badge.color} shrink-0`} />
+                {badge.label}
+              </span>
+            ))}
           </div>
         </div>
 
         {/* Right Column: Visual Graphic & Floating Stickers */}
-        <div className="lg:col-span-5 relative mt-6 lg:mt-0">
+        <div className="lg:col-span-5 relative mt-2 sm:mt-6 lg:mt-0">
           <div className="relative mx-auto max-w-md lg:max-w-none">
-            {/* Backing Organic Blob Container */}
-            <div className="rounded-3xl bg-[#DAE2FD]/80 p-3 sm:p-4 shadow-xl relative overflow-hidden border border-[#C4C5D7]/40">
-              <img
-                src="/images/hero-students.jpg"
-                alt="Siswa-siswi ceria SDIT Fajar Depok belajar dengan bahagia di sekolah"
-                className="rounded-2xl w-full h-[320px] sm:h-[400px] object-cover"
-                loading="eager"
-              />
+            {/* Ambient Backing Glow & Decorative Tilt Frame */}
+            <div
+              className="absolute -inset-2 sm:-inset-3 bg-gradient-to-tr from-[#1D4ED8]/15 via-[#DAE2FD]/40 to-[#FFDBCA]/40 rounded-[2rem] sm:rounded-[2.5rem] transform -rotate-1 scale-[0.98] pointer-events-none"
+              aria-hidden="true"
+            />
 
-              {/* Floating Sticker 1: Hafalan */}
-              <div className="absolute top-6 -left-2 sm:-left-4 bg-white/95 backdrop-blur-sm p-3 rounded-2xl shadow-lg border border-slate-100 flex items-center gap-2.5 sm:gap-3">
-                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#ECFDF5] text-[#047857] flex items-center justify-center shrink-0">
-                  <BookOpen className="w-5 h-5" />
-                </div>
-                <div>
-                  <p className="text-base sm:text-lg font-extrabold text-[#0F172A] leading-none">
-                    98%
-                  </p>
-                  <p className="text-[11px] sm:text-xs font-medium text-[#434655]">
-                    Hafal Target Juz 30
-                  </p>
-                </div>
+            {/* Photo Frame Container */}
+            <div className="relative rounded-3xl bg-[#DAE2FD]/80 p-2.5 sm:p-3.5 shadow-xl border border-[#C4C5D7]/50 backdrop-blur-sm z-10">
+              <div className="relative rounded-2xl overflow-hidden aspect-[4/3] sm:h-[400px] w-full">
+                <img
+                  src="/images/hero-students.jpg"
+                  alt="Siswa-siswi ceria SDIT Fajar Depok belajar dengan bahagia di sekolah"
+                  className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500 ease-out"
+                  loading="eager"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/15 via-transparent to-transparent pointer-events-none" />
               </div>
+            </div>
 
-              {/* Floating Sticker 2: Rasio Guru */}
-              <div className="absolute bottom-10 -right-2 sm:-right-3 bg-white/95 backdrop-blur-sm p-3 rounded-2xl shadow-lg border border-slate-100 flex items-center gap-2.5 sm:gap-3">
-                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#FFEDD5] text-[#9D4300] flex items-center justify-center shrink-0">
-                  <Users className="w-5 h-5" />
-                </div>
-                <div>
-                  <p className="text-base sm:text-lg font-extrabold text-[#0F172A] leading-none">
-                    1:15
-                  </p>
-                  <p className="text-[11px] sm:text-xs font-medium text-[#434655]">
-                    Rasio Ideal Guru : Siswa
-                  </p>
-                </div>
+            {/* Floating Stickers (Positioned outside overflow-hidden, elevated to z-20 so never clipped) */}
+            {/* Floating Sticker 1: Hafalan */}
+            <div className="absolute -top-3 -left-2 sm:-top-4 sm:-left-5 z-20 bg-white/95 backdrop-blur-md p-2.5 sm:p-3 rounded-2xl shadow-xl border border-slate-100/90 flex items-center gap-2.5 sm:gap-3 hover:-translate-y-0.5 transition-transform duration-200">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#ECFDF5] text-[#047857] flex items-center justify-center shrink-0 shadow-sm">
+                <BookOpen className="w-5 h-5" />
               </div>
+              <div className="pr-1 sm:pr-2">
+                <p className="text-base sm:text-lg font-extrabold text-[#0F172A] leading-none">
+                  98%
+                </p>
+                <p className="text-[11px] sm:text-xs font-semibold text-[#434655] mt-0.5">
+                  Target Hafalan Juz 30
+                </p>
+              </div>
+            </div>
 
-              {/* Floating Sticker 3: Alumni */}
-              <div className="absolute -bottom-2 left-6 sm:left-10 bg-[#1D4ED8] text-white px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full shadow-md flex items-center gap-1.5 sm:gap-2">
-                <Award className="w-4 h-4 text-[#F97316]" />
-                <span className="text-xs sm:text-sm font-bold">500+ Alumni Berprestasi</span>
+            {/* Floating Sticker 2: Rasio Guru & Siswa */}
+            <div className="absolute bottom-10 -right-2 sm:bottom-12 sm:-right-4 z-20 bg-white/95 backdrop-blur-md p-2.5 sm:p-3 rounded-2xl shadow-xl border border-slate-100/90 flex items-center gap-2.5 sm:gap-3 hover:-translate-y-0.5 transition-transform duration-200">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#FFEDD5] text-[#9D4300] flex items-center justify-center shrink-0 shadow-sm">
+                <Users className="w-5 h-5" />
               </div>
+              <div className="pr-1 sm:pr-2">
+                <p className="text-base sm:text-lg font-extrabold text-[#0F172A] leading-none">
+                  1:15
+                </p>
+                <p className="text-[11px] sm:text-xs font-semibold text-[#434655] mt-0.5">
+                  Rasio Ideal Guru : Siswa
+                </p>
+              </div>
+            </div>
+
+            {/* Floating Sticker 3: Alumni Berprestasi */}
+            <div className="absolute -bottom-3 left-4 sm:-bottom-4 sm:left-8 z-20 bg-[#1D4ED8] text-white px-3.5 sm:px-4 py-2 rounded-full shadow-lg border border-blue-400/30 flex items-center gap-2 hover:-translate-y-0.5 transition-transform duration-200">
+              <Award className="w-4 h-4 text-[#F97316] shrink-0" />
+              <span className="text-xs sm:text-sm font-bold tracking-tight">500+ Alumni Berprestasi</span>
             </div>
           </div>
         </div>
@@ -159,4 +211,3 @@ export function HomeHero({ academicYear = SCHOOL_CONFIG.defaultAcademicYear }: H
     </section>
   );
 }
-

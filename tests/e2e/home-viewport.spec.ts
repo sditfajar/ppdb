@@ -89,4 +89,31 @@ test.describe("Halaman Beranda (Home) - Redesign Stitch Verification", () => {
     await page.getByRole("button", { name: /Tutup menu/i }).click();
     await expect(page.getByRole("button", { name: /Buka menu/i })).toBeVisible();
   });
+
+  test("Dropdown Hamburger: Memiliki styling glassmorphism dan tertutup saat klik di luar area menu", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 360, height: 800 });
+    await page.goto("/");
+
+    const hamburgerBtn = page.getByRole("button", { name: /Buka menu/i });
+    await hamburgerBtn.click();
+
+    // Pastikan menu dropdown terbuka
+    const menuLink = page.getByRole("link", { name: "Kurikulum" });
+    await expect(menuLink).toBeVisible();
+
+    // Verifikasi efek glassmorphism pada dropdown container
+    const glassContainer = page.locator("div.backdrop-blur-xl");
+    await expect(glassContainer).toBeVisible();
+    await expect(glassContainer).toHaveClass(/bg-white\/85/);
+    await expect(glassContainer).toHaveClass(/backdrop-blur-xl/);
+
+    // Klik di luar menu dropdown (misalnya di area overlay bagian bawah di luar floating card)
+    await page.mouse.click(10, 750);
+
+    // Verifikasi menu dropdown tertutup
+    await expect(menuLink).not.toBeVisible();
+    await expect(page.getByRole("button", { name: /Buka menu/i })).toBeVisible();
+  });
 });

@@ -159,8 +159,32 @@ body {
   animation-play-state: paused;
 }
 
+/* Animasi Marquee Pelan untuk Badge Keunggulan di Mobile */
+@keyframes marquee-slow {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-marquee-slow {
+  display: flex;
+  width: max-content;
+  animation: marquee-slow 22s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-slow:hover,
+.animate-marquee-slow:active {
+  animation-play-state: paused;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .animate-enter {
+  .animate-enter,
+  .animate-marquee,
+  .animate-marquee-slow {
     animation: none !important;
     transform: none !important;
     filter: none !important;

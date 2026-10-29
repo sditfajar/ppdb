@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Phone, MessageCircle, Menu, X, ArrowRight, School } from "lucide-react";
@@ -13,6 +13,8 @@ interface HomeNavbarProps {
 export function HomeNavbar({ academicYear = SCHOOL_CONFIG.defaultAcademicYear }: HomeNavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const hamburgerButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,6 +33,39 @@ export function HomeNavbar({ academicYear = SCHOOL_CONFIG.defaultAcademicYear }:
     }
     return () => {
       document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
+
+  // Tutup menu dropdown saat klik di luar area dropdown atau menekan tombol Escape
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      const target = event.target as Node;
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(target) &&
+        hamburgerButtonRef.current &&
+        !hamburgerButtonRef.current.contains(target)
+      ) {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside, { passive: true });
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
     };
   }, [mobileMenuOpen]);
 
@@ -179,51 +214,71 @@ export function HomeNavbar({ academicYear = SCHOOL_CONFIG.defaultAcademicYear }:
 
           {/* Hamburger Menu Toggle (Mobile & Tablet: <= 1024px) */}
           <button
+            ref={hamburgerButtonRef}
             type="button"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden inline-flex items-center justify-center w-9 h-9 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-[#F2F3FF] text-slate-700 hover:text-[#1D4ED8] hover:bg-[#E2E7FF] focus:outline-none focus:ring-2 focus:ring-[#1D4ED8] transition-colors shrink-0"
+            onClick={() => setMobileMenuOpen((prev) => !prev)}
+            className={`lg:hidden inline-flex items-center justify-center w-11 h-11 rounded-2xl transition-all shrink-0 focus:outline-none focus:ring-2 focus:ring-[#1D4ED8] ${
+              mobileMenuOpen
+                ? "bg-[#1D4ED8] text-white shadow-sm ring-2 ring-[#1D4ED8]/30"
+                : "bg-[#F2F3FF] text-slate-700 hover:text-[#1D4ED8] hover:bg-[#E2E7FF]"
+            }`}
             aria-label={mobileMenuOpen ? "Tutup menu" : "Buka menu"}
             aria-expanded={mobileMenuOpen}
           >
-            {mobileMenuOpen ? <X className="w-5 h-5 sm:w-6 sm:h-6" /> : <Menu className="w-5 h-5 sm:w-6 sm:h-6" />}
+            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
       </div>
 
-      {/* Mobile & Tablet Drawer Menu Overlay */}
+      {/* Mobile & Tablet Drawer Menu Overlay with Glassmorphism */}
       {mobileMenuOpen && (
         <div
-          className={`lg:hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-40 transition-all duration-300 ${
+          className={`lg:hidden fixed inset-0 bg-slate-900/25 backdrop-blur-sm z-40 transition-all duration-300 ${
             isScrolled ? "top-[56px] sm:top-[64px]" : "top-[96px] sm:top-[116px]"
           }`}
           onClick={() => setMobileMenuOpen(false)}
         >
           <div
-            className="bg-white rounded-b-3xl shadow-2xl p-6 border-b border-slate-200 max-h-[85vh] overflow-y-auto space-y-5"
+            ref={menuRef}
+            className="mx-3 sm:mx-6 mt-2.5 sm:mt-3 bg-white/85 backdrop-blur-xl backdrop-saturate-150 rounded-3xl border border-white/60 shadow-[0_20px_50px_rgba(15,23,42,0.12)] ring-1 ring-slate-900/5 p-4 sm:p-5 max-h-[calc(100vh-120px)] overflow-y-auto space-y-4 animate-in fade-in slide-in-from-top-2 duration-200"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex flex-col gap-1.5">
-              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3">
+            <div className="flex items-center justify-between px-2 pt-0.5">
+              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
                 Menu Utama
               </span>
-              {navLinks.map((item) => (
+              <span className="text-[10px] font-bold text-[#1D4ED8] bg-[#F2F3FF]/80 border border-[#DAE2FD]/70 px-2.5 py-0.5 rounded-full">
+                SDIT FAJAR
+              </span>
+            </div>
+
+            <div className="bg-[#F2F3FF]/60 border border-[#DAE2FD]/60 rounded-2xl p-1.5 flex flex-col gap-1 backdrop-blur-xs">
+              {navLinks.map((item, idx) => (
                 <a
                   key={item.label}
                   href={item.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center justify-between px-4 py-3 rounded-2xl font-bold text-slate-800 hover:bg-[#F2F3FF] hover:text-[#1D4ED8] transition-colors min-h-[44px]"
+                  className={`group flex items-center justify-between px-3.5 py-2.5 rounded-xl font-bold text-sm transition-all min-h-[44px] ${
+                    idx === 0
+                      ? "bg-white text-[#1D4ED8] shadow-xs border border-white/80"
+                      : "text-slate-700 hover:text-[#1D4ED8] hover:bg-white/80"
+                  }`}
                 >
-                  <span>{item.label}</span>
-                  <ArrowRight className="w-4 h-4 text-slate-400" />
+                  <span className="group-hover:translate-x-0.5 transition-transform">{item.label}</span>
+                  <ArrowRight
+                    className={`w-4 h-4 transition-transform group-hover:translate-x-1 ${
+                      idx === 0 ? "text-[#1D4ED8]" : "text-slate-400 group-hover:text-[#1D4ED8]"
+                    }`}
+                  />
                 </a>
               ))}
             </div>
 
-            <div className="pt-3 border-t border-slate-100 flex flex-col gap-2.5">
+            <div className="pt-2 border-t border-slate-200/60 flex flex-col gap-2.5">
               <Link
                 href="/spmb"
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-full flex items-center justify-center gap-2 py-3.5 px-6 rounded-full font-bold bg-[#F97316] text-[#0F172A] shadow-[0_4px_0_#9d4300] active:translate-y-0.5 text-sm min-h-[44px]"
+                className="w-full flex items-center justify-center gap-2 py-3 px-6 rounded-full font-bold bg-[#F97316] text-[#0F172A] shadow-[0_3px_0_#9d4300] hover:brightness-105 active:translate-y-0.5 text-sm min-h-[44px] transition-all"
               >
                 <span>Daftar SPMB Online</span>
                 <ArrowRight className="w-4 h-4" />
@@ -233,7 +288,7 @@ export function HomeNavbar({ academicYear = SCHOOL_CONFIG.defaultAcademicYear }:
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-full flex items-center justify-center gap-2 py-3 px-6 rounded-full font-bold bg-[#F2F3FF] text-[#0F172A] hover:bg-[#E2E7FF] text-sm min-h-[44px]"
+                className="w-full flex items-center justify-center gap-2 py-2.5 px-6 rounded-full font-bold bg-white/80 hover:bg-white text-[#0F172A] border border-slate-200/70 shadow-xs hover:border-[#DAE2FD] text-sm min-h-[44px] transition-all"
               >
                 <MessageCircle className="w-4 h-4 text-[#10B981]" />
                 <span>Konsultasi WhatsApp</span>
