@@ -20,9 +20,6 @@ describe("Theme Management - Path Locking & Logic", () => {
     expect(isLightLockedPath("/spmb/formulir")).toBe(true);
     expect(isLightLockedPath("/spmb/step/1")).toBe(true);
 
-    // /ppdb dan variasinya (kompatibilitas redirect)
-    expect(isLightLockedPath("/ppdb")).toBe(true);
-    expect(isLightLockedPath("/ppdb/")).toBe(true);
   });
 
   it("isLightLockedPath tidak mengunci rute selain '/' dan '/spmb/*'", () => {

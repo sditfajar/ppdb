@@ -9,7 +9,7 @@ const geistSans = Geist({
   display: "swap",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://ppdb.sditfajar.sch.id";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.sditfajar.sch.id";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -19,35 +19,38 @@ export const metadata: Metadata = {
     apple: "/favicon.ico",
   },
   title: {
-    default: "PPDB Online — SDIT Fajar",
+    default: "SPMB — SDIT Fajar",
     template: "%s | SDIT Fajar",
   },
   description:
     "Sistem Penerimaan Murid Baru (SPMB) SDIT Fajar. Formulir pendaftaran siswa baru online, cepat, transparan, dan aman.",
-  applicationName: "PPDB Online SDIT Fajar",
+  applicationName: "SPMB SDIT Fajar",
+  alternates: {
+    canonical: "/",
+  },
   keywords: [
-    "PPDB SDIT Fajar",
+    "SPMB SDIT Fajar",
     "SDIT Fajar",
     "Pendaftaran Siswa Baru",
     "SD Islam Terpadu Fajar",
-    "PPDB Online",
+    "SPMB",
     "SDIT Depok",
   ],
   authors: [{ name: "SDIT Fajar", url: siteUrl }],
   creator: "SDIT Fajar",
   publisher: "SDIT Fajar",
   openGraph: {
-    title: "PPDB Online — SDIT Fajar",
+    title: "SPMB — SDIT Fajar",
     description:
       "Sistem Penerimaan Murid Baru (SPMB) SDIT Fajar. Daftarkan putra-putri Anda secara online dengan mudah dan aman.",
     url: "/",
-    siteName: "PPDB SDIT Fajar",
+    siteName: "SPMB SDIT Fajar",
     locale: "id_ID",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "PPDB Online — SDIT Fajar",
+    title: "SPMB — SDIT Fajar",
     description:
       "Sistem Penerimaan Murid Baru (SPMB) SDIT Fajar. Pendaftaran online mudah dan aman.",
   },
@@ -84,7 +87,7 @@ export default function RootLayout({
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var p=window.location.pathname;var clean=p.length>1&&p.endsWith('/')?p.slice(0,-1):p;var isLocked=clean===''||clean==='/'||clean==='/spmb'||clean.indexOf('/spmb/')===0||clean==='/ppdb'||clean.indexOf('/ppdb/')===0;var theme='light';if(!isLocked){var stored=localStorage.getItem('theme');if(stored==='dark'||stored==='light'){theme=stored;}}var root=document.documentElement;root.setAttribute('data-theme',theme);if(theme==='dark'){root.classList.add('dark');root.classList.remove('light');root.style.colorScheme='dark';}else{root.classList.add('light');root.classList.remove('dark');root.style.colorScheme='light';}}catch(e){}})();`,
+            __html: `(function(){try{var p=window.location.pathname;var clean=p.length>1&&p.endsWith('/')?p.slice(0,-1):p;var isLocked=clean===''||clean==='/'||clean==='/spmb'||clean.indexOf('/spmb/')===0;var theme='light';if(!isLocked){var stored=localStorage.getItem('theme');if(stored==='dark'||stored==='light'){theme=stored;}}var root=document.documentElement;root.setAttribute('data-theme',theme);if(theme==='dark'){root.classList.add('dark');root.classList.remove('light');root.style.colorScheme='dark';}else{root.classList.add('light');root.classList.remove('dark');root.style.colorScheme='light';}}catch(e){}})();`,
           }}
         />
       </head>

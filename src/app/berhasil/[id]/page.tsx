@@ -47,7 +47,7 @@ export default async function BerhasilPage({ params }: BerhasilPageProps) {
 
   // 3. Siapkan pesan WhatsApp konfirmasi
   const waContact = SCHOOL_CONFIG.contacts.fadil;
-  const waMessage = `Assalamu'alaikum Warahmatullahi Wabarakatuh, Panitia PPDB SDIT Fajar. Saya telah melakukan pendaftaran online atas nama *${registration.student_name}* dengan Nomor Registrasi: *${registration.reg_number}*. Mohon informasi verifikasinya. Terima kasih.`;
+  const waMessage = `Assalamu'alaikum Warahmatullahi Wabarakatuh, Panitia SPMB SDIT Fajar. Saya telah melakukan pendaftaran online atas nama *${registration.student_name}* dengan Nomor Registrasi: *${registration.reg_number}*. Mohon informasi verifikasinya. Terima kasih.`;
   const waUrl = `${waContact.waLink}?text=${encodeURIComponent(waMessage)}`;
 
   return (

@@ -1,5 +1,5 @@
 # Laporan Audit Keamanan Sistem (Security Checklist)
-## PPDB Online SDIT Fajar
+## SPMB SDIT Fajar
 
 Dokumen audit ini merangkum pengujian dan verifikasi kontrol keamanan sistem sesuai spesifikasi PRD §10 dan Roadmap Fase 7 & 8.
 
@@ -23,4 +23,4 @@ Dokumen audit ini merangkum pengujian dan verifikasi kontrol keamanan sistem ses
 
 ## 2. Kesimpulan Keamanan
 
-Sistem PPDB Online SDIT Fajar telah memenuhi seluruh kriteria keamanan tingkat lanjut (defense-in-depth) yang disyaratkan dalam dokumen PRD dan siap untuk tahap peluncuran produksi.
+Sistem SPMB SDIT Fajar telah memenuhi seluruh kriteria keamanan tingkat lanjut (defense-in-depth) yang disyaratkan dalam dokumen PRD dan siap untuk tahap peluncuran produksi.

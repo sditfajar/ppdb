@@ -1,5 +1,5 @@
 -- 0003_rls.sql
--- Konfigurasi Row Level Security (RLS) PPDB SDIT Fajar (PRD §11)
+-- Konfigurasi Row Level Security (RLS) SPMB SDIT Fajar (PRD §11)
 -- PRINSIP: Deny by default. TANPA policy untuk anon.
 
 -- 1. Enable RLS pada semua tabel

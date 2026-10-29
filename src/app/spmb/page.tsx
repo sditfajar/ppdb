@@ -75,6 +75,15 @@ function YoutubeIcon({ className }: { className?: string }) {
 export const metadata: Metadata = {
   title: `Pendaftaran Siswa Baru — ${SCHOOL_CONFIG.name}`,
   description: `Formulir online Sistem Penerimaan Murid Baru (SPMB) ${SCHOOL_CONFIG.fullName} Tahun Ajaran ${SCHOOL_CONFIG.defaultAcademicYear}.`,
+  alternates: {
+    canonical: "/spmb",
+  },
+  openGraph: {
+    url: "/spmb",
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
 };
 
 export default async function SpmbPage() {
@@ -85,7 +94,7 @@ export default async function SpmbPage() {
       ? payment.bank.replace(/^.*\((.*)\).*$/, "$1")
       : payment.bank
     : "BSI";
-  const accountName = payment?.accountName || "SDIT Fajar PPDB";
+  const accountName = payment?.accountName || "SDIT Fajar SPMB";
   const accountNo = payment?.accountNo || "712-345-6789";
 
   return (

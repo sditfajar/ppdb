@@ -1,13 +1,13 @@
 # Buku Panduan Operasional & Teknis (Runbook)
-## PPDB Online SDIT Fajar
+## SPMB SDIT Fajar
 
-Buku panduan ini disusun sebagai pedoman operasional bagi **Panitia PPDB** (non-teknis) dan **Tim Pengelola Teknis/IT** dalam mengelola, memantau, dan merawat sistem formulir pendaftaran PPDB Online SDIT Fajar.
+Buku panduan ini disusun sebagai pedoman operasional bagi **Panitia SPMB** (non-teknis) dan **Tim Pengelola Teknis/IT** dalam mengelola, memantau, dan merawat sistem formulir pendaftaran SPMB SDIT Fajar.
 
 ---
 
 ## DAFTAR ISI
 1. [Prinsip & Arsitektur Akses Admin](#1-prinsip--arsitektur-akses-admin)
-2. [Panduan Operasional Panitia PPDB (Harian)](#2-panduan-operasional-panitia-ppdb-harian)
+2. [Panduan Operasional Panitia SPMB (Harian)](#2-panduan-operasional-panitia-SPMB-harian)
    - [2.1 Cara Masuk (Login) ke Dasbor Admin](#21-cara-masuk-login-ke-dasbor-admin)
    - [2.2 Membuka & Menutup Pendaftaran](#22-membuka--menutup-pendaftaran)
    - [2.3 Mengubah Tahun Ajaran & Info Rekening Pembayaran](#23-mengubah-tahun-ajaran--info-rekening-pembayaran)
@@ -36,12 +36,12 @@ Buku panduan ini disusun sebagai pedoman operasional bagi **Panitia PPDB** (non-
 
 ---
 
-## 2. Panduan Operasional Panitia PPDB (Harian)
+## 2. Panduan Operasional Panitia SPMB (Harian)
 
 ### 2.1 Cara Masuk (Login) ke Dasbor Admin
 1. Buka peramban (browser) di komputer atau ponsel, lalu akses alamat:
    ```
-   https://ppdb.sditfajar.sch.id/admin/login
+   https://SPMB.sditfajar.sch.id/admin/login
    ```
 2. Masukkan **Alamat Email** dan **Kata Sandi** admin yang telah diberikan tim IT.
 3. Klik tombol **Masuk ke Dasbor**.
@@ -107,7 +107,7 @@ Untuk keperluan pengolahan data spreadsheet dan arsip cetak rapat pleno, dasbor 
 3. **Cara Mengunduh:**
    - Di halaman `/admin`, sesuaikan filter pencarian/status/gelombang bila perlu (atau biarkan default untuk mengunduh semua pendaftar).
    - Klik tombol **Ekspor Excel** untuk analisis spreadsheet atau klik **Ekspor PDF** untuk arsip cetak dokumen.
-   - Berkas akan terunduh dengan format nama: `ppdb-[tahun_ajaran]-[tanggal].[xlsx|pdf]`.
+   - Berkas akan terunduh dengan format nama: `SPMB-[tahun_ajaran]-[tanggal].[xlsx|pdf]`.
    - Simpan berkas hasil cadangan ke folder penyimpanan aman panitia (Google Drive Yayasan / Flashdisk terenkripsi).
 
 ---
@@ -116,14 +116,14 @@ Untuk keperluan pengolahan data spreadsheet dan arsip cetak rapat pleno, dasbor 
 
 ### 3.1 Reset Kata Sandi Admin
 Jika panitia lupa kata sandi admin:
-1. Buka [Supabase Dashboard](https://supabase.com/dashboard) -> Masuk ke proyek produksi PPDB.
+1. Buka [Supabase Dashboard](https://supabase.com/dashboard) -> Masuk ke proyek produksi SPMB.
 2. Buka menu **Authentication** -> **Users**.
 3. Cari alamat email admin yang bersangkutan.
 4. Klik tombol titik tiga (`...`) di kanan baris pengguna -> Pilih **Send Password Reset** (email reset akan dikirimkan ke admin), ATAU pilih **Edit User** -> Masukkan kata sandi baru secara langsung.
 5. Informasikan kata sandi baru ke panitia melalui saluran komunikasi yang aman (bukan di grup publik).
 
 ### 3.2 Menambah Akun Admin Baru / Cadangan
-Sistem PPDB SDIT Fajar memerlukan minimal **2 akun admin** (1 admin utama dan 1 admin cadangan) untuk mencegah terkunci dari sistem:
+Sistem SPMB SDIT Fajar memerlukan minimal **2 akun admin** (1 admin utama dan 1 admin cadangan) untuk mencegah terkunci dari sistem:
 1. Buka Supabase Dashboard -> **Authentication** -> **Users** -> Klik **Add user** -> **Create user**.
 2. Masukkan alamat email admin baru dan kata sandi yang kuat (minimal 12 karakter kombinasi huruf besar, kecil, angka, dan simbol).
 3. Salin nilai **User UID** dari user yang baru dibuat.
@@ -133,10 +133,10 @@ Sistem PPDB SDIT Fajar memerlukan minimal **2 akun admin** (1 admin utama dan 1 
    VALUES (
      '<USER_UID_DARI_LANGKAH_3>',
      'admin2@sditfajar.sch.id',
-     'Ustadz Cadangan PPDB'
+     'Ustadz Cadangan SPMB'
    );
    ```
-5. Uji coba masuk dengan akun baru tersebut di `https://ppdb.sditfajar.sch.id/admin/login`.
+5. Uji coba masuk dengan akun baru tersebut di `https://SPMB.sditfajar.sch.id/admin/login`.
 
 ### 3.3 Rotasi Kunci API (Supabase & Turnstile)
 Jika terjadi insiden keamanan atau kecurigaan kebocoran kunci:
@@ -187,6 +187,6 @@ Sesuai kepatuhan Undang-Undang Perlindungan Data Pribadi (UU PDP No. 27/2022) da
    - Setelah siswa resmi terdaftar di buku induk sekolah (DAPODIK/EMIS), data formulir online dapat diarsipkan secara luring dan dihapus dari basis data web.
 2. **Data Pendaftar Ditolak / Mengundurkan Diri:**
    - Disimpan selama **3 (tiga) bulan** pasca pengumuman hasil seleksi gelombang untuk mengakomodasi masa sanggah atau konfirmasi orang tua.
-   - *(Catatan Sekolah: Kebijakan pasti mengenai jadwal penghapusan berkas bukti bayar pendaftar ditolak dapat disesuaikan kembali berdasarkan rapat pleno panitia PPDB).*
+   - *(Catatan Sekolah: Kebijakan pasti mengenai jadwal penghapusan berkas bukti bayar pendaftar ditolak dapat disesuaikan kembali berdasarkan rapat pleno panitia SPMB).*
 3. **Prosedur Penghapusan Aman:**
    - Dilakukan oleh teknisi basis data dengan menghapus baris tabel `registrations` dan objek terkait di bucket `payment-proofs`.

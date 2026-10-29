@@ -43,7 +43,7 @@ export async function getRegistrationState(now: Date = new Date()): Promise<AppR
           amount: 250000,
           bank: "Bank Syariah Indonesia (BSI)",
           accountNo: "712-345-6789",
-          accountName: "SDIT Fajar PPDB",
+          accountName: "SDIT Fajar SPMB",
         },
       };
     }
@@ -58,7 +58,7 @@ export async function getRegistrationState(now: Date = new Date()): Promise<AppR
         amount: settings.payment_amount ?? 250000,
         bank: settings.payment_bank ?? "Bank Syariah Indonesia (BSI)",
         accountNo: settings.payment_account_no ?? "712-345-6789",
-        accountName: settings.payment_account_name ?? "SDIT Fajar PPDB",
+        accountName: settings.payment_account_name ?? "SDIT Fajar SPMB",
       },
     };
   } catch (err) {
@@ -71,7 +71,7 @@ export async function getRegistrationState(now: Date = new Date()): Promise<AppR
         amount: 250000,
         bank: "Bank Syariah Indonesia (BSI)",
         accountNo: "712-345-6789",
-        accountName: "SDIT Fajar PPDB",
+        accountName: "SDIT Fajar SPMB",
       },
     };
   }

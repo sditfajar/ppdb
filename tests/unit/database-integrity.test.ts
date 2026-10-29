@@ -112,7 +112,7 @@ describe("Database Migrations & Business Logic Integrity", () => {
     expect(res.rows[0].registration_open).toBe(true);
   });
 
-  it("menghasilkan nomor registrasi otomatis dengan format PPDB-{tahun_awal}-{urut 4 digit}", async () => {
+  it("menghasilkan nomor registrasi otomatis dengan format SPMB-{tahun_awal}-{urut 4 digit}", async () => {
     const res = await db.query<{ reg_number: string }>(
       `insert into public.registrations (
         student_name, student_nickname, birth_place, birth_date, gender,
@@ -151,7 +151,7 @@ describe("Database Migrations & Business Logic Integrity", () => {
       ]
     );
 
-    expect(res.rows[0].reg_number).toBe("PPDB-2026-0001");
+    expect(res.rows[0].reg_number).toBe("SPMB-2026-0001");
   });
 
   it("menghasilkan nomor urut berulang dan berurutan untuk pendaftaran berikutnya", async () => {
@@ -171,7 +171,7 @@ describe("Database Migrations & Business Logic Integrity", () => {
       ) returning reg_number;
     `);
 
-    expect(res.rows[0].reg_number).toBe("PPDB-2026-0002");
+    expect(res.rows[0].reg_number).toBe("SPMB-2026-0002");
   });
 
   it("menolak duplikasi pendaftaran aktif dengan nama (case-insensitive + trim), tanggal lahir, dan tahun ajaran sama", async () => {
@@ -200,7 +200,7 @@ describe("Database Migrations & Business Logic Integrity", () => {
       db.query(`
         update public.registrations
         set status = 'rejected', rejection_reason = null
-        where reg_number = 'PPDB-2026-0002';
+        where reg_number = 'SPMB-2026-0002';
       `)
     ).rejects.toThrow();
 
@@ -208,7 +208,7 @@ describe("Database Migrations & Business Logic Integrity", () => {
       db.query(`
         update public.registrations
         set status = 'rejected', rejection_reason = 'abc'
-        where reg_number = 'PPDB-2026-0002';
+        where reg_number = 'SPMB-2026-0002';
       `)
     ).rejects.toThrow();
   });
@@ -217,7 +217,7 @@ describe("Database Migrations & Business Logic Integrity", () => {
     const res = await db.query<{ status: string; rejection_reason: string }>(`
       update public.registrations
       set status = 'rejected', rejection_reason = 'Bukti pembayaran tidak terbaca dengan jelas.'
-      where reg_number = 'PPDB-2026-0002'
+      where reg_number = 'SPMB-2026-0002'
       returning status, rejection_reason;
     `);
 
@@ -243,7 +243,7 @@ describe("Database Migrations & Business Logic Integrity", () => {
       ) returning reg_number;
     `);
 
-    expect(res.rows[0].reg_number).toBe("PPDB-2026-0003");
+    expect(res.rows[0].reg_number).toBe("SPMB-2026-0003");
   });
 
   it("dua insert paralel/bersamaan pada tahun ajaran yang sama menghasilkan reg_number berbeda tanpa tabrakan", async () => {
@@ -308,7 +308,7 @@ describe("Database Migrations & Business Logic Integrity", () => {
 
     expect(num1).not.toBe(num2);
     expect([num1, num2]).toEqual(
-      expect.arrayContaining(["PPDB-2026-0004", "PPDB-2026-0005"])
+      expect.arrayContaining(["SPMB-2026-0004", "SPMB-2026-0005"])
     );
   });
 

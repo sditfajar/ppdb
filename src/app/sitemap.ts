@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://ppdb.sditfajar.sch.id";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.sditfajar.sch.id";
   const baseUrl = siteUrl.endsWith("/") ? siteUrl.slice(0, -1) : siteUrl;
 
   return [

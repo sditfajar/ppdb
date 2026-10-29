@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Masuk Admin — PPDB SDIT Fajar",
+  title: "Masuk Admin — SPMB SDIT Fajar",
   robots: {
     index: false,
     follow: false,

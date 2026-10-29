@@ -29,7 +29,7 @@ export default function AdminLoginPage() {
             SDIT Fajar
           </h1>
           <p className="text-xs sm:text-sm text-muted text-pretty">
-            Masuk ke Panel Administrasi PPDB Online
+            Masuk ke Panel Administrasi SPMB
           </p>
         </div>
 

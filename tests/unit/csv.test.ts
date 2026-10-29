@@ -74,7 +74,7 @@ describe("escapeCsvValue - RFC 4180 Escaping", () => {
 describe("generateRegistrationsCsv", () => {
   const mockRegistration: RegistrationRow = {
     id: "uuid-1234",
-    reg_number: "PPDB-2026-0001",
+    reg_number: "SPMB-2026-0001",
     academic_year: "2026/2027",
     wave: 1,
     status: "verified",
@@ -123,7 +123,7 @@ describe("generateRegistrationsCsv", () => {
   it("memformat data pendaftar dan menjaga nilai '-' tanpa tanda kutip berbahaya", () => {
     const row = serializeRegistrationToCsvRow(mockRegistration);
     // Kolom ke-0: reg_number
-    expect(row[0]).toBe("PPDB-2026-0001");
+    expect(row[0]).toBe("SPMB-2026-0001");
     // Kolom ke-2: status terformat Bahasa Indonesia
     expect(row[2]).toBe("Terverifikasi");
     // Kolom ke-13: No HP dengan awalan teks

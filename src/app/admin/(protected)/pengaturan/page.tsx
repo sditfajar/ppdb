@@ -24,7 +24,7 @@ export default async function AdminSettingsPage() {
     payment_amount: settings?.payment_amount ?? 250000,
     payment_bank: settings?.payment_bank || "Bank Syariah Indonesia (BSI)",
     payment_account_no: settings?.payment_account_no || "712-345-6789",
-    payment_account_name: settings?.payment_account_name || "SDIT Fajar PPDB",
+    payment_account_name: settings?.payment_account_name || "SDIT Fajar SPMB",
   };
 
   return (
@@ -43,10 +43,10 @@ export default async function AdminSettingsPage() {
           <div className="flex flex-col gap-1">
             <div className="inline-flex items-center gap-1.5 text-accent text-xs font-semibold">
               <Settings className="w-3.5 h-3.5" aria-hidden="true" />
-              <span>Konfigurasi PPDB</span>
+              <span>Konfigurasi SPMB</span>
             </div>
             <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground text-balance">
-              Pengaturan Sistem PPDB
+              Pengaturan Sistem SPMB
             </h1>
             <p className="text-xs sm:text-sm text-muted text-pretty">
               Atur tahun ajaran aktif, status buka/tutup pendaftaran, dan informasi transfer formulir.

@@ -21,20 +21,6 @@ const cspHeader = `
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  async redirects() {
-    return [
-      {
-        source: "/ppdb",
-        destination: "/spmb",
-        permanent: true,
-      },
-      {
-        source: "/ppdb/:path*",
-        destination: "/spmb/:path*",
-        permanent: true,
-      },
-    ];
-  },
   async headers() {
     return [
       {

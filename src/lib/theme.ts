@@ -8,7 +8,6 @@ export const THEME_STORAGE_KEY = "theme";
  * Aturan:
  * - Halaman root "/"
  * - Halaman "/spmb" dan seluruh turunannya ("/spmb/*")
- * - Halaman "/ppdb" dan seluruh turunannya ("/ppdb/*") [fallback redirect]
  *
  * Normalisasi dilakukan untuk mengabaikan trailing slash (kecuali root "/").
  */
@@ -20,9 +19,6 @@ export function isLightLockedPath(pathname: string | null | undefined): boolean 
 
   return (
     cleanPath === "/" ||
-    cleanPath === "/spmb" ||
-    cleanPath.startsWith("/spmb/") ||
-    cleanPath === "/ppdb" ||
-    cleanPath.startsWith("/ppdb/")
+    cleanPath === "/spmb" || cleanPath.startsWith("/spmb/")
   );
 }

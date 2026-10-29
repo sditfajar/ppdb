@@ -79,7 +79,7 @@ export async function generateRegistrationsPdf(
 
     if (isFirstPage) {
       // Judul Utama
-      page.drawText("SDIT FAJAR • REKAPITULASI PENDAFTARAN PPDB ONLINE", {
+      page.drawText("SDIT FAJAR • REKAPITULASI PENDAFTARAN SPMB", {
         x: marginX,
         y,
         size: 13,
@@ -239,7 +239,7 @@ export async function generateRegistrationsPdf(
   // Tulis nomor halaman di footer setiap halaman
   const totalPages = pdfDoc.getPageCount();
   pdfDoc.getPages().forEach((page, pageIndex) => {
-    const pageNumText = `Halaman ${pageIndex + 1} dari ${totalPages}  |  PPDB SDIT Fajar`;
+    const pageNumText = `Halaman ${pageIndex + 1} dari ${totalPages}  |  SPMB SDIT Fajar`;
     page.drawText(pageNumText, {
       x: pageWidth - marginX - fontRegular.widthOfTextAtSize(pageNumText, 7.5),
       y: 18,

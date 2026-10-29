@@ -99,7 +99,7 @@ export function SettingsForm({ initialSettings }: SettingsFormProps) {
           <div className="flex flex-col justify-between p-4 rounded-control bg-black/[0.02] dark:bg-white/[0.03] shadow-border">
             <div className="flex flex-col gap-1">
               <span className="text-xs font-semibold text-foreground">
-                Status Pendaftaran PPDB
+                Status Pendaftaran SPMB
               </span>
               <p className="text-xs text-muted text-pretty">
                 {registrationOpen
@@ -110,11 +110,10 @@ export function SettingsForm({ initialSettings }: SettingsFormProps) {
 
             <div className="pt-3 mt-2 border-t border-black/[0.05] dark:border-white/[0.05] flex items-center justify-between">
               <span
-                className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${
-                  registrationOpen
+                className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${registrationOpen
                     ? "bg-accent/15 text-accent"
                     : "bg-rose-500/15 text-rose-700 dark:text-rose-300"
-                }`}
+                  }`}
               >
                 {registrationOpen ? (
                   <>
@@ -217,12 +216,12 @@ export function SettingsForm({ initialSettings }: SettingsFormProps) {
           <Field
             label="Nama Pemilik Rekening (Atas Nama)"
             required
-            hint="Contoh: SDIT Fajar PPDB"
+            hint="Contoh: SDIT Fajar SPMB"
             error={errors.payment_account_name?.message}
           >
             <TextInput
               {...register("payment_account_name")}
-              placeholder="SDIT Fajar PPDB"
+              placeholder="SDIT Fajar SPMB"
               aria-invalid={Boolean(errors.payment_account_name)}
               aria-label="Nama Pemilik Rekening"
             />

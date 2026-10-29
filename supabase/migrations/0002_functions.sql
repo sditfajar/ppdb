@@ -45,7 +45,7 @@ create trigger app_settings_set_updated_at
   execute function public.set_updated_at();
 
 -- 3. Generator Nomor Registrasi Concurrency-Safe
--- Format: PPDB-{tahun_awal}-{urut 4 digit} (contoh: PPDB-2026-0001)
+-- Format: SPMB-{tahun_awal}-{urut 4 digit} (contoh: SPMB-2026-0001)
 -- Menggunakan pg_advisory_xact_lock berbasis hash academic_year untuk mencegah race condition
 create or replace function public.generate_registration_number()
 returns trigger
@@ -71,21 +71,21 @@ begin
 
   -- Kunci advisory tingkat transaksi berbasis hash academic_year
   -- Mengunci secara eksklusif dalam transaksi saat ini hingga commit / rollback
-  v_lock_key := ('x' || substr(md5('ppdb_reg_lock_' || new.academic_year), 1, 15))::bit(64)::bigint;
+  v_lock_key := ('x' || substr(md5('SPMB_reg_lock_' || new.academic_year), 1, 15))::bit(64)::bigint;
   perform pg_advisory_xact_lock(v_lock_key);
 
   -- Cari sequence tertinggi untuk tahun ajaran yang bersangkutan
   select coalesce(
     max(
-      substring(reg_number from 'PPDB-[0-9]+-([0-9]{4})$')::integer
+      substring(reg_number from 'SPMB-[0-9]+-([0-9]{4})$')::integer
     ), 0
   ) + 1
   into v_next_seq
   from public.registrations
   where academic_year = new.academic_year;
 
-  -- Format nomor registrasi: PPDB-{tahun_awal}-{4 digit urut}
-  new.reg_number := 'PPDB-' || v_start_year || '-' || lpad(v_next_seq::text, 4, '0');
+  -- Format nomor registrasi: SPMB-{tahun_awal}-{4 digit urut}
+  new.reg_number := 'SPMB-' || v_start_year || '-' || lpad(v_next_seq::text, 4, '0');
 
   return new;
 end;

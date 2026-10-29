@@ -25,8 +25,8 @@ describe("sanitizePostgrestSearch", () => {
   });
 
   it("mempertahankan teks alfanumerik biasa dan spasi tunggal", () => {
-    const raw = "PPDB-2026-0001";
-    expect(sanitizePostgrestSearch(raw)).toBe("PPDB-2026-0001");
+    const raw = "SPMB-2026-0001";
+    expect(sanitizePostgrestSearch(raw)).toBe("SPMB-2026-0001");
 
     const phone = "081234567890";
     expect(sanitizePostgrestSearch(phone)).toBe("081234567890");

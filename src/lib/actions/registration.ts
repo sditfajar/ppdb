@@ -202,7 +202,7 @@ export async function createRegistration(
         return {
           success: false,
           message:
-            "Calon siswa dengan nama dan tanggal lahir ini sudah terdaftar pada tahun ajaran aktif. Silakan hubungi panitia PPDB jika Anda membutuhkan bantuan.",
+            "Calon siswa dengan nama dan tanggal lahir ini sudah terdaftar pada tahun ajaran aktif. Silakan hubungi panitia SPMB jika Anda membutuhkan bantuan.",
         };
       }
 

@@ -1,7 +1,7 @@
 import { SCHOOL_CONFIG } from "@/lib/config";
 
 /**
- * Utilitas penentuan gelombang pendaftaran PPDB SDIT Fajar
+ * Utilitas penentuan gelombang pendaftaran SPMB SDIT Fajar
  * Sesuai PRD §8.1, §9 (Aturan 1), & §17 (Asumsi 2):
  * - Gelombang 1: September – Februari (Bulan 9, 10, 11, 12, 1, 2)
  * - Gelombang 2: Maret – Juni (Bulan 3, 4, 5, 6)

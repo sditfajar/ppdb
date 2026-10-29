@@ -1,6 +1,6 @@
 # Panduan Verifikasi Manual — Fase 4: Submit & Upload (Backend Publik)
 
-Dokumen ini berisi panduan skenario pengujian manual untuk memvalidasi kriteria penerimaan (**AC-1, AC-4, AC-6, AC-13**) pada PPDB Online SDIT Fajar.
+Dokumen ini berisi panduan skenario pengujian manual untuk memvalidasi kriteria penerimaan (**AC-1, AC-4, AC-6, AC-13**) pada SPMB SDIT Fajar.
 
 ---
 
@@ -57,7 +57,7 @@ pnpm dev
    - Tombol berubah menjadi loading ("Kirim Pendaftaran" dengan spinner disabled).
    - Tampil indikator progres: *"Mengunggah foto bukti transfer..."* lalu *"Memverifikasi dan menyimpan data pendaftaran Anda..."*.
    - Browser diarahkan ke `/berhasil/[id]`.
-   - Menampilkan nomor registrasi (format: `PPDB-2026-XXXX`), nama siswa, gelombang pendaftaran, dan status *"Menunggu Verifikasi"*.
+   - Menampilkan nomor registrasi (format: `SPMB-2026-XXXX`), nama siswa, gelombang pendaftaran, dan status *"Menunggu Verifikasi"*.
    - Klik tombol **"Konfirmasi via WhatsApp"**: membuka WhatsApp dengan format pesan otomatis terisi nomor registrasi dan nama pendaftar.
    - Buka kembali `http://localhost:3000`: draf lokal telah terhapus bersih.
 
@@ -72,7 +72,7 @@ pnpm dev
 4. **Ekspektasi:**
    - Server Action menolak penyimpanan berdasarkan indeks unik parsial `registrations_active_unique` (error kode `23505`).
    - Muncul pesan ramah Bahasa Indonesia:
-     *"Calon siswa dengan nama dan tanggal lahir ini sudah terdaftar pada tahun ajaran aktif. Silakan hubungi panitia PPDB jika Anda membutuhkan bantuan."*
+     *"Calon siswa dengan nama dan tanggal lahir ini sudah terdaftar pada tahun ajaran aktif. Silakan hubungi panitia SPMB jika Anda membutuhkan bantuan."*
    - Formulir tidak terhapus dan file tidak diunggah ulang bila pengguna ingin memperbaiki nama/tanggal lahir.
 
 ---

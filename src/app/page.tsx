@@ -8,6 +8,15 @@ import { HomeScrollLock } from "@/components/home/HomeScrollLock";
 export const metadata: Metadata = {
   title: `Beranda — ${SCHOOL_CONFIG.name}`,
   description: `Sistem Penerimaan Murid Baru (SPMB) ${SCHOOL_CONFIG.fullName}. Pendaftaran online siswa baru Tahun Ajaran ${SCHOOL_CONFIG.defaultAcademicYear}.`,
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    url: "/",
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
 };
 
 export default async function HomePage() {
@@ -15,7 +24,7 @@ export default async function HomePage() {
   const academicYear = regState.academicYear || SCHOOL_CONFIG.defaultAcademicYear;
 
   const waMessage = encodeURIComponent(
-    `Assalamualaikum Admin PPDB ${SCHOOL_CONFIG.name}, saya ingin konsultasi terkait Sistem Penerimaan Murid Baru (SPMB).`
+    `Assalamualaikum Admin SPMB ${SCHOOL_CONFIG.name}, saya ingin konsultasi terkait Sistem Penerimaan Murid Baru (SPMB).`
   );
   const waUrl = `https://wa.me/6287737860657?text=${waMessage}`;
 

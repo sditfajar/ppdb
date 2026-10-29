@@ -187,12 +187,12 @@ describe("Backend Pendaftaran — Unit Tests (Fase 4)", () => {
       const isDuplicate = postgres23505ErrorCode === "23505";
 
       const friendlyMessage = isDuplicate
-        ? "Calon siswa dengan nama dan tanggal lahir ini sudah terdaftar pada tahun ajaran aktif. Silakan hubungi panitia PPDB jika Anda membutuhkan bantuan."
+        ? "Calon siswa dengan nama dan tanggal lahir ini sudah terdaftar pada tahun ajaran aktif. Silakan hubungi panitia SPMB jika Anda membutuhkan bantuan."
         : "Terjadi kesalahan.";
 
       expect(friendlyMessage).toContain("sudah terdaftar pada tahun ajaran aktif");
       // Memastikan tidak membocorkan nomor registrasi atau ID spesifik orang lain
-      expect(friendlyMessage).not.toContain("PPDB-");
+      expect(friendlyMessage).not.toContain("SPMB-");
       expect(friendlyMessage).not.toContain("id=");
     });
   });

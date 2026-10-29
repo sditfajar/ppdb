@@ -156,7 +156,7 @@ export function RegistrationDetailActions({
       `Alhamdulillah, berkas pendaftaran calon siswa di SDIT Fajar telah kami verifikasi dan dinyatakan LENGKAP.\n\n` +
       `Informasi jadwal tahapan selanjutnya akan kami sampaikan lebih lanjut melalui kontak ini. Terima kasih atas kepercayaan Bapak/Ibu kepada SDIT Fajar.\n\n` +
       `Wassalamu'alaikum Warahmatullahi Wabarakatuh.\n` +
-      `Panitia PPDB SDIT Fajar`;
+      `Panitia SPMB SDIT Fajar`;
   } else if (currentStatus === "rejected") {
     const reasonText = rejectionReason || "Berkas pendaftaran belum memenuhi persyaratan.";
     rawWaMessage =
@@ -164,17 +164,17 @@ export function RegistrationDetailActions({
       `Bapak/Ibu wali dari calon siswa ananda *${studentName}* (No. Registrasi: *${regNumber}*),\n` +
       `Kami menginformasikan bahwa berkas pendaftaran calon siswa ananda di SDIT Fajar belum dapat diverifikasi dengan alasan:\n` +
       `"${reasonText}"\n\n` +
-      `Bapak/Ibu dapat memperbaiki data atau mendaftar kembali melalui website PPDB SDIT Fajar. Jika membutuhkan bantuan lebih lanjut, silakan balas pesan ini.\n\n` +
+      `Bapak/Ibu dapat memperbaiki data atau mendaftar kembali melalui website SPMB SDIT Fajar. Jika membutuhkan bantuan lebih lanjut, silakan balas pesan ini.\n\n` +
       `Wassalamu'alaikum Warahmatullahi Wabarakatuh.\n` +
-      `Panitia PPDB SDIT Fajar`;
+      `Panitia SPMB SDIT Fajar`;
   } else {
     rawWaMessage =
       `Assalamu'alaikum Warahmatullahi Wabarakatuh.\n\n` +
       `Bapak/Ibu wali dari calon siswa ananda *${studentName}* (No. Registrasi: *${regNumber}*),\n` +
-      `Kami dari Panitia PPDB SDIT Fajar ingin mengonfirmasi terkait pendaftaran ananda yang saat ini sedang dalam proses verifikasi berkas.\n\n` +
+      `Kami dari Panitia SPMB SDIT Fajar ingin mengonfirmasi terkait pendaftaran ananda yang saat ini sedang dalam proses verifikasi berkas.\n\n` +
       `Jika ada data atau informasi yang perlu diperbarui, silakan hubungi kami melalui pesan ini.\n\n` +
       `Wassalamu'alaikum Warahmatullahi Wabarakatuh.\n` +
-      `Panitia PPDB SDIT Fajar`;
+      `Panitia SPMB SDIT Fajar`;
   }
 
   const waNumber = normalizeIdPhone(contactPhone);

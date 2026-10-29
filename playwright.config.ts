@@ -1,7 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 
 /**
- * Konfigurasi Playwright untuk PPDB Online SDIT Fajar (Fase 7 QA)
+ * Konfigurasi Playwright untuk SPMB SDIT Fajar (Fase 7 QA)
  * Mencakup viewport Pixel 7, iPhone 14, dan Desktop Chrome.
  */
 export default defineConfig({

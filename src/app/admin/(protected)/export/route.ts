@@ -63,7 +63,7 @@ export async function GET(request: NextRequest) {
 
   const registrations = (rows || []) as RegistrationRow[];
 
-  // 4. Tentukan penamaan file: ppdb-{tahun}-{tanggal}.{ext}
+  // 4. Tentukan penamaan file: SPMB-{tahun}-{tanggal}.{ext}
   const todayJakarta = new Intl.DateTimeFormat("en-CA", {
     timeZone: "Asia/Jakarta",
   }).format(new Date()); // format YYYY-MM-DD
@@ -78,7 +78,7 @@ export async function GET(request: NextRequest) {
   // 5. Ekspor berdasarkan format yang diminta
   if (formatParam === "xlsx" || formatParam === "excel") {
     const excelBuffer = await generateRegistrationsExcel(registrations);
-    const filename = `ppdb-${yearSlug}-${todayJakarta}.xlsx`;
+    const filename = `SPMB-${yearSlug}-${todayJakarta}.xlsx`;
 
     return new Response(new Uint8Array(excelBuffer), {
       status: 200,
@@ -100,7 +100,7 @@ export async function GET(request: NextRequest) {
       academicYear: yearParam !== "all" ? yearParam : undefined,
       filterSummary: filterParts.join(", "),
     });
-    const filename = `ppdb-${yearSlug}-${todayJakarta}.pdf`;
+    const filename = `SPMB-${yearSlug}-${todayJakarta}.pdf`;
 
     return new Response(new Uint8Array(pdfBytes), {
       status: 200,
@@ -114,7 +114,7 @@ export async function GET(request: NextRequest) {
 
   // Default: CSV aman ber-BOM UTF-8
   const csvContent = generateRegistrationsCsv(registrations);
-  const filename = `ppdb-${yearSlug}-${todayJakarta}.csv`;
+  const filename = `SPMB-${yearSlug}-${todayJakarta}.csv`;
 
   return new Response(csvContent, {
     status: 200,

@@ -1,4 +1,4 @@
-# Roadmap — PPDB Online SDIT Fajar
+# Roadmap — SPMB SDIT Fajar
 
 Rencana kerja bertahap untuk membangun aplikasi di `PRD.md`. Setiap fase memuat **tujuan, tugas, prompt untuk agent (AI coding agent), dan kriteria selesai**. Semua prompt **wajib memakai Context7** agar kode mengikuti dokumentasi terbaru, bukan ingatan model.
 
@@ -86,7 +86,7 @@ Setelah terpasang, agent dapat menjalankan `/better-ui`, `/better-typography`, `
 
 ````text
 PERAN
-Kamu adalah senior full-stack engineer sekaligus design engineer. Kamu membangun "PPDB Online SDIT Fajar": form registrasi online penerimaan peserta didik baru dengan SATU role admin untuk verifikasi.
+Kamu adalah senior full-stack engineer sekaligus design engineer. Kamu membangun "SPMB SDIT Fajar": form registrasi online penerimaan peserta didik baru dengan SATU role admin untuk verifikasi.
 
 SUMBER KEBENARAN
 - PRD.md = apa yang dibangun (fitur, field, validasi, data, keamanan, desain).
@@ -215,7 +215,7 @@ Context7 (wajib), minimal:
 Tugas:
 1. `supabase init` (jika belum). Buat migration berurutan di supabase/migrations/:
    - 0001_schema.sql: enum, tabel registrations, admins, app_settings, constraint, indeks sesuai PRD §11 (termasuk constraint rejected_requires_reason dan indeks unik parsial untuk duplikasi aktif).
-   - 0002_functions.sql: is_admin() (security definer, stable, search_path aman), set_updated_at(), dan generator reg_number format "PPDB-{tahun_awal}-{urut 4 digit}" yang berulang per academic_year dan AMAN terhadap insert bersamaan (mis. pg_advisory_xact_lock). Pasang sebagai trigger BEFORE INSERT bila reg_number kosong.
+   - 0002_functions.sql: is_admin() (security definer, stable, search_path aman), set_updated_at(), dan generator reg_number format "SPMB-{tahun_awal}-{urut 4 digit}" yang berulang per academic_year dan AMAN terhadap insert bersamaan (mis. pg_advisory_xact_lock). Pasang sebagai trigger BEFORE INSERT bila reg_number kosong.
    - 0003_rls.sql: ENABLE (dan FORCE bila sesuai) RLS pada semua tabel. Tanpa policy untuk anon. Policy untuk admin saja sesuai tabel RLS PRD §11 (registrations: select+update; admins: select baris sendiri; app_settings: select+update). Tanpa delete di MVP.
    - 0004_storage.sql: bucket "payment-proofs" (public=false, file_size_limit 5MB, allowed_mime_types image/jpeg, image/png, image/webp) dan policy select pada storage.objects untuk admin saja.
 2. Seed: satu baris app_settings dengan academic_year "2026/2027", registration_open true (nilai payment_* dibiarkan kosong). Dokumentasikan perintah SQL untuk mendaftarkan user admin (insert ke public.admins memakai UID) di README/docs, JANGAN meng-hardcode UID.
@@ -318,7 +318,7 @@ Tugas:
    - Input memakai inputMode/autoComplete/enterKeyHint yang tepat; RadioChips untuk gender dan jumlah saudara ("Lainnya" memunculkan input angka); select native untuk pendidikan; kotak centang "Sama dengan alamat siswa"; tombol "Tidak ada" untuk prestasi dan penyakit.
    - UploadProof sesuai PRD §8.3: pilih file (jpg/png/webp, maks 5MB, pesan error jelas), TAMPIL THUMBNAIL PREVIEW (rasio 4:3, outline gambar), nama dan ukuran file, tombol Ganti dan Hapus, dan KLIK THUMBNAIL MEMBUKA GAMBAR PENUH DI TAB BARU (<a target="_blank" rel="noopener noreferrer"> ke object URL) dengan ikon dan aria-label. Revoke object URL saat ganti/hapus/unmount. Ikon status memakai IconSwap.
    - ReviewSummary read-only dengan tautan "Ubah" ke langkah terkait; kotak centang persetujuan wajib; honeypot tersembunyi dan placeholder untuk Turnstile (dihubungkan di Fase 4).
-6. Draft: simpan nilai form ke localStorage dengan kunci berversi "ppdb:draft:v1" (debounce, TANPA file), pulihkan saat load, hapus setelah sukses; peringatan beforeunload bila ada perubahan belum terkirim.
+6. Draft: simpan nilai form ke localStorage dengan kunci berversi "SPMB:draft:v1" (debounce, TANPA file), pulihkan saat load, hapus setelah sukses; peringatan beforeunload bila ada perubahan belum terkirim.
 7. onSubmit sementara: panggil fungsi `submitRegistration(values, file)` berupa stub yang menunda 800ms lalu resolve (akan diganti Fase 4). Tangani state loading dan cegah klik ganda.
 
 Batasan: belum ada pemanggilan Supabase/Server Action. Jangan menyimpan data pribadi di mana pun selain localStorage draft.
@@ -452,7 +452,7 @@ Context7 (wajib), minimal:
 - /supabase/supabase: Storage list/remove dari server.
 
 Tugas:
-1. /admin/export (Route Handler): requireAdmin(); ikuti filter aktif (status, wave, year, q); CSV UTF-8 dengan BOM; header kolom Bahasa Indonesia; tanggal format YYYY-MM-DD; telepon sebagai teks; nama file "ppdb-{tahun}-{tanggal}.csv". NETRALKAN formula injection: sel berawalan = + - @ (tab/CR) diberi awalan apostrof, KECUALI nilai persis "-". Escape koma/kutip/baris baru dengan benar. Tombol "Ekspor CSV" di /admin. Unit test src/lib/csv.ts untuk kasus tepi.
+1. /admin/export (Route Handler): requireAdmin(); ikuti filter aktif (status, wave, year, q); CSV UTF-8 dengan BOM; header kolom Bahasa Indonesia; tanggal format YYYY-MM-DD; telepon sebagai teks; nama file "SPMB-{tahun}-{tanggal}.csv". NETRALKAN formula injection: sel berawalan = + - @ (tab/CR) diberi awalan apostrof, KECUALI nilai persis "-". Escape koma/kutip/baris baru dengan benar. Tombol "Ekspor CSV" di /admin. Unit test src/lib/csv.ts untuk kasus tepi.
 2. /admin/pengaturan: form (Zod) untuk academic_year, registration_open, payment_amount/bank/account_no/account_name; update lewat klien sesi admin (RLS). Perubahan langsung memengaruhi halaman publik (revalidate). Tautkan dari header admin.
 3. Detail admin: tombol "Hubungi via WhatsApp" dengan template pesan berbeda untuk status terverifikasi dan ditolak (isi alasan penolakan), diencode dengan benar.
 4. Cron /api/cron/cleanup-orphans: hanya menerima Authorization "Bearer ${CRON_SECRET}" (selain itu 401). Hapus objek di bucket payment-proofs yang berumur > 24 jam dan path-nya TIDAK dirujuk registrations.payment_proof_path. Batasi jumlah per eksekusi dan catat jumlah (tanpa PII). Tambahkan jadwal harian di vercel.json.

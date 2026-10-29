@@ -6,7 +6,7 @@ import { ToastProvider } from "@/components/ui/Toast";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Panel Admin — PPDB SDIT Fajar",
+  title: "Panel Admin — SPMB SDIT Fajar",
   robots: {
     index: false,
     follow: false,

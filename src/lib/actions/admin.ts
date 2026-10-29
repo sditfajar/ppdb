@@ -238,7 +238,7 @@ export async function saveAdminNote(
 }
 
 /**
- * Memperbarui pengaturan sistem PPDB (tahun ajaran, buka/tutup pendaftaran, info pembayaran).
+ * Memperbarui pengaturan sistem SPMB (tahun ajaran, buka/tutup pendaftaran, info pembayaran).
  * Dijalankan dengan sesi admin sehingga RLS 'Admins can update app settings' berlaku.
  * Menggunakan revalidatePath agar langsung memengaruhi halaman publik dan admin.
  */
@@ -282,6 +282,6 @@ export async function updateSettings(
 
   return {
     success: true,
-    message: "Pengaturan PPDB berhasil disimpan.",
+    message: "Pengaturan SPMB berhasil disimpan.",
   };
 }

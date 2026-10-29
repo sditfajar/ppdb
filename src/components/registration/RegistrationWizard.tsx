@@ -25,7 +25,7 @@ import { requestUploadUrl } from "@/lib/actions/upload";
 import { createRegistration } from "@/lib/actions/registration";
 import type { PaymentSettings } from "@/lib/actions/registration-state";
 
-const DRAFT_STORAGE_KEY = "ppdb:draft:v1";
+const DRAFT_STORAGE_KEY = "SPMB:draft:v1";
 
 const STEPS: StepItem[] = [
   { number: 1, title: "Data Calon Siswa", shortTitle: "Siswa" },
@@ -136,7 +136,7 @@ export function RegistrationWizard({ paymentSettings }: RegistrationWizardProps)
         }
       }
     } catch (e) {
-      console.warn("[PPDB] Gagal memulihkan draf form:", e);
+      console.warn("[SPMB] Gagal memulihkan draf form:", e);
     }
   }, [setValue]);
 
@@ -152,7 +152,7 @@ export function RegistrationWizard({ paymentSettings }: RegistrationWizardProps)
       try {
         localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(dataToSave));
       } catch (e) {
-        console.warn("[PPDB] Penyimpanan draf penuh:", e);
+        console.warn("[SPMB] Penyimpanan draf penuh:", e);
       }
     });
 
@@ -483,7 +483,7 @@ export function RegistrationWizard({ paymentSettings }: RegistrationWizardProps)
                 loading={isSubmitting}
                 disabled={isSubmitting}
                 iconRight={!isSubmitting ? <Send className="h-4 w-4" /> : undefined}
-                aria-label="Kirim formulir pendaftaran PPDB"
+                aria-label="Kirim formulir pendaftaran SPMB"
                 className="flex-1 sm:flex-initial sm:min-w-[190px] sm:ml-auto h-11 text-sm sm:text-base font-semibold shadow-sm"
               >
                 Kirim Pendaftaran

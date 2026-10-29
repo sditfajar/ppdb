@@ -14,10 +14,10 @@ interface ThemeContextType {
 
 const ThemeContext = React.createContext<ThemeContextType | undefined>(undefined);
 
-const THEME_CHANGE_EVENT = "ppdb-theme-change";
+const THEME_CHANGE_EVENT = "SPMB-theme-change";
 
 function subscribeTheme(callback: () => void) {
-  if (typeof window === "undefined") return () => {};
+  if (typeof window === "undefined") return () => { };
   window.addEventListener("storage", callback);
   window.addEventListener(THEME_CHANGE_EVENT, callback);
   return () => {

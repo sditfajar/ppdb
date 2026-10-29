@@ -1,5 +1,5 @@
 -- 0001_schema.sql
--- Skema database PPDB Online SDIT Fajar (PRD §11)
+-- Skema database SPMB SDIT Fajar (PRD §11)
 
 -- 1. Enum Types (Idempoten: dicek terlebih dahulu di katalog pg_type)
 do $$

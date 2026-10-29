@@ -1,5 +1,5 @@
 -- supabase/tests/rls.sql
--- Pengujian Row Level Security (RLS) & Access Control PPDB Online SDIT Fajar (pgTAP)
+-- Pengujian Row Level Security (RLS) & Access Control SPMB SDIT Fajar (pgTAP)
 -- Dapat dijalankan via `supabase test db` saat Docker/Supabase lokal aktif
 
 begin;
@@ -97,7 +97,7 @@ insert into public.registrations (
   father_job, mother_job, parent_address, payment_proof_path,
   payment_proof_mime, payment_proof_size, consented_at, wave, academic_year
 ) values (
-  'b0000000-0000-0000-0000-000000000001', 'PPDB-2026-9999', 'Uji Admin', 'Uji', 'Jakarta', '2019-05-10', 'L',
+  'b0000000-0000-0000-0000-000000000001', 'SPMB-2026-9999', 'Uji Admin', 'Uji', 'Jakarta', '2019-05-10', 'L',
   0, 1, 'Jl. Uji', '081299999999', 'Robotik',
   'Ayah Uji', 'Ibu Uji', 's1_s3', 's1_s3',
   'Insinyur', 'Guru', 'Jl. Uji', 'proof.jpg',

@@ -1,10 +1,10 @@
-# PRD — PPDB Online SDIT Fajar (Form Registrasi Online)
+# PRD — SPMB SDIT Fajar (Form Registrasi Online)
 
 | | |
 |---|---|
 | **Versi** | 1.0 (Draft untuk review panitia) |
 | **Tanggal** | 27 Oktober 2026 |
-| **Pemilik produk** | Panitia PPDB SDIT Fajar |
+| **Pemilik produk** | Panitia SPMB SDIT Fajar |
 | **Stack** | Next.js (App Router) · Supabase · Vercel · Tailwind CSS v4 |
 | **Dokumen pendamping** | `Roadmap.md` (urutan kerja + prompt untuk agent) |
 
@@ -12,7 +12,7 @@
 
 ## 1. Ringkasan
 
-Aplikasi web untuk **pendaftaran peserta didik baru (PPDB) SDIT Fajar** secara online. Calon wali murid mengisi formulir (data siswa, data orang tua) dan mengunggah bukti pembayaran formulir lewat ponsel. Panitia (satu role: **admin**) memeriksa data dan bukti bayar, lalu menandai pendaftaran sebagai **Terverifikasi** atau **Ditolak**.
+Aplikasi web untuk **Sistem Penerimaan Murid Baru (SPMB) SDIT Fajar** secara online. Calon wali murid mengisi formulir (data siswa, data orang tua) dan mengunggah bukti pembayaran formulir lewat ponsel. Panitia (satu role: **admin**) memeriksa data dan bukti bayar, lalu menandai pendaftaran sebagai **Terverifikasi** atau **Ditolak**.
 
 Pengganti form berbasis spreadsheet/Google Form: data tersimpan terstruktur, bukti bayar tersimpan privat, dan proses verifikasi punya status yang jelas.
 
@@ -157,7 +157,7 @@ Opsi pendidikan (nilai enum → label):
 1. Kartu info pembayaran (nominal, rekening) dari pengaturan.
 2. **Upload Bukti Pembayaran Formulir** (spesifikasi di §8.3).
 3. Ringkasan isian (read-only, tiap bagian punya tautan "Ubah" ke langkah terkait).
-4. Kotak centang persetujuan (wajib): *"Saya menyatakan data yang diisi benar dan menyetujui data ini diproses oleh SDIT Fajar untuk keperluan PPDB."* Waktu persetujuan disimpan (`consented_at`).
+4. Kotak centang persetujuan (wajib): *"Saya menyatakan data yang diisi benar dan menyetujui data ini diproses oleh SDIT Fajar untuk keperluan SPMB."* Waktu persetujuan disimpan (`consented_at`).
 5. Turnstile (anti-bot) + honeypot tersembunyi.
 6. Tombol **Kirim Pendaftaran**.
 
@@ -186,7 +186,7 @@ Opsi pendidikan (nilai enum → label):
 ### 8.4 Submit & konfirmasi
 
 - Server Action `createRegistration` memvalidasi skema, Turnstile, honeypot, status buka/tutup pendaftaran, keberadaan file bukti, dan duplikasi.
-- Berhasil → redirect ke `/berhasil/[id]` (`id` = UUID acak, **bukan** nomor registrasi) yang menampilkan **Nomor Registrasi** (mis. `PPDB-2026-0007`), nama siswa, gelombang, status "Menunggu Verifikasi", dan tombol **Konfirmasi via WhatsApp** (pesan siap kirim berisi nomor registrasi dan nama siswa).
+- Berhasil → redirect ke `/berhasil/[id]` (`id` = UUID acak, **bukan** nomor registrasi) yang menampilkan **Nomor Registrasi** (mis. `SPMB-2026-0007`), nama siswa, gelombang, status "Menunggu Verifikasi", dan tombol **Konfirmasi via WhatsApp** (pesan siap kirim berisi nomor registrasi dan nama siswa).
 - Alasan memakai UUID: nomor registrasi berurutan sehingga mudah ditebak; URL berbasis nomor akan membuka nama siswa lain. Halaman ini `noindex`, tanpa cache, dan tidak menampilkan data pribadi selain nama siswa dan nomor registrasi.
 - Error server ditampilkan dengan bahasa manusiawi; isian tidak hilang.
 
@@ -206,7 +206,7 @@ Setiap aksi admin: konfirmasi eksplisit untuk Verifikasi/Tolak, status loading p
 
 1. **Gelombang** ditentukan otomatis dari tanggal submit (zona waktu `Asia/Jakarta`): bulan 9–12 dan 1–2 → **Gelombang 1**; bulan 3–6 → **Gelombang 2**; bulan 7–8 → **tutup** (asumsi, lihat §17). Admin dapat menutup pendaftaran manual kapan saja (P1).
 2. **Status**: `pending` (default) → `verified` | `rejected`. `rejected` wajib punya `rejection_reason`. Admin boleh mengembalikan ke `pending`.
-3. **Nomor registrasi**: `PPDB-{tahun_awal}-{urut 4 digit}`, urut berulang per tahun ajaran, unik, aman terhadap submit bersamaan (concurrent).
+3. **Nomor registrasi**: `SPMB-{tahun_awal}-{urut 4 digit}`, urut berulang per tahun ajaran, unik, aman terhadap submit bersamaan (concurrent).
 4. **Duplikasi**: tidak boleh ada dua pendaftaran aktif (status ≠ `rejected`) dengan **nama siswa (case-insensitive, trim) + tanggal lahir + tahun ajaran** yang sama. Ditegakkan oleh indeks unik parsial di database. Pendaftar yang ditolak boleh mendaftar ulang.
 5. **Tahun ajaran** dan penanda gelombang tidak di-hard-code; dibaca dari pengaturan/konfigurasi.
 6. Hanya admin yang boleh mengubah status; setiap perubahan mencatat `reviewed_by` dan `reviewed_at`.
@@ -549,7 +549,7 @@ Gaya: hangat, jelas, sopan, tidak bertele-tele. Tombol berupa kata kerja ("Lanju
 - Bagaimana bila salah satu orang tua telah wafat/tidak ada, atau data diisi wali? (saat ini kedua orang tua wajib diisi)
 - Berapa lama data pendaftar yang ditolak/tidak lanjut disimpan sebelum dihapus/dianonimkan?
 - Perlu notifikasi email/WhatsApp otomatis ke orang tua setelah verifikasi?
-- Domain yang akan dipakai (mis. `ppdb.sditfajar.sch.id`)?
+- Domain yang akan dipakai (mis. `SPMB.sditfajar.sch.id`)?
 - Apakah panitia butuh cetak "bukti pendaftaran" (PDF) di MVP?
 
 ---

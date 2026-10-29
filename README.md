@@ -1,6 +1,6 @@
-# PPDB Online SDIT Fajar
+# SPMB SDIT Fajar
 
-Aplikasi web penerimaan peserta didik baru (PPDB) online untuk SDIT Fajar dengan formulir registrasi wizard (mobile-first) dan satu role admin untuk verifikasi.
+Aplikasi web penerimaan peserta didik baru (SPMB) online untuk SDIT Fajar dengan formulir registrasi wizard (mobile-first) dan satu role admin untuk verifikasi.
 
 ## Prasyarat
 

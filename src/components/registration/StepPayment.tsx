@@ -71,7 +71,7 @@ export function StepPayment({
 
   const bankName = paymentSettings?.bank || "Bank Syariah Indonesia (BSI)";
   const accountNo = paymentSettings?.accountNo || "712-345-6789";
-  const accountName = paymentSettings?.accountName || "SDIT Fajar PPDB";
+  const accountName = paymentSettings?.accountName || "SDIT Fajar SPMB";
   const amount = paymentSettings?.amount ?? 250000;
 
   return (
@@ -169,10 +169,10 @@ export function StepPayment({
               label={
                 <span className="text-xs font-medium text-foreground leading-relaxed">
                   Saya menyatakan data yang diisi benar dan menyetujui data ini diproses oleh
-                  SDIT Fajar untuk keperluan PPDB.
+                  SDIT Fajar untuk keperluan SPMB.
                 </span>
               }
-              description="Data yang Anda berikan dilindungi sesuai UU No. 27/2022 tentang Pelindungan Data Pribadi dan hanya digunakan untuk keperluan seleksi PPDB SDIT Fajar."
+              description="Data yang Anda berikan dilindungi sesuai UU No. 27/2022 tentang Pelindungan Data Pribadi dan hanya digunakan untuk keperluan seleksi SPMB SDIT Fajar."
             />
           )}
         />

@@ -1,5 +1,5 @@
 -- supabase/seed.sql
--- Seed data konfigurasi awal PPDB Online SDIT Fajar
+-- Seed data konfigurasi awal SPMB SDIT Fajar
 
 insert into public.app_settings (
   id,

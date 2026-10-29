@@ -8,7 +8,7 @@ describe("settingsSchema", () => {
     payment_amount: 250000,
     payment_bank: "Bank Syariah Indonesia (BSI)",
     payment_account_no: "712-345-6789",
-    payment_account_name: "SDIT Fajar PPDB",
+    payment_account_name: "SDIT Fajar SPMB",
   };
 
   it("menerima data pengaturan yang lengkap dan valid", () => {

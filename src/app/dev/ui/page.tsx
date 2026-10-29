@@ -135,7 +135,7 @@ function DevUIShowcase() {
                 Design System & Komponen UI
               </h1>
               <p className="text-sm text-muted text-pretty mt-1">
-                PPDB Online SDIT Fajar · Standar jakub.kr · Basis mobile 360px
+                SPMB SDIT Fajar · Standar jakub.kr · Basis mobile 360px
               </p>
             </div>
 
@@ -144,11 +144,10 @@ function DevUIShowcase() {
               <button
                 type="button"
                 onClick={() => setThemeMode("system")}
-                className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-[6px] transition-all cursor-pointer ${
-                  themeMode === "system"
-                    ? "bg-accent text-white shadow-sm dark:text-white"
-                    : "text-muted hover:text-foreground"
-                }`}
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-[6px] transition-all cursor-pointer ${themeMode === "system"
+                  ? "bg-accent text-white shadow-sm dark:text-white"
+                  : "text-muted hover:text-foreground"
+                  }`}
                 aria-label="Tema sistem"
               >
                 <Laptop className="h-3.5 w-3.5" />
@@ -157,11 +156,10 @@ function DevUIShowcase() {
               <button
                 type="button"
                 onClick={() => setThemeMode("light")}
-                className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-[6px] transition-all cursor-pointer ${
-                  themeMode === "light"
-                    ? "bg-accent text-white shadow-sm dark:text-white"
-                    : "text-muted hover:text-foreground"
-                }`}
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-[6px] transition-all cursor-pointer ${themeMode === "light"
+                  ? "bg-accent text-white shadow-sm dark:text-white"
+                  : "text-muted hover:text-foreground"
+                  }`}
                 aria-label="Tema terang"
               >
                 <Sun className="h-3.5 w-3.5" />
@@ -170,11 +168,10 @@ function DevUIShowcase() {
               <button
                 type="button"
                 onClick={() => setThemeMode("dark")}
-                className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-[6px] transition-all cursor-pointer ${
-                  themeMode === "dark"
-                    ? "bg-accent text-white shadow-sm dark:text-white"
-                    : "text-muted hover:text-foreground"
-                }`}
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-[6px] transition-all cursor-pointer ${themeMode === "dark"
+                  ? "bg-accent text-white shadow-sm dark:text-white"
+                  : "text-muted hover:text-foreground"
+                  }`}
                 aria-label="Tema gelap"
               >
                 <Moon className="h-3.5 w-3.5" />
@@ -416,7 +413,7 @@ function DevUIShowcase() {
                     checked={agree}
                     onChange={(e) => setAgree(e.target.checked)}
                     label="Pernyataan Kebenaran Data"
-                    description="Saya menyatakan data yang diisi adalah benar dan menyetujui pemrosesan data untuk keperluan PPDB SDIT Fajar."
+                    description="Saya menyatakan data yang diisi adalah benar dan menyetujui pemrosesan data untuk keperluan SPMB SDIT Fajar."
                   />
 
                   <Checkbox
@@ -531,7 +528,7 @@ function DevUIShowcase() {
                   {/* Salin Nomor Registrasi */}
                   <div className="p-3 rounded-control bg-surface shadow-border flex items-center gap-3">
                     <div className="text-sm font-mono tabular-nums font-semibold">
-                      PPDB-2026-0042
+                      SPMB-2026-0042
                     </div>
                     <Button
                       size="sm"

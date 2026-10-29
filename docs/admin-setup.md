@@ -1,6 +1,6 @@
-# Panduan Pendaftaran Admin PPDB Online SDIT Fajar
+# Panduan Pendaftaran Admin SPMB SDIT Fajar
 
-Sesuai aturan keamanan di [PRD.md §10](file:///C:/Users/muhaz/Downloads/ppdb/PRD.md), sistem menggunakan **SATU role admin** untuk verifikasi pendaftaran. Pendaftaran publik pada Supabase Auth dimatikan (`signups disabled`), dan akun admin didaftarkan secara manual oleh pengelola sistem.
+Sesuai aturan keamanan di [PRD.md §10](file:///C:/Users/muhaz/Downloads/SPMB/PRD.md), sistem menggunakan **SATU role admin** untuk verifikasi pendaftaran. Pendaftaran publik pada Supabase Auth dimatikan (`signups disabled`), dan akun admin didaftarkan secara manual oleh pengelola sistem.
 
 ---
 
@@ -12,7 +12,7 @@ Ada dua cara untuk membuat akun pengguna admin di Supabase Auth:
 1. Buka dashboard proyek Supabase Anda.
 2. Navigasi ke menu **Authentication** -> **Users**.
 3. Klik tombol **Add User** -> **Create User**.
-4. Masukkan email admin (contoh: `admin.ppdb@sditfajar.sch.id`) dan password yang kuat.
+4. Masukkan email admin (contoh: `admin.SPMB@sditfajar.sch.id`) dan password yang kuat.
 5. Centang **Auto Confirm User?** agar user langsung aktif tanpa perlu konfirmasi email.
 6. Salin **User UID** (UUID) dari tabel pengguna.
 

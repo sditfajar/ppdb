@@ -33,7 +33,7 @@ export function AdminHeader({ userEmail }: AdminHeaderProps) {
           <Link
             href="/admin"
             className="flex items-center gap-2.5 text-foreground hover:opacity-85 transition-opacity outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-control p-1 -m-1"
-            aria-label="Kembali ke Dashboard Admin PPDB"
+            aria-label="Kembali ke Dashboard Admin SPMB"
           >
             <div className="flex items-center justify-center w-9 h-9 rounded-control bg-accent/10 text-accent font-semibold shadow-xs">
               <School className="w-5 h-5" aria-hidden="true" />
@@ -43,7 +43,7 @@ export function AdminHeader({ userEmail }: AdminHeaderProps) {
                 SDIT Fajar
               </span>
               <span className="text-[11px] text-muted font-medium">
-                Panel Admin PPDB
+                Panel Admin SPMB
               </span>
             </div>
           </Link>
@@ -52,11 +52,10 @@ export function AdminHeader({ userEmail }: AdminHeaderProps) {
           <nav className="hidden sm:flex items-center gap-1" aria-label="Menu Admin">
             <Link
               href="/admin"
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-control text-xs font-semibold transition-colors outline-none focus-visible:ring-2 focus-visible:ring-accent ${
-                isDashboardActive
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-control text-xs font-semibold transition-colors outline-none focus-visible:ring-2 focus-visible:ring-accent ${isDashboardActive
                   ? "bg-accent/15 text-accent"
                   : "text-muted hover:text-foreground hover:bg-black/[0.04] dark:hover:bg-white/[0.05]"
-              }`}
+                }`}
             >
               <LayoutDashboard className="w-3.5 h-3.5" aria-hidden="true" />
               <span>Dashboard</span>
@@ -64,11 +63,10 @@ export function AdminHeader({ userEmail }: AdminHeaderProps) {
 
             <Link
               href="/admin/pengaturan"
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-control text-xs font-semibold transition-colors outline-none focus-visible:ring-2 focus-visible:ring-accent ${
-                isSettingsActive
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-control text-xs font-semibold transition-colors outline-none focus-visible:ring-2 focus-visible:ring-accent ${isSettingsActive
                   ? "bg-accent/15 text-accent"
                   : "text-muted hover:text-foreground hover:bg-black/[0.04] dark:hover:bg-white/[0.05]"
-              }`}
+                }`}
             >
               <Settings className="w-3.5 h-3.5" aria-hidden="true" />
               <span>Pengaturan</span>
@@ -83,12 +81,11 @@ export function AdminHeader({ userEmail }: AdminHeaderProps) {
           {/* Menu Mobile Singkat untuk Pengaturan */}
           <Link
             href="/admin/pengaturan"
-            className={`sm:hidden inline-flex items-center justify-center w-9 h-9 rounded-control transition-colors outline-none focus-visible:ring-2 focus-visible:ring-accent ${
-              isSettingsActive
+            className={`sm:hidden inline-flex items-center justify-center w-9 h-9 rounded-control transition-colors outline-none focus-visible:ring-2 focus-visible:ring-accent ${isSettingsActive
                 ? "bg-accent/15 text-accent"
                 : "text-muted hover:text-foreground hover:bg-black/[0.04] dark:hover:bg-white/[0.05]"
-            }`}
-            aria-label="Buka Pengaturan PPDB"
+              }`}
+            aria-label="Buka Pengaturan SPMB"
           >
             <Settings className="w-4 h-4" aria-hidden="true" />
           </Link>

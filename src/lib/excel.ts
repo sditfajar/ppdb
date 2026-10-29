@@ -27,7 +27,7 @@ export async function generateRegistrationsExcel(
 ): Promise<Buffer> {
   const workbook = new ExcelJS.Workbook();
   workbook.creator = "SDIT Fajar";
-  workbook.lastModifiedBy = "Admin PPDB SDIT Fajar";
+  workbook.lastModifiedBy = "Admin SPMB SDIT Fajar";
   workbook.created = new Date();
   workbook.modified = new Date();
 
