@@ -4,6 +4,9 @@ vi.mock("next/font/google", () => ({
   Geist: () => ({
     variable: "--font-geist-sans",
   }),
+  Plus_Jakarta_Sans: () => ({
+    variable: "--font-plus-jakarta",
+  }),
 }));
 
 import robots from "@/app/robots";

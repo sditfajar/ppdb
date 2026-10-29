@@ -3,6 +3,8 @@
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *, .dark, .dark *));
 
 @theme inline {
+  --font-jakarta: var(--font-plus-jakarta), 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-surface: var(--surface);
@@ -10,6 +12,19 @@
   --color-accent: var(--accent);
   --color-secondary: var(--secondary);
   --color-danger: var(--danger);
+
+  --color-fajar-primary: var(--fajar-primary);
+  --color-fajar-primary-dark: var(--fajar-primary-dark);
+  --color-fajar-secondary: var(--fajar-secondary);
+  --color-fajar-secondary-dark: var(--fajar-secondary-dark);
+  --color-fajar-tertiary: var(--fajar-tertiary);
+  --color-fajar-tertiary-dark: var(--fajar-tertiary-dark);
+  --color-fajar-canvas: var(--fajar-canvas);
+  --color-fajar-surface-low: var(--fajar-surface-low);
+  --color-fajar-surface-high: var(--fajar-surface-high);
+  --color-fajar-surface-highest: var(--fajar-surface-highest);
+  --color-fajar-dark: var(--fajar-dark);
+  --color-fajar-muted: var(--fajar-muted);
 
   --radius-control: var(--radius-control);
   --radius-card: var(--radius-card);
@@ -31,6 +46,20 @@
   --secondary: oklch(0.55 0.16 48);
   /* oren (secondary), kontras >= 4.5:1 terhadap putih dan background */
   --danger: oklch(0.52 0.2 27);
+
+  /* Playful Tactile Design Tokens (SDIT Fajar Stitch) */
+  --fajar-primary: #1D4ED8;
+  --fajar-primary-dark: #0037B0;
+  --fajar-secondary: #F97316;
+  --fajar-secondary-dark: #9D4300;
+  --fajar-tertiary: #10B981;
+  --fajar-tertiary-dark: #047857;
+  --fajar-canvas: #FAF8FF;
+  --fajar-surface-low: #F2F3FF;
+  --fajar-surface-high: #E2E7FF;
+  --fajar-surface-highest: #DAE2FD;
+  --fajar-dark: #0F172A;
+  --fajar-muted: #434655;
 
   /* Radius konsentris (jakub.kr) */
   --radius-control: 10px;
@@ -118,18 +147,42 @@ body {
   }
 }
 
-/* Aturan satu layar penuh tanpa scroll untuk Beranda (Home) */
-html:has(.home-viewport),
-body:has(.home-viewport),
-html.home-scroll-locked,
-body.home-scroll-locked {
-  height: 100vh;
-  height: 100dvh;
-  width: 100%;
-  overflow: hidden !important;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+html {
+  scroll-behavior: smooth;
+}
+
+/* Navigasi dan link scroll dengan offset header */
+section[id] {
+  scroll-margin-top: 5rem;
+}
+
+/* Utilitas Tactile & Playful Button */
+.btn-chunky-primary {
+  background-color: var(--fajar-primary);
+  color: #ffffff;
+  box-shadow: 0 4px 0 #173fa8;
+  transition: all 150ms ease;
+}
+.btn-chunky-primary:hover {
+  filter: brightness(1.05);
+}
+.btn-chunky-primary:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #173fa8;
+}
+
+.btn-chunky-secondary {
+  background-color: var(--fajar-secondary);
+  color: #0f172a;
+  box-shadow: 0 4px 0 #9d4300;
+  transition: all 150ms ease;
+}
+.btn-chunky-secondary:hover {
+  filter: brightness(1.05);
+}
+.btn-chunky-secondary:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #9d4300;
 }
 
 /* Optimasi landscape pada perangkat dengan tinggi terbatas (<= 500px) */

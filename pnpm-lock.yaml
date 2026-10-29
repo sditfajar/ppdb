@@ -205,6 +205,9 @@ importers:
       react-hook-form:
         specifier: 7.91.0
         version: 7.91.0(@types/react@19.3.0)(react@19.2.5)
+      safe-regex-test:
+        specifier: ^1.1.0
+        version: 1.1.0
       server-only:
         specifier: 0.0.1
         version: 0.0.1
