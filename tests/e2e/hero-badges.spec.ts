@@ -52,5 +52,27 @@ test.describe("HomeHero Trust Badges - Responsive & Auto-Scroll", () => {
     expect(desktopText).toContain("Pendidikan Karakter Adab");
     expect(desktopText).toContain("50+ Prestasi Kota & Provinsi");
   });
+
+  test("Footer: Alamat Sekolah dapat diklik dan membuka link Google Maps yang benar", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    const mapsLink = page.locator('footer a[href*="-6.414286354408696"]');
+    await expect(mapsLink).toBeVisible();
+
+    const href = await mapsLink.getAttribute("href");
+    expect(href).toBe("https://maps.google.com/?q=-6.414286354408696,106.8655665373222");
+
+    const target = await mapsLink.getAttribute("target");
+    expect(target).toBe("_blank");
+
+    const rel = await mapsLink.getAttribute("rel");
+    expect(rel).toContain("noopener");
+
+    await mapsLink.scrollIntoViewIfNeeded();
+    await page.screenshot({
+      path: "C:/Users/muhaz/.gemini/antigravity/brain/f1dd4633-47ae-4355-985b-bcf8fba5623e/footer_maps_link.png",
+    });
+  });
 });
 

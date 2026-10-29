@@ -9,6 +9,7 @@ import {
   Mail,
   MessageCircle,
   Search,
+  ExternalLink,
 } from "lucide-react";
 import { SCHOOL_CONFIG } from "@/lib/config";
 
@@ -120,12 +121,24 @@ export function HomeFooter() {
             <h4 className="text-sm sm:text-base font-bold text-[#0F172A]">
               Alamat Sekolah
             </h4>
-            <div className="flex items-start gap-2.5 text-[#434655]">
-              <MapPin className="w-5 h-5 text-[#1D4ED8] shrink-0 mt-0.5" />
-              <p className="text-xs sm:text-sm leading-relaxed">
-                Jl. Jati III No.40 RT.007/007, Kel. Jatijajar, Kec. Tapos, Kota Depok, Jawa Barat 16451
-              </p>
-            </div>
+            <a
+              href={SCHOOL_CONFIG.mapsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-start gap-2.5 text-[#434655] hover:text-[#1D4ED8] transition-colors"
+              title="Buka lokasi di Google Maps"
+            >
+              <MapPin className="w-5 h-5 text-[#1D4ED8] shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
+              <div className="space-y-1">
+                <p className="text-xs sm:text-sm leading-relaxed group-hover:underline">
+                  {SCHOOL_CONFIG.address}
+                </p>
+                <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#1D4ED8] group-hover:underline">
+                  <span>Buka di Google Maps</span>
+                  <ExternalLink className="w-3 h-3" />
+                </span>
+              </div>
+            </a>
 
             <div className="pt-1 space-y-1.5">
               <div className="flex items-center gap-2 text-xs font-bold text-[#0F172A]">

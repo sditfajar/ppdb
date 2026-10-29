@@ -7,7 +7,12 @@ import { z } from "zod";
 export const SCHOOL_CONFIG = {
   name: "SDIT Fajar",
   fullName: "Sekolah Dasar Islam Terpadu Fajar",
-  address: "Depok, Jawa Barat",
+  address: "Jl. Jati III No.40 RT.007/007, Kel. Jatijajar, Kec. Tapos, Kota Depok, Jawa Barat 16451",
+  mapsUrl: "https://maps.google.com/?q=-6.414286354408696,106.8655665373222",
+  coordinates: {
+    lat: -6.414286354408696,
+    lng: 106.8655665373222,
+  },
   defaultAcademicYear: "2026/2027",
   contacts: {
     fadil: {
