@@ -150,7 +150,7 @@ export function createHomeSocialImage() {
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", transform: "rotate(-5deg)" }}>
               <span style={{ fontSize: "94px", lineHeight: 1, color: colors.orange }}>✦</span>
               <span style={{ marginTop: "14px", color: colors.white, fontSize: "31px", fontWeight: 800, textAlign: "center", whiteSpace: "pre" }}>
-                {"Belajar dengan\\nGembira"}
+                {"Belajar dengan\nGembira"}
               </span>
             </div>
           </div>
