@@ -5,6 +5,7 @@ import { useActionState } from "react";
 import { School, Lock, Mail, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import { ThemeToggle } from "@/components/theme";
 import { signInAdmin, AdminActionState } from "@/lib/actions/admin";
 
 export default function AdminLoginPage() {
@@ -14,7 +15,10 @@ export default function AdminLoginPage() {
   );
 
   return (
-    <main className="min-h-screen w-full flex items-center justify-center p-4 sm:p-6 bg-background">
+    <main className="relative min-h-screen w-full flex items-center justify-center p-4 sm:p-6 bg-background">
+      <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-20">
+        <ThemeToggle />
+      </div>
       <div className="w-full max-w-sm flex flex-col gap-6 animate-enter">
         {/* Identitas SDIT Fajar */}
         <div className="flex flex-col items-center text-center gap-2">

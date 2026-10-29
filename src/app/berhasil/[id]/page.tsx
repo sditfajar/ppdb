@@ -6,6 +6,7 @@ import { CheckCircle2, MessageCircle, Home, AlertCircle } from "lucide-react";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { SCHOOL_CONFIG } from "@/lib/config";
 import { StatusBadge } from "@/components/ui/StatusBadge";
+import { ThemeToggle } from "@/components/theme";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -50,7 +51,10 @@ export default async function BerhasilPage({ params }: BerhasilPageProps) {
   const waUrl = `${waContact.waLink}?text=${encodeURIComponent(waMessage)}`;
 
   return (
-    <main className="min-h-screen bg-background text-foreground flex flex-col justify-center items-center px-4 py-12 sm:py-20">
+    <main className="relative min-h-screen bg-background text-foreground flex flex-col justify-center items-center px-4 py-12 sm:py-20">
+      <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-20">
+        <ThemeToggle />
+      </div>
       <div className="w-full max-w-xl mx-auto space-y-6 animate-enter">
         {/* Kartu Konfirmasi */}
         <div className="rounded-card bg-surface shadow-border p-6 sm:p-8 text-center space-y-6">
@@ -114,7 +118,7 @@ export default async function BerhasilPage({ params }: BerhasilPageProps) {
               href={waUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full min-h-[48px] py-3 px-4 text-base font-semibold shadow-sm flex items-center justify-center gap-2 rounded-control bg-accent text-white hover:opacity-95 active:opacity-90 transition-all cursor-pointer select-none"
+              className="w-full min-h-[48px] py-3 px-4 text-base font-semibold shadow-sm flex items-center justify-center gap-2 rounded-control bg-[#25D366] text-white hover:bg-[#20bd5a] active:bg-[#1ca850] focus-visible:ring-2 focus-visible:ring-[#25D366] focus-visible:ring-offset-2 outline-none transition-all cursor-pointer select-none"
             >
               <MessageCircle className="h-5 w-5" />
               <span>Konfirmasi via WhatsApp</span>

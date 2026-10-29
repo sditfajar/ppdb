@@ -58,7 +58,7 @@ export default async function HomePage() {
           className="hero-subtitle animate-enter text-muted text-pretty max-w-lg mx-auto text-[clamp(0.85rem,2vw,1.1rem)] leading-relaxed"
           style={{ "--stagger": 3 } as React.CSSProperties}
         >
-          Membina generasi Qur'ani yang cerdas, berkarakter, dan berakhlak mulia bersama {SCHOOL_CONFIG.fullName}.
+          Membina generasi Qur&apos;ani yang cerdas, berkarakter, dan berakhlak mulia bersama {SCHOOL_CONFIG.fullName}.
         </p>
 
         {/* Tombol Aksi: Daftar PPDB & Konsultasi WhatsApp */}

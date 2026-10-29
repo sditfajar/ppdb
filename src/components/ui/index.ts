@@ -14,3 +14,4 @@ export * from "./ConfirmDialog";
 export * from "./Pagination";
 export * from "./Stepper";
 export * from "./IconSwap";
+export * from "./CopyButton";

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LogOut, UserCircle2, School, LayoutDashboard, Settings } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { ThemeToggle } from "@/components/theme";
 import { signOutAdmin } from "@/lib/actions/admin";
 
 interface AdminHeaderProps {
@@ -77,6 +78,8 @@ export function AdminHeader({ userEmail }: AdminHeaderProps) {
 
         {/* Informasi Akun & Tombol Keluar */}
         <div className="flex items-center gap-2 sm:gap-3">
+          <ThemeToggle />
+
           {/* Menu Mobile Singkat untuk Pengaturan */}
           <Link
             href="/admin/pengaturan"

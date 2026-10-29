@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *, .dark, .dark *));
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -17,6 +19,7 @@
 }
 
 :root {
+  color-scheme: light;
   /* Warna dalam OKLCH (tema terang default) - disesuaikan untuk WCAG AA contrast ratio >= 4.5:1 */
   --background: oklch(0.97 0 0);
   /* abu-abu terang hampir putih ≈ #f5f5f5 */
@@ -43,26 +46,10 @@
   --image-outline: rgb(0 0 0 / 0.1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: oklch(0.173 0 0);
-    /* ≈ #101010 */
-    --foreground: oklch(0.96 0 0);
-    --surface: oklch(0.21 0 0);
-    --muted: oklch(0.7 0 0);
-    --accent: oklch(0.78 0.12 235);
-    /* biru langit terang, kontras tinggi di latar gelap */
-    --secondary: oklch(0.77 0.15 58);
-    /* oren terang, kontras tinggi di latar gelap */
-    --shadow-border: 0 0 0 1px rgb(255 255 255 / 0.08);
-    --shadow-border-hover: 0 0 0 1px rgb(255 255 255 / 0.12);
-    --image-outline: rgb(255 255 255 / 0.1);
-  }
-}
-
 /* Explicit class / data-theme overrides for testing and manual preview */
 [data-theme="dark"],
 .dark {
+  color-scheme: dark;
   --background: oklch(0.173 0 0);
   /* ≈ #101010 */
   --foreground: oklch(0.96 0 0);
@@ -77,6 +64,7 @@
 
 [data-theme="light"],
 .light {
+  color-scheme: light;
   --background: oklch(0.97 0 0);
   --foreground: oklch(0.173 0 0);
   --surface: oklch(1 0 0);

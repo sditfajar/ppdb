@@ -8,7 +8,9 @@ import {
   ArrowLeft,
   ArrowRight,
   AlertTriangle,
+  Send,
 } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { Stepper, type StepItem } from "@/components/ui/Stepper";
 import { Button } from "@/components/ui/Button";
 import { StepStudent } from "@/components/registration/StepStudent";
@@ -419,22 +421,32 @@ export function RegistrationWizard({ paymentSettings }: RegistrationWizardProps)
           )}
         </div>
 
-        {/* Tombol Aksi Sticky di Bawah Layar untuk Mobile */}
-        <div className="sticky bottom-0 z-30 mt-8 -mx-4 sm:mx-0 px-4 py-3 bg-surface/95 backdrop-blur-md shadow-border sm:rounded-card border-t sm:border border-muted/15 pb-[calc(0.75rem+env(safe-area-inset-bottom))] transition-all">
-          <div className="flex items-center justify-between gap-3 max-w-xl mx-auto">
-            {currentStep > 1 ? (
+        {/* Tombol Aksi Sticky / Floating di Bawah Layar */}
+        <div
+          className={cn(
+            "sticky bottom-0 sm:bottom-4 z-30 mt-8",
+            "-mx-4 sm:mx-0 px-4 py-3 sm:p-4",
+            "bg-surface/95 backdrop-blur-md",
+            "border-t sm:border border-muted/20",
+            "shadow-[0_-4px_16px_rgba(0,0,0,0.05)] sm:shadow-lg sm:rounded-card",
+            "pb-[calc(0.75rem+env(safe-area-inset-bottom))] sm:pb-4",
+            "transition-all duration-200"
+          )}
+        >
+          <div className="flex items-center gap-3 max-w-xl mx-auto w-full">
+            {currentStep > 1 && (
               <Button
                 type="button"
                 variant="secondary"
                 onClick={handlePrevStep}
                 disabled={isSubmitting}
-                className="min-w-[100px] h-11"
+                iconLeft={<ArrowLeft className="h-4 w-4" />}
+                aria-label="Kembali ke form sebelumnya"
+                className="flex-1 sm:flex-initial sm:min-w-[170px] h-11 text-sm sm:text-base font-medium"
               >
-                <ArrowLeft className="h-4 w-4 mr-1.5" />
-                Kembali
+                <span className="hidden sm:inline">Kembali ke Form Sebelumnya</span>
+                <span className="sm:hidden">Sebelumnya</span>
               </Button>
-            ) : (
-              <div /> // Spacer agar tombol Lanjut tetap di kanan
             )}
 
             {currentStep < 3 ? (
@@ -442,10 +454,27 @@ export function RegistrationWizard({ paymentSettings }: RegistrationWizardProps)
                 type="button"
                 variant="primary"
                 onClick={handleNextStep}
-                className="min-w-[130px] h-11 font-semibold ml-auto"
+                iconRight={<ArrowRight className="h-4 w-4" />}
+                aria-label={
+                  currentStep === 1
+                    ? "Lanjut ke data orang tua"
+                    : "Lanjut ke form pembayaran dan konfirmasi"
+                }
+                className={cn(
+                  "h-11 text-sm sm:text-base font-semibold shadow-sm",
+                  currentStep === 1
+                    ? "w-full sm:w-auto sm:min-w-[200px] sm:ml-auto"
+                    : "flex-1 sm:flex-initial sm:min-w-[170px] sm:ml-auto"
+                )}
               >
-                Lanjut
-                <ArrowRight className="h-4 w-4 ml-1.5" />
+                <span className="hidden sm:inline">
+                  {currentStep === 1
+                    ? "Lanjut ke Data Orang Tua"
+                    : "Lanjut ke Pembayaran"}
+                </span>
+                <span className="sm:hidden">
+                  {currentStep === 1 ? "Lanjut ke Data Orang Tua" : "Lanjut"}
+                </span>
               </Button>
             ) : (
               <Button
@@ -453,7 +482,9 @@ export function RegistrationWizard({ paymentSettings }: RegistrationWizardProps)
                 variant="primary"
                 loading={isSubmitting}
                 disabled={isSubmitting}
-                className="min-w-[160px] h-11 font-semibold ml-auto"
+                iconRight={!isSubmitting ? <Send className="h-4 w-4" /> : undefined}
+                aria-label="Kirim formulir pendaftaran PPDB"
+                className="flex-1 sm:flex-initial sm:min-w-[190px] sm:ml-auto h-11 text-sm sm:text-base font-semibold shadow-sm"
               >
                 Kirim Pendaftaran
               </Button>

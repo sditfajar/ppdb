@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { useFormContext, Controller } from "react-hook-form";
 import { CreditCard, ShieldCheck, AlertCircle } from "lucide-react";
 import { Checkbox } from "@/components/ui/Checkbox";
+import { CopyButton } from "@/components/ui/CopyButton";
 import { UploadProof } from "@/components/registration/UploadProof";
 import { ReviewSummary } from "@/components/registration/ReviewSummary";
 import type { RegistrationFormData } from "@/lib/validation/registration";
@@ -94,9 +95,12 @@ export function StepPayment({
           </div>
           <div className="flex justify-between items-center">
             <span className="text-muted">Nomor Rekening:</span>
-            <span className="font-mono font-bold text-foreground tabular-nums text-sm">
-              {accountNo}
-            </span>
+            <div className="flex items-center gap-1.5">
+              <span className="font-mono font-bold text-foreground tabular-nums text-sm">
+                {accountNo}
+              </span>
+              <CopyButton text={accountNo} />
+            </div>
           </div>
           <div className="flex justify-between items-center">
             <span className="text-muted">Atas Nama:</span>
