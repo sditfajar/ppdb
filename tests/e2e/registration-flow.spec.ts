@@ -4,7 +4,7 @@ import * as path from "node:path";
 test.describe("Alur Pendaftaran Publik & Validasi Langkah (AC-1, AC-2, AC-3, AC-4, AC-5, AC-7, AC-14)", () => {
   test.beforeEach(async ({ page }) => {
     // Bersihkan draf localStorage sebelum setiap test
-    await page.goto("/");
+    await page.goto("/ppdb");
     await page.evaluate(() => localStorage.clear());
     await page.reload();
     await page.waitForSelector("h1");

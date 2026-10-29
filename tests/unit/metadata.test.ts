@@ -1,6 +1,14 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
+
+vi.mock("next/font/google", () => ({
+  Geist: () => ({
+    variable: "--font-geist-sans",
+  }),
+}));
+
 import robots from "@/app/robots";
 import sitemap from "@/app/sitemap";
+import { metadata } from "@/app/layout";
 
 describe("Metadata & SEO Configuration (Fase 8)", () => {
   it("robots.ts mengizinkan root dan melarang admin/api/dev", () => {
@@ -26,15 +34,28 @@ describe("Metadata & SEO Configuration (Fase 8)", () => {
     expect(robotsConfig.sitemap).toContain("/sitemap.xml");
   });
 
-  it("sitemap.ts hanya mendaftarkan rute utama '/'", () => {
+  it("sitemap.ts mendaftarkan rute utama '/' dan rute pendaftaran '/ppdb'", () => {
     const sitemapEntries = sitemap();
     expect(Array.isArray(sitemapEntries)).toBe(true);
-    expect(sitemapEntries.length).toBe(1);
+    expect(sitemapEntries.length).toBe(2);
 
     const rootEntry = sitemapEntries[0];
     expect(rootEntry.url).toMatch(/\/$/);
     expect(rootEntry.priority).toBe(1.0);
     expect(rootEntry.changeFrequency).toBe("daily");
     expect(rootEntry.lastModified).toBeInstanceOf(Date);
+
+    const ppdbEntry = sitemapEntries[1];
+    expect(ppdbEntry.url).toMatch(/\/ppdb$/);
+    expect(ppdbEntry.priority).toBe(0.9);
+    expect(ppdbEntry.changeFrequency).toBe("daily");
+    expect(ppdbEntry.lastModified).toBeInstanceOf(Date);
+  });
+
+  it("layout.tsx mengonfigurasi icons menuju /favicon.ico", () => {
+    expect(metadata.icons).toBeDefined();
+    const icons = metadata.icons as { icon?: string; shortcut?: string; apple?: string };
+    expect(icons.icon).toBe("/favicon.ico");
+    expect(icons.shortcut).toBe("/favicon.ico");
   });
 });

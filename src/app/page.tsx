@@ -1,296 +1,88 @@
 import type { Metadata } from "next";
-import {
-  Calendar,
-  Phone,
-  Mail,
-  CreditCard,
-  AlertCircle,
-  Sparkles,
-} from "lucide-react";
+import Link from "next/link";
+import { Sparkles } from "lucide-react";
 import { SCHOOL_CONFIG } from "@/lib/config";
-import { formatCurrency } from "@/lib/format";
 import { getRegistrationState } from "@/lib/actions/registration-state";
-import { RegistrationWizard } from "@/components/registration/RegistrationWizard";
-import { Card } from "@/components/ui/Card";
-
-function InstagramIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
-      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-      <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
-    </svg>
-  );
-}
-
-function YoutubeIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17" />
-      <polygon points="10 15 15 12 10 9 10 15" fill="currentColor" />
-    </svg>
-  );
-}
+import { HomeScrollLock } from "@/components/home/HomeScrollLock";
 
 export const metadata: Metadata = {
-  title: `Pendaftaran Siswa Baru — ${SCHOOL_CONFIG.name}`,
-  description: `Formulir online Penerimaan Peserta Didik Baru (PPDB) ${SCHOOL_CONFIG.fullName} Tahun Ajaran ${SCHOOL_CONFIG.defaultAcademicYear}.`,
+  title: `Beranda — ${SCHOOL_CONFIG.name}`,
+  description: `Penerimaan Peserta Didik Baru (PPDB) ${SCHOOL_CONFIG.fullName}. Pendaftaran online siswa baru Tahun Ajaran ${SCHOOL_CONFIG.defaultAcademicYear}.`,
 };
 
 export default async function HomePage() {
   const regState = await getRegistrationState();
-  const { open: isOpen, wave, academicYear, payment } = regState;
-  const bankLabel = payment?.bank
-    ? payment.bank.includes("(")
-      ? payment.bank.replace(/^.*\((.*)\).*$/, "$1")
-      : payment.bank
-    : "BSI";
-  const accountName = payment?.accountName || "SDIT Fajar PPDB";
+  const academicYear = regState.academicYear || SCHOOL_CONFIG.defaultAcademicYear;
+
+  const waMessage = encodeURIComponent(
+    `Assalamualaikum Admin PPDB ${SCHOOL_CONFIG.name}, saya ingin konsultasi terkait Penerimaan Peserta Didik Baru (PPDB).`
+  );
+  const waUrl = `https://wa.me/6287737860657?text=${waMessage}`;
 
   return (
-    <div className="min-h-screen bg-background text-foreground pb-20">
-      {/* 1. Header Informasi & Salam (PRD §8.1 & Lampiran A) */}
-      <header className="relative pt-10 pb-8 px-4 text-center max-w-xl mx-auto">
+    <main className="home-viewport relative w-full h-[100vh] h-[100dvh] overflow-hidden flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 select-none box-border">
+      <HomeScrollLock />
+
+      {/* Background ambient halus tanpa overflow */}
+      <div
+        className="absolute inset-0 -z-10 pointer-events-none flex items-center justify-center overflow-hidden"
+        aria-hidden="true"
+      >
+        <div className="w-[min(70vw,480px)] h-[min(70vw,480px)] rounded-full bg-accent/8 blur-3xl opacity-75 dark:opacity-40" />
+      </div>
+
+      {/* Hero Section tunggal */}
+      <section className="w-full max-w-2xl mx-auto flex flex-col items-center justify-center text-center gap-3 sm:gap-5 landscape-compact px-2">
+        {/* Badge Sekolah */}
         <div
-          className="animate-enter inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent/10 text-accent text-xs font-semibold mb-4"
+          className="hero-badge animate-enter inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-accent/10 text-accent text-xs sm:text-sm font-semibold mb-1"
           style={{ "--stagger": 1 } as React.CSSProperties}
         >
-          <Sparkles className="h-3.5 w-3.5" />
+          <Sparkles className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
           <span>PPDB Online {SCHOOL_CONFIG.name}</span>
         </div>
 
+        {/* Judul Hero */}
         <h1
-          className="animate-enter text-2xl sm:text-3xl font-bold tracking-tight text-balance leading-snug text-foreground mb-4"
+          className="hero-title animate-enter font-bold tracking-tight text-foreground text-balance leading-tight text-[clamp(1.5rem,4.5vw,3rem)]"
           style={{ "--stagger": 2 } as React.CSSProperties}
         >
-          Formulir Pendaftaran Siswa Baru {SCHOOL_CONFIG.name}
-          <span className="block text-accent font-semibold text-xl sm:text-2xl mt-1">
-            Tahun Pengajaran {academicYear}
+          Penerimaan Peserta Didik Baru
+          <span className="block text-accent mt-1 text-[clamp(1.2rem,3.5vw,2.25rem)]">
+            Tahun Ajaran {academicYear}
           </span>
         </h1>
 
-        <div
-          className="animate-enter rounded-card bg-surface shadow-border p-4 sm:p-5 text-left space-y-2 mb-6"
+        {/* Deskripsi Singkat */}
+        <p
+          className="hero-subtitle animate-enter text-muted text-pretty max-w-lg mx-auto text-[clamp(0.85rem,2vw,1.1rem)] leading-relaxed"
           style={{ "--stagger": 3 } as React.CSSProperties}
         >
-          <p className="text-sm font-semibold text-foreground">
-            Assalamualaikum Wr. Wb.
-          </p>
-          <p className="text-xs sm:text-sm text-muted text-pretty leading-relaxed">
-            Sehubungan telah dibukanya Penerimaan Peserta Didik Baru (PPDB) TP {academicYear}, silakan
-            mengisi formulir pendaftaran di bawah ini secara bertahap.
-          </p>
-          <div className="pt-2 border-t border-muted/15">
-            <p className="text-xs font-medium text-foreground">
-              ⚠️ Catatan Penting:
-            </p>
-            <p className="text-xs text-muted text-pretty mt-0.5">
-              Pastikan data yang Bapak/Ibu isi sesuai dengan identitas resmi pendaftar (Nama Siswa,
-              Nama Orang Tua, Tanggal Lahir, dan dokumen lainnya).
-            </p>
-          </div>
-        </div>
+          Membina generasi Qur'ani yang cerdas, berkarakter, dan berakhlak mulia bersama {SCHOOL_CONFIG.fullName}.
+        </p>
 
-        {/* 2. Kartu Jadwal Gelombang */}
+        {/* Tombol Aksi: Daftar PPDB & Konsultasi WhatsApp */}
         <div
-          className="animate-enter grid grid-cols-1 sm:grid-cols-2 gap-3 text-left mb-6"
+          className="animate-enter pt-2 sm:pt-4 flex flex-col sm:flex-row items-center justify-center gap-2.5 sm:gap-4 w-full"
           style={{ "--stagger": 4 } as React.CSSProperties}
         >
-          {/* Gelombang 1 */}
-          <Card
-            className={`relative p-4 transition-all ${wave === 1 ? "ring-2 ring-accent bg-accent/5" : "opacity-90"
-              }`}
+          <Link
+            href="/ppdb"
+            className="hero-cta-btn inline-flex items-center justify-center font-semibold bg-accent text-white rounded-control shadow-sm hover:opacity-95 active:scale-[0.98] transition-all h-11 sm:h-13 px-6 sm:px-8 text-sm sm:text-base focus-visible:ring-2 focus-visible:ring-accent outline-none w-full sm:w-auto"
           >
-            <div className="flex items-center justify-between mb-1.5">
-              <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-foreground">
-                <Calendar className="h-3.5 w-3.5 text-accent" />
-                <span>Gelombang 1</span>
-              </div>
-              {wave === 1 && (
-                <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-accent bg-accent/15 px-2 py-0.5 rounded-full">
-                  <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
-                  Aktif
-                </span>
-              )}
-            </div>
-            <p className="text-xs text-muted">September – Februari</p>
-          </Card>
+            Daftar PPDB
+          </Link>
 
-          {/* Gelombang 2 */}
-          <Card
-            className={`relative p-4 transition-all ${wave === 2 ? "ring-2 ring-accent bg-accent/5" : "opacity-90"
-              }`}
+          <a
+            href={waUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hero-secondary-btn inline-flex items-center justify-center font-semibold border-2 border-accent text-accent bg-transparent rounded-control hover:bg-accent/10 active:scale-[0.98] transition-all h-11 sm:h-13 px-5 sm:px-7 text-sm sm:text-base focus-visible:ring-2 focus-visible:ring-accent outline-none w-full sm:w-auto"
           >
-            <div className="flex items-center justify-between mb-1.5">
-              <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-foreground">
-                <Calendar className="h-3.5 w-3.5 text-accent" />
-                <span>Gelombang 2</span>
-              </div>
-              {wave === 2 ? (
-                <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-accent bg-accent/15 px-2 py-0.5 rounded-full">
-                  <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
-                  Aktif
-                </span>
-              ) : (
-                <span className="text-[11px] font-medium text-muted">Maret – Juni</span>
-              )}
-            </div>
-            <p className="text-xs text-muted">Maret – Juni</p>
-          </Card>
+            Konsultasi WhatsApp
+          </a>
         </div>
-
-        {/* 3. Kartu Info Pembayaran Singkat */}
-        <div
-          className="animate-enter rounded-card bg-surface shadow-border p-4 text-left mb-6"
-          style={{ "--stagger": 5 } as React.CSSProperties}
-        >
-          <div className="flex items-center gap-2 mb-2 text-accent">
-            <CreditCard className="h-4 w-4" />
-            <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider">
-              Biaya Formulir Pendaftaran
-            </h3>
-          </div>
-          <div className="flex items-center justify-between text-xs gap-2">
-            <span
-              className="text-muted truncate"
-              title={`Transfer ${payment?.bank || bankLabel} a.n ${accountName}:`}
-            >
-              Transfer {bankLabel} a.n {accountName}:
-            </span>
-            <span className="font-bold text-accent tabular-nums text-sm shrink-0">
-              {formatCurrency(payment?.amount ?? 250000)}
-            </span>
-          </div>
-        </div>
-
-        {/* 4. Kartu Kontak Resmi Sekolah */}
-        <div
-          className="animate-enter rounded-card bg-surface shadow-border p-4 text-left mb-8"
-          style={{ "--stagger": 6 } as React.CSSProperties}
-        >
-          <p className="text-xs font-semibold text-foreground uppercase tracking-wider mb-2">
-            Butuh Bantuan? Hubungi Panitia PPDB
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-            <a
-              href={SCHOOL_CONFIG.contacts.fadil.waLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 p-2 rounded-control bg-muted/5 hover:bg-accent/10 hover:text-accent transition-colors"
-            >
-              <Phone className="h-3.5 w-3.5 text-accent shrink-0" />
-              <div className="truncate">
-                <span className="font-medium block">{SCHOOL_CONFIG.contacts.fadil.name}</span>
-                <span className="text-muted text-[11px] tabular-nums">
-                  {SCHOOL_CONFIG.contacts.fadil.display}
-                </span>
-              </div>
-            </a>
-
-            <a
-              href={SCHOOL_CONFIG.contacts.viny.waLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 p-2 rounded-control bg-muted/5 hover:bg-accent/10 hover:text-accent transition-colors"
-            >
-              <Phone className="h-3.5 w-3.5 text-accent shrink-0" />
-              <div className="truncate">
-                <span className="font-medium block">{SCHOOL_CONFIG.contacts.viny.name}</span>
-                <span className="text-muted text-[11px] tabular-nums">
-                  {SCHOOL_CONFIG.contacts.viny.display}
-                </span>
-              </div>
-            </a>
-          </div>
-
-          <div className="flex items-center justify-center gap-4 mt-3 pt-3 border-t border-muted/15 text-xs text-muted">
-            <a
-              href={SCHOOL_CONFIG.contacts.instagram.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1 hover:text-foreground transition-colors"
-            >
-              <InstagramIcon className="h-3.5 w-3.5" />
-              <span>Instagram</span>
-            </a>
-            <span>•</span>
-            <a
-              href={SCHOOL_CONFIG.contacts.youtube.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1 hover:text-foreground transition-colors"
-            >
-              <YoutubeIcon className="h-3.5 w-3.5" />
-              <span>YouTube</span>
-            </a>
-            <span>•</span>
-            <a
-              href={SCHOOL_CONFIG.contacts.email.mailto}
-              className="flex items-center gap-1 hover:text-foreground transition-colors"
-            >
-              <Mail className="h-3.5 w-3.5" />
-              <span>Email</span>
-            </a>
-          </div>
-        </div>
-      </header>
-
-      {/* 5. Konten Utama: Formulir Wizard atau Banner Pendaftaran Ditutup */}
-      <main className="px-4 max-w-xl mx-auto">
-        {!isOpen ? (
-          <div className="rounded-card bg-surface shadow-border p-6 text-center space-y-4 animate-enter">
-            <div className="h-12 w-12 rounded-full bg-danger/10 text-danger flex items-center justify-center mx-auto">
-              <AlertCircle className="h-6 w-6" />
-            </div>
-            <h2 className="text-lg font-bold text-foreground">
-              Pendaftaran Saat Ini Sedang Ditutup
-            </h2>
-            <p className="text-xs sm:text-sm text-muted text-pretty max-w-md mx-auto">
-              Penerimaan Peserta Didik Baru dibuka pada bulan September – Juni. Saat ini masa
-              pendaftaran telah berakhir atau sedang dipersiapkan untuk gelombang berikutnya.
-            </p>
-            <p className="text-xs text-muted">
-              Untuk informasi lebih lanjut, silakan hubungi kontak panitia di atas.
-            </p>
-          </div>
-        ) : (
-          <div
-            className="animate-enter"
-            style={{ "--stagger": 7 } as React.CSSProperties}
-          >
-            <RegistrationWizard paymentSettings={payment} />
-          </div>
-        )}
-
-        {/* 6. Penutup (PRD Lampiran A) */}
-        <footer className="mt-12 text-center text-xs text-muted text-pretty space-y-1">
-          <p className="font-medium text-foreground">
-            Daftarkan segera, dan jadilah bagian dari keluarga kami.
-          </p>
-          <p>Terima kasih, Wassalamualaikum Wr. Wb.</p>
-          <p className="text-[11px] text-muted pt-4">
-            © {new Date().getFullYear()} {SCHOOL_CONFIG.fullName}. All rights reserved.
-          </p>
-        </footer>
-      </main>
-    </div>
+      </section>
+    </main>
   );
 }

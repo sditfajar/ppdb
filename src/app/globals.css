@@ -6,6 +6,7 @@
   --color-surface: var(--surface);
   --color-muted: var(--muted);
   --color-accent: var(--accent);
+  --color-secondary: var(--secondary);
   --color-danger: var(--danger);
 
   --radius-control: var(--radius-control);
@@ -17,17 +18,22 @@
 
 :root {
   /* Warna dalam OKLCH (tema terang default) - disesuaikan untuk WCAG AA contrast ratio >= 4.5:1 */
-  --background: oklch(0.991 0 0);
+  --background: oklch(0.97 0 0);
+  /* abu-abu terang hampir putih ≈ #f5f5f5 */
   --foreground: oklch(0.173 0 0);
-  --surface:    oklch(1 0 0);
-  --muted:      oklch(0.44 0 0);
-  --accent:     oklch(0.44 0.13 160);   /* hijau tenang khas SDIT, kontras >= 4.5:1 terhadap putih */
-  --danger:     oklch(0.52 0.2 27);
+  --surface: oklch(1 0 0);
+  --muted: oklch(0.44 0 0);
+  --accent: oklch(0.52 0.14 240);
+  /* biru langit (primary), kontras >= 4.5:1 terhadap putih dan background */
+  --secondary: oklch(0.55 0.16 48);
+  /* oren (secondary), kontras >= 4.5:1 terhadap putih dan background */
+  --danger: oklch(0.52 0.2 27);
 
   /* Radius konsentris (jakub.kr) */
   --radius-control: 10px;
   --card-padding: 12px;
-  --radius-card: calc(var(--radius-control) + var(--card-padding)); /* 22px */
+  --radius-card: calc(var(--radius-control) + var(--card-padding));
+  /* 22px */
 
   /* Bayangan berlapis alih-alih border tebal */
   --shadow-border:
@@ -39,39 +45,50 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: oklch(0.173 0 0);     /* ≈ #101010 */
+    --background: oklch(0.173 0 0);
+    /* ≈ #101010 */
     --foreground: oklch(0.96 0 0);
-    --surface:    oklch(0.21 0 0);
-    --muted:      oklch(0.7 0 0);
-    --shadow-border:       0 0 0 1px rgb(255 255 255 / 0.08);
+    --surface: oklch(0.21 0 0);
+    --muted: oklch(0.7 0 0);
+    --accent: oklch(0.78 0.12 235);
+    /* biru langit terang, kontras tinggi di latar gelap */
+    --secondary: oklch(0.77 0.15 58);
+    /* oren terang, kontras tinggi di latar gelap */
+    --shadow-border: 0 0 0 1px rgb(255 255 255 / 0.08);
     --shadow-border-hover: 0 0 0 1px rgb(255 255 255 / 0.12);
     --image-outline: rgb(255 255 255 / 0.1);
   }
 }
 
 /* Explicit class / data-theme overrides for testing and manual preview */
-[data-theme="dark"], .dark {
-  --background: oklch(0.173 0 0);     /* ≈ #101010 */
+[data-theme="dark"],
+.dark {
+  --background: oklch(0.173 0 0);
+  /* ≈ #101010 */
   --foreground: oklch(0.96 0 0);
-  --surface:    oklch(0.21 0 0);
-  --muted:      oklch(0.7 0 0);
-  --shadow-border:       0 0 0 1px rgb(255 255 255 / 0.08);
+  --surface: oklch(0.21 0 0);
+  --muted: oklch(0.7 0 0);
+  --accent: oklch(0.78 0.12 235);
+  --secondary: oklch(0.77 0.15 58);
+  --shadow-border: 0 0 0 1px rgb(255 255 255 / 0.08);
   --shadow-border-hover: 0 0 0 1px rgb(255 255 255 / 0.12);
   --image-outline: rgb(255 255 255 / 0.1);
 }
 
-[data-theme="light"], .light {
-  --background: oklch(0.991 0 0);
+[data-theme="light"],
+.light {
+  --background: oklch(0.97 0 0);
   --foreground: oklch(0.173 0 0);
-  --surface:    oklch(1 0 0);
-  --muted:      oklch(0.44 0 0);
-  --accent:     oklch(0.44 0.13 160);
-  --danger:     oklch(0.52 0.2 27);
+  --surface: oklch(1 0 0);
+  --muted: oklch(0.44 0 0);
+  --accent: oklch(0.52 0.14 240);
+  --secondary: oklch(0.55 0.16 48);
+  --danger: oklch(0.52 0.2 27);
   --shadow-border:
     0 0 0 1px rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.06), 0 2px 4px 0 rgb(0 0 0 / 0.04);
   --shadow-border-hover:
     0 0 0 1px rgb(0 0 0 / 0.08), 0 1px 2px -1px rgb(0 0 0 / 0.08), 0 2px 4px 0 rgb(0 0 0 / 0.06);
-  --image-outline: rgb(0 0 0 / 0.1);
+  --image-outline: rgb(255 255 255 / 0.1);
 }
 
 @utility image-outline {
@@ -91,6 +108,7 @@ body {
     filter: blur(8px);
     opacity: 0;
   }
+
   to {
     transform: translateY(0);
     filter: blur(0);
@@ -109,5 +127,63 @@ body {
     transform: none !important;
     filter: none !important;
     opacity: 1 !important;
+  }
+}
+
+/* Aturan satu layar penuh tanpa scroll untuk Beranda (Home) */
+html:has(.home-viewport),
+body:has(.home-viewport),
+html.home-scroll-locked,
+body.home-scroll-locked {
+  height: 100vh;
+  height: 100dvh;
+  width: 100%;
+  overflow: hidden !important;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Optimasi landscape pada perangkat dengan tinggi terbatas (<= 500px) */
+@media (max-height: 500px) and (orientation: landscape) {
+  .landscape-compact {
+    gap: 0.4rem !important;
+  }
+
+  .landscape-compact .hero-badge {
+    padding: 0.15rem 0.5rem !important;
+    font-size: 0.75rem !important;
+    margin-bottom: 0 !important;
+  }
+
+  .landscape-compact .hero-title {
+    font-size: clamp(1.15rem, 4vh, 1.55rem) !important;
+    line-height: 1.15 !important;
+    margin-bottom: 0 !important;
+  }
+
+  .landscape-compact .hero-subtitle {
+    font-size: clamp(0.7rem, 2.5vh, 0.825rem) !important;
+    line-height: 1.25 !important;
+    max-width: 480px !important;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .landscape-compact>div:last-child {
+    flex-direction: row !important;
+    gap: 0.75rem !important;
+  }
+
+  .landscape-compact .hero-cta-btn,
+  .landscape-compact .hero-secondary-btn {
+    height: 2.25rem !important;
+    min-height: 2.25rem !important;
+    padding: 0 1rem !important;
+    font-size: 0.8125rem !important;
+    margin-top: 0.15rem !important;
+    width: auto !important;
   }
 }

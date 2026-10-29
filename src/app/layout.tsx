@@ -12,6 +12,11 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://ppdb.sditfajar.sch.
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/favicon.ico",
+  },
   title: {
     default: "PPDB Online — SDIT Fajar",
     template: "%s | SDIT Fajar",

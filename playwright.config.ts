@@ -18,18 +18,6 @@ export default defineConfig({
   },
   projects: [
     {
-      name: "Pixel 7",
-      use: {
-        ...devices["Pixel 7"],
-      },
-    },
-    {
-      name: "iPhone 14",
-      use: {
-        ...devices["iPhone 14"],
-      },
-    },
-    {
       name: "Desktop Chrome",
       use: {
         ...devices["Desktop Chrome"],
@@ -37,7 +25,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: "pnpm dev",
+    command: "node ./node_modules/next/dist/bin/next dev",
     url: "http://localhost:3000",
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,
