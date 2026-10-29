@@ -79,7 +79,7 @@ export default async function HomePage() {
       {/* 10. Footer Resmi */}
       <HomeFooter />
 
-      {/* 11. Floating WhatsApp Button ("Tanya Humas") */}
+      {/* 11. Floating WhatsApp Button ("Tanya Admin") */}
       <HomeFloatingWa />
     </div>
   );

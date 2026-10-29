@@ -68,18 +68,21 @@ export function HomeCurriculum() {
                 className="bg-white p-7 sm:p-8 rounded-3xl shadow-sm border border-slate-200/70 space-y-5 flex flex-col justify-between hover:shadow-md transition-shadow"
               >
                 <div className="space-y-4">
-                  <div
-                    className={`w-12 h-12 sm:w-14 sm:h-14 rounded-2xl ${p.iconBg} ${p.iconColor} flex items-center justify-center`}
-                  >
-                    <Icon className="w-6 h-6 sm:w-7 sm:h-7" />
-                  </div>
-                  <div>
-                    <span className={`text-xs font-bold uppercase tracking-wider ${p.tagColor}`}>
-                      {p.num}
-                    </span>
-                    <h3 className="text-lg sm:text-xl font-bold text-[#0F172A] mt-0.5">
-                      {p.title}
-                    </h3>
+                  {/* Header: Icon di kiri, Nomor & Judul di kanan */}
+                  <div className="flex items-center gap-3.5 sm:gap-4">
+                    <div
+                      className={`w-12 h-12 sm:w-14 sm:h-14 rounded-2xl ${p.iconBg} ${p.iconColor} flex items-center justify-center shrink-0 shadow-sm`}
+                    >
+                      <Icon className="w-6 h-6 sm:w-7 sm:h-7" />
+                    </div>
+                    <div className="space-y-0.5">
+                      <span className={`text-xs font-bold uppercase tracking-wider ${p.tagColor}`}>
+                        {p.num}
+                      </span>
+                      <h3 className="text-lg sm:text-xl font-bold text-[#0F172A] leading-snug">
+                        {p.title}
+                      </h3>
+                    </div>
                   </div>
                   <p className="text-xs sm:text-sm text-[#434655] leading-relaxed">
                     {p.desc}

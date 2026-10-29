@@ -91,16 +91,18 @@ export function HomeVisiMisi() {
             {missions.map((m) => (
               <div
                 key={m.num}
-                className="bg-white p-6 rounded-3xl shadow-sm border border-slate-200/70 flex flex-col space-y-3 hover:shadow-md transition-shadow"
+                className="bg-white p-5 sm:p-6 rounded-3xl shadow-sm border border-slate-200/70 flex flex-col gap-3.5 hover:shadow-md transition-shadow"
               >
-                <div
-                  className={`w-11 h-11 sm:w-12 sm:h-12 rounded-2xl ${m.badgeBg} ${m.badgeText} text-lg font-extrabold flex items-center justify-center shrink-0 shadow-xs`}
-                >
-                  {m.num}
+                <div className="flex items-center gap-3.5 sm:gap-4">
+                  <div
+                    className={`w-11 h-11 sm:w-12 sm:h-12 rounded-2xl ${m.badgeBg} ${m.badgeText} text-base sm:text-lg font-extrabold flex items-center justify-center shrink-0 shadow-xs`}
+                  >
+                    {m.num}
+                  </div>
+                  <h4 className="text-base sm:text-lg font-bold text-[#0F172A] leading-snug">
+                    {m.title}
+                  </h4>
                 </div>
-                <h4 className="text-base sm:text-lg font-bold text-[#0F172A] leading-tight">
-                  {m.title}
-                </h4>
                 <p className="text-xs sm:text-sm text-[#434655] leading-relaxed">
                   {m.desc}
                 </p>

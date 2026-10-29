@@ -138,6 +138,27 @@ body {
   animation-delay: calc(var(--stagger, 0) * 100ms);
 }
 
+/* Animasi Marquee Banner Berjalan (Slide Kanan ke Kiri Loop) */
+@keyframes marquee {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 26s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-enter {
     animation: none !important;
