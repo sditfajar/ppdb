@@ -100,6 +100,7 @@ export function HomeFooter() {
                   <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
                   <input
                     type="search"
+                    suppressHydrationWarning
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Cari program, profil, info SPMB..."
@@ -218,7 +219,7 @@ export function HomeFooter() {
           <div>
             © 2026 SDIT Fajar Depok. Hak Cipta Dilindungi.
           </div>
-          <div className="flex items-center gap-2 text-slate-500">
+          <div className="flex items-center gap-2 text-slate-700 font-medium">
             <span>Sekolah Dasar Islam Terpadu Fajar</span>
             <span>•</span>
             <span>Tapos, Kota Depok</span>

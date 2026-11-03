@@ -1,21 +1,28 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import {
   Calendar,
-  Mail,
   CreditCard,
   AlertCircle,
   Sparkles,
   ArrowLeft,
   Home,
   ExternalLink,
+  MessageCircle,
+  FileCheck2,
+  Clock,
+  CheckCircle2,
 } from "lucide-react";
 import { SCHOOL_CONFIG } from "@/lib/config";
 import { formatCurrency } from "@/lib/format";
 import { getRegistrationState } from "@/lib/actions/registration-state";
 import { RegistrationWizard } from "@/components/registration/RegistrationWizard";
-import { Card } from "@/components/ui/Card";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/Button";
 import { CopyButton } from "@/components/ui/CopyButton";
+import { HomeFooter, HomeFloatingWa } from "@/components/home";
 
 function WhatsAppIcon({ className }: { className?: string }) {
   return (
@@ -98,277 +105,340 @@ export default async function SpmbPage() {
   const accountNo = payment?.accountNo || "712-345-6789";
 
   return (
-    <div className="min-h-screen bg-background text-foreground pb-20">
-      {/* 0. Bilah Navigasi Atas (Kembali ke Beranda) */}
-      <nav className="sticky top-0 z-40 w-full bg-surface/90 backdrop-blur-md border-b border-muted/15 shadow-xs">
-        <div className="max-w-xl mx-auto px-4 h-14 flex items-center justify-between">
+    <div className="min-h-screen flex flex-col bg-[#FAF8FF] text-[#0F172A] font-[family-name:var(--font-plus-jakarta)] selection:bg-[#FFDBCA] selection:text-[#783200]">
+      {/* Ambient Organic Glows khas Beranda */}
+      <div
+        className="fixed -top-24 -right-24 w-80 sm:w-96 h-80 sm:h-96 rounded-full bg-[#FFDBCA]/40 blur-3xl pointer-events-none z-0"
+        aria-hidden="true"
+      />
+      <div
+        className="fixed top-1/2 -left-20 w-72 sm:w-80 h-72 sm:h-80 rounded-full bg-[#DCE1FF]/50 blur-3xl pointer-events-none z-0"
+        aria-hidden="true"
+      />
+
+      {/* 0. Bilah Navigasi Atas (Sticky & Responsive) */}
+      <nav className="sticky top-0 z-40 w-full bg-[#FAF8FF]/90 backdrop-blur-md border-b border-slate-200/80 shadow-2xs">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-muted hover:text-foreground transition-colors group p-1.5 -ml-1.5 rounded-control outline-none focus-visible:ring-2 focus-visible:ring-accent"
-            aria-label="Kembali ke Beranda"
+            className="flex items-center gap-3 group outline-none focus-visible:ring-2 focus-visible:ring-[#1D4ED8] rounded-xl p-1"
+            aria-label="Kembali ke Beranda SDIT Fajar"
           >
-            <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" aria-hidden="true" />
-            <span>Kembali ke Beranda</span>
+            <div className="relative w-9 h-9 sm:w-10 sm:h-10 shrink-0">
+              <Image
+                src="/logo.png"
+                alt="Logo SDIT Fajar Depok"
+                fill
+                sizes="40px"
+                className="object-contain"
+                priority
+              />
+            </div>
+            <div className="flex flex-col">
+              <span className="font-extrabold text-sm sm:text-base text-[#0F172A] tracking-tight group-hover:text-[#1D4ED8] transition-colors leading-tight">
+                {SCHOOL_CONFIG.name}
+              </span>
+              <span className="text-[11px] text-slate-600 font-medium hidden sm:inline leading-tight">
+                Penerimaan Murid Baru
+              </span>
+            </div>
           </Link>
-          <Link
-            href="/"
-            className="flex items-center gap-1.5 text-xs font-semibold text-accent hover:opacity-85 transition-opacity outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-control p-1"
-            aria-label="Beranda SDIT Fajar"
-          >
-            <Home className="h-3.5 w-3.5" aria-hidden="true" />
-            <span>Beranda</span>
-          </Link>
+
+          <div className="flex items-center gap-2 sm:gap-3">
+            <Badge
+              variant="outline"
+              className="hidden md:inline-flex items-center gap-1.5 px-3 py-1 bg-white border-slate-200 text-slate-700 font-semibold text-xs rounded-full shadow-2xs"
+            >
+              <span className="h-2 w-2 rounded-full bg-[#10B981] animate-pulse" />
+              <span>T.A. {academicYear}</span>
+            </Badge>
+
+            <Button
+              asChild
+              variant="outline"
+              size="sm"
+              className="rounded-full gap-2 border-slate-200 bg-white/80 hover:bg-white text-slate-700 hover:text-[#1D4ED8] text-xs sm:text-sm font-semibold shadow-2xs transition-all"
+            >
+              <Link href="/" aria-label="Kembali ke Beranda">
+                <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+                <span className="hidden sm:inline">Kembali ke Beranda</span>
+                <span className="sm:hidden">Beranda</span>
+              </Link>
+            </Button>
+          </div>
         </div>
       </nav>
 
-      {/* 1. Header Informasi & Salam (PRD §8.1 & Lampiran A) */}
-      <header className="relative pt-10 pb-8 px-4 text-center max-w-xl mx-auto">
-        <div
-          className="animate-enter inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent/10 text-accent text-xs font-semibold mb-4"
-          style={{ "--stagger": 1 } as React.CSSProperties}
-        >
-          <Sparkles className="h-3.5 w-3.5" />
-          <span>SPMB Online {SCHOOL_CONFIG.name}</span>
-        </div>
-
-        <h1
-          className="animate-enter text-2xl sm:text-3xl font-bold tracking-tight text-balance leading-snug text-foreground mb-4"
-          style={{ "--stagger": 2 } as React.CSSProperties}
-        >
-          Formulir Pendaftaran Siswa Baru {SCHOOL_CONFIG.name}
-          <span className="block text-accent font-semibold text-xl sm:text-2xl mt-1">
-            Tahun Pengajaran {academicYear}
-          </span>
-        </h1>
-
-        <div
-          className="animate-enter rounded-card bg-surface shadow-border p-4 sm:p-5 text-left space-y-2 mb-6"
-          style={{ "--stagger": 3 } as React.CSSProperties}
-        >
-          <p className="text-sm font-semibold text-foreground">
-            Assalamualaikum Wr. Wb.
-          </p>
-          <p className="text-xs sm:text-sm text-muted text-pretty leading-relaxed">
-            Sehubungan telah dibukanya Sistem Penerimaan Murid Baru (SPMB) TP {academicYear}, silakan
-            mengisi formulir pendaftaran di bawah ini secara bertahap.
-          </p>
-          <div className="pt-2 border-t border-muted/15">
-            <p className="text-xs font-medium text-foreground">
-              ⚠️ Catatan Penting:
-            </p>
-            <p className="text-xs text-muted text-pretty mt-0.5">
-              Pastikan data yang Bapak/Ibu isi sesuai dengan identitas resmi pendaftar (Nama Siswa,
-              Nama Orang Tua, Tanggal Lahir, dan dokumen lainnya).
-            </p>
+      {/* Konten Utama: 12-Column Grid Responsif */}
+      <main className="relative z-10 flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        {/* Header Utama / Hero SPMB */}
+        <header className="mb-8 sm:mb-12 text-center lg:text-left">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white shadow-2xs border border-slate-200/80 text-[#1D4ED8] text-xs sm:text-sm font-bold mb-3.5">
+            <span className="inline-block w-2.5 h-2.5 rounded-full bg-[#F97316] animate-pulse" />
+            <span>SPMB Online {SCHOOL_CONFIG.name} • T.A. {academicYear}</span>
           </div>
-        </div>
 
-        {/* 2. Kartu Jadwal Gelombang */}
-        <div
-          className="animate-enter grid grid-cols-1 sm:grid-cols-2 gap-3 text-left mb-6"
-          style={{ "--stagger": 4 } as React.CSSProperties}
-        >
-          {/* Gelombang 1 */}
-          <Card
-            className={`relative p-4 transition-all ${wave === 1 ? "ring-2 ring-accent bg-accent/5" : "opacity-90"
-              }`}
-          >
-            <div className="flex items-center justify-between mb-1.5">
-              <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-foreground">
-                <Calendar className="h-3.5 w-3.5 text-accent" />
-                <span>Gelombang 1</span>
-              </div>
-              {wave === 1 && (
-                <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-accent bg-accent/15 px-2 py-0.5 rounded-full">
-                  <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
-                  Aktif
-                </span>
-              )}
-            </div>
-            <p className="text-xs text-muted">September – Februari</p>
-          </Card>
-
-          {/* Gelombang 2 */}
-          <Card
-            className={`relative p-4 transition-all ${wave === 2 ? "ring-2 ring-accent bg-accent/5" : "opacity-90"
-              }`}
-          >
-            <div className="flex items-center justify-between mb-1.5">
-              <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-foreground">
-                <Calendar className="h-3.5 w-3.5 text-accent" />
-                <span>Gelombang 2</span>
-              </div>
-              {wave === 2 ? (
-                <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-accent bg-accent/15 px-2 py-0.5 rounded-full">
-                  <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
-                  Aktif
-                </span>
-              ) : (
-                <span className="text-[11px] font-medium text-muted">Maret – Juni</span>
-              )}
-            </div>
-            <p className="text-xs text-muted">Maret – Juni</p>
-          </Card>
-        </div>
-
-        {/* 3. Kartu Info Pembayaran Singkat */}
-        <div
-          className="animate-enter rounded-card bg-surface shadow-border p-4 text-left mb-6 space-y-2.5"
-          style={{ "--stagger": 5 } as React.CSSProperties}
-        >
-          <div className="flex items-center gap-2 mb-1 text-accent">
-            <CreditCard className="h-4 w-4" />
-            <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider">
-              Biaya Formulir Pendaftaran
-            </h3>
-          </div>
-          <div className="flex items-center justify-between text-xs gap-2">
-            <span
-              className="text-muted truncate"
-              title={`Transfer ${payment?.bank || bankLabel} a.n ${accountName}`}
-            >
-              Transfer {bankLabel} a.n {accountName}:
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-[#0F172A] text-balance leading-tight mb-3">
+            Formulir Pendaftaran Siswa Baru {SCHOOL_CONFIG.name}
+            <span className="block text-[#1D4ED8] font-bold text-xl sm:text-2xl lg:text-3xl mt-1">
+              Tahun Pengajaran {academicYear}
             </span>
-            <span className="font-bold text-accent tabular-nums text-sm shrink-0">
-              {formatCurrency(payment?.amount ?? 250000)}
-            </span>
-          </div>
-          <div className="flex items-center justify-between text-xs pt-2 border-t border-muted/15">
-            <span className="text-muted">Nomor Rekening:</span>
-            <div className="flex items-center gap-1.5 font-mono font-bold text-foreground text-sm">
-              <span>{accountNo}</span>
-              <CopyButton text={accountNo} />
-            </div>
-          </div>
-        </div>
+          </h1>
 
-        {/* 4. Kartu Kontak Resmi Sekolah */}
-        <div
-          className="animate-enter rounded-card bg-surface shadow-border p-4 text-left mb-8"
-          style={{ "--stagger": 6 } as React.CSSProperties}
-        >
-          <p className="text-xs font-semibold text-foreground uppercase tracking-wider mb-2">
-            Butuh Bantuan? Hubungi WhatsApp Panitia SPMB
+          <p className="text-sm sm:text-base text-slate-600 max-w-3xl text-pretty leading-relaxed">
+            Assalamualaikum Wr. Wb. Selamat datang di portal resmi Sistem Penerimaan Murid Baru (SPMB).
+            Silakan lengkapi formulir pendaftaran di bawah ini secara bertahap dengan data yang valid dan sesuai dokumen resmi.
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-            <a
-              href={SCHOOL_CONFIG.contacts.fadil.waLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex items-center justify-between gap-2 px-3 py-2.5 rounded-control bg-muted/5 hover:bg-accent/10 hover:text-accent transition-colors"
-            >
-              <div className="flex items-center gap-2.5 min-w-0">
-                <WhatsAppIcon className="h-3.5 w-3.5 text-accent shrink-0" />
-                <div className="truncate">
-                  <span className="font-medium block truncate">{SCHOOL_CONFIG.contacts.fadil.name}</span>
-                  <span className="text-muted text-[11px] tabular-nums group-hover:text-accent/80 transition-colors">
-                    {SCHOOL_CONFIG.contacts.fadil.display}
+        </header>
+
+        {/* 12-Grid Responsif: Sidebar Info & Form Wizard */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          {/* Kolom Kiri / Sidebar Informasi (Sticky di Desktop) */}
+          <aside className="lg:col-span-4 xl:col-span-4 space-y-6 lg:sticky lg:top-24">
+            {/* 1. Kartu Jadwal Gelombang */}
+            <Card className="bg-white rounded-2xl border border-slate-200/90 shadow-2xs overflow-hidden">
+              <CardHeader className="p-4 sm:p-5 pb-3 border-b border-slate-100 flex flex-row items-center gap-2.5">
+                <div className="h-8 w-8 rounded-lg bg-blue-50 text-[#1D4ED8] flex items-center justify-center shrink-0">
+                  <Calendar className="h-4 w-4" />
+                </div>
+                <div>
+                  <CardTitle className="text-sm font-bold text-[#0F172A]">
+                    Jadwal Gelombang Pendaftaran
+                  </CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent className="p-4 sm:p-5 space-y-3">
+                {/* Gelombang 1 */}
+                <div
+                  className={`p-3.5 rounded-xl border transition-all ${
+                    wave === 1
+                      ? "border-[#1D4ED8] bg-blue-50/60 ring-2 ring-[#1D4ED8]/10"
+                      : "border-slate-200/80 bg-slate-50/50"
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-xs font-bold text-[#0F172A] uppercase tracking-wider">
+                      Gelombang 1
+                    </span>
+                    {wave === 1 && (
+                      <Badge className="bg-[#047857] hover:bg-[#065f46] text-white text-[11px] font-bold px-2 py-0.5 rounded-full gap-1">
+                        <span className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" />
+                        Aktif
+                      </Badge>
+                    )}
+                  </div>
+                  <p className="text-xs text-slate-600 font-medium">September – Februari</p>
+                </div>
+
+                {/* Gelombang 2 */}
+                <div
+                  className={`p-3.5 rounded-xl border transition-all ${
+                    wave === 2
+                      ? "border-[#1D4ED8] bg-blue-50/60 ring-2 ring-[#1D4ED8]/10"
+                      : "border-slate-200/80 bg-slate-50/50"
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-xs font-bold text-[#0F172A] uppercase tracking-wider">
+                      Gelombang 2
+                    </span>
+                    {wave === 2 ? (
+                      <Badge className="bg-[#047857] hover:bg-[#065f46] text-white text-[11px] font-bold px-2 py-0.5 rounded-full gap-1">
+                        <span className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" />
+                        Aktif
+                      </Badge>
+                    ) : (
+                      <span className="text-[11px] font-medium text-slate-600">Maret – Juni</span>
+                    )}
+                  </div>
+                  <p className="text-xs text-slate-600 font-medium">Maret – Juni</p>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* 2. Kartu Info Biaya & Rekening Transfer */}
+            <Card className="bg-white rounded-2xl border border-slate-200/90 shadow-2xs overflow-hidden">
+              <CardHeader className="p-4 sm:p-5 pb-3 border-b border-slate-100 flex flex-row items-center gap-2.5">
+                <div className="h-8 w-8 rounded-lg bg-orange-50 text-[#F97316] flex items-center justify-center shrink-0">
+                  <CreditCard className="h-4 w-4" />
+                </div>
+                <div>
+                  <CardTitle className="text-sm font-bold text-[#0F172A]">
+                    Biaya Formulir Pendaftaran
+                  </CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent className="p-4 sm:p-5 space-y-3">
+                <div className="flex items-center justify-between text-xs gap-2">
+                  <span
+                    className="text-slate-600 truncate"
+                    title={`Transfer ${payment?.bank || bankLabel} a.n ${accountName}`}
+                  >
+                    Transfer {bankLabel} a.n {accountName}:
+                  </span>
+                  <span className="font-extrabold text-[#1D4ED8] tabular-nums text-base shrink-0">
+                    {formatCurrency(payment?.amount ?? 250000)}
                   </span>
                 </div>
-              </div>
-              <ExternalLink className="h-3.5 w-3.5 text-muted/60 group-hover:text-accent shrink-0 transition-colors ml-1" aria-hidden="true" />
-            </a>
-
-            <a
-              href={SCHOOL_CONFIG.contacts.viny.waLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex items-center justify-between gap-2 px-3 py-2.5 rounded-control bg-muted/5 hover:bg-accent/10 hover:text-accent transition-colors"
-            >
-              <div className="flex items-center gap-2.5 min-w-0">
-                <WhatsAppIcon className="h-3.5 w-3.5 text-accent shrink-0" />
-                <div className="truncate">
-                  <span className="font-medium block truncate">{SCHOOL_CONFIG.contacts.viny.name}</span>
-                  <span className="text-muted text-[11px] tabular-nums group-hover:text-accent/80 transition-colors">
-                    {SCHOOL_CONFIG.contacts.viny.display}
-                  </span>
+                <div className="flex items-center justify-between text-xs pt-2.5 border-t border-slate-100">
+                  <span className="text-slate-600 font-medium">Nomor Rekening:</span>
+                  <div className="flex items-center gap-1.5 font-mono font-bold text-[#0F172A] text-sm">
+                    <span>{accountNo}</span>
+                    <CopyButton text={accountNo} />
+                  </div>
                 </div>
-              </div>
-              <ExternalLink className="h-3.5 w-3.5 text-muted/60 group-hover:text-accent shrink-0 transition-colors ml-1" aria-hidden="true" />
-            </a>
-          </div>
+                <p className="text-[11px] text-slate-600 pt-1 leading-normal">
+                  💡 Bukti transfer pembayaran diunggah pada Langkah 3 formulir pendaftaran.
+                </p>
+              </CardContent>
+            </Card>
 
-          <div className="flex items-center justify-center gap-4 mt-3 pt-3 border-t border-muted/15 text-xs text-muted">
-            <a
-              href={SCHOOL_CONFIG.contacts.instagram.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1 hover:text-foreground transition-colors group"
-            >
-              <InstagramIcon className="h-3.5 w-3.5" />
-              <span>Instagram</span>
-              <ExternalLink className="h-2.5 w-2.5 opacity-60 group-hover:opacity-100 transition-opacity" aria-hidden="true" />
-            </a>
-            <span>•</span>
-            <a
-              href={SCHOOL_CONFIG.contacts.youtube.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1 hover:text-foreground transition-colors group"
-            >
-              <YoutubeIcon className="h-3.5 w-3.5" />
-              <span>YouTube</span>
-              <ExternalLink className="h-2.5 w-2.5 opacity-60 group-hover:opacity-100 transition-opacity" aria-hidden="true" />
-            </a>
-            <span>•</span>
-            <a
-              href={SCHOOL_CONFIG.contacts.email.mailto}
-              className="flex items-center gap-1 hover:text-foreground transition-colors"
-            >
-              <Mail className="h-3.5 w-3.5" />
-              <span>Email</span>
-            </a>
-          </div>
+            {/* 3. Kartu Bantuan Panitia WhatsApp */}
+            <Card className="bg-white rounded-2xl border border-slate-200/90 shadow-2xs overflow-hidden">
+              <CardHeader className="p-4 sm:p-5 pb-3 border-b border-slate-100 flex flex-row items-center gap-2.5">
+                <div className="h-8 w-8 rounded-lg bg-emerald-50 text-[#10B981] flex items-center justify-center shrink-0">
+                  <MessageCircle className="h-4 w-4" />
+                </div>
+                <div>
+                  <CardTitle className="text-sm font-bold text-[#0F172A]">
+                    Butuh Bantuan? Hubungi WhatsApp Panitia SPMB
+                  </CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent className="p-4 sm:p-5 space-y-3 text-xs">
+                <div className="grid grid-cols-1 gap-2">
+                  <a
+                    href={SCHOOL_CONFIG.contacts.fadil.waLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex items-center justify-between gap-2 p-3 rounded-xl bg-slate-50 hover:bg-emerald-50/80 hover:text-[#047857] border border-slate-200/70 transition-colors"
+                  >
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <WhatsAppIcon className="h-4 w-4 text-[#10B981] shrink-0" />
+                      <div className="truncate">
+                        <span className="font-bold block truncate">{SCHOOL_CONFIG.contacts.fadil.name}</span>
+                        <span className="text-slate-600 text-[11px] tabular-nums group-hover:text-[#047857]">
+                          {SCHOOL_CONFIG.contacts.fadil.display}
+                        </span>
+                      </div>
+                    </div>
+                    <ExternalLink className="h-3.5 w-3.5 text-slate-400 group-hover:text-[#047857] shrink-0 transition-colors" aria-hidden="true" />
+                  </a>
+
+                  <a
+                    href={SCHOOL_CONFIG.contacts.viny.waLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex items-center justify-between gap-2 p-3 rounded-xl bg-slate-50 hover:bg-emerald-50/80 hover:text-[#047857] border border-slate-200/70 transition-colors"
+                  >
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <WhatsAppIcon className="h-4 w-4 text-[#10B981] shrink-0" />
+                      <div className="truncate">
+                        <span className="font-bold block truncate">{SCHOOL_CONFIG.contacts.viny.name}</span>
+                        <span className="text-slate-600 text-[11px] tabular-nums group-hover:text-[#047857]">
+                          {SCHOOL_CONFIG.contacts.viny.display}
+                        </span>
+                      </div>
+                    </div>
+                    <ExternalLink className="h-3.5 w-3.5 text-slate-400 group-hover:text-[#047857] shrink-0 transition-colors" aria-hidden="true" />
+                  </a>
+                </div>
+
+                <div className="flex items-center justify-center gap-4 pt-3 border-t border-slate-100 text-xs text-slate-600">
+                  <a
+                    href={SCHOOL_CONFIG.contacts.instagram.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1 hover:text-[#1D4ED8] transition-colors"
+                  >
+                    <InstagramIcon className="h-3.5 w-3.5" />
+                    <span>Instagram</span>
+                  </a>
+                  <span>•</span>
+                  <a
+                    href={SCHOOL_CONFIG.contacts.youtube.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1 hover:text-[#1D4ED8] transition-colors"
+                  >
+                    <YoutubeIcon className="h-3.5 w-3.5" />
+                    <span>YouTube</span>
+                  </a>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* 4. Kartu Panduan Dokumen */}
+            <Card className="bg-white rounded-2xl border border-slate-200/90 shadow-2xs overflow-hidden">
+              <CardHeader className="p-4 sm:p-5 pb-2.5 border-b border-slate-100 flex flex-row items-center gap-2">
+                <FileCheck2 className="h-4 w-4 text-[#1D4ED8]" />
+                <CardTitle className="text-xs font-bold text-[#0F172A] uppercase tracking-wider">
+                  Dokumen yang Disiapkan
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-4 sm:p-5 text-xs space-y-2 text-slate-600">
+                <div className="flex items-start gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-[#10B981] shrink-0 mt-0.5" />
+                  <span>Akta Kelahiran Siswa (tempat & tanggal lahir)</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-[#10B981] shrink-0 mt-0.5" />
+                  <span>Kartu Keluarga (KK) orang tua / wali</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-[#10B981] shrink-0 mt-0.5" />
+                  <span>Foto bukti transfer biaya pendaftaran</span>
+                </div>
+              </CardContent>
+            </Card>
+          </aside>
+
+          {/* Kolom Kanan / Konten Utama: Wizard Pendaftaran */}
+          <section className="lg:col-span-8 xl:col-span-8">
+            {!isOpen ? (
+              <Card className="rounded-3xl bg-white border border-slate-200/90 shadow-sm p-8 sm:p-12 text-center space-y-4">
+                <div className="h-16 w-16 rounded-full bg-red-50 text-red-600 flex items-center justify-center mx-auto shadow-inner">
+                  <AlertCircle className="h-8 w-8" />
+                </div>
+                <h2 className="text-xl sm:text-2xl font-extrabold text-[#0F172A]">
+                  Pendaftaran Saat Ini Sedang Ditutup
+                </h2>
+                <p className="text-sm text-slate-600 text-pretty max-w-md mx-auto leading-relaxed">
+                  Sistem Penerimaan Murid Baru dibuka pada bulan September – Juni. Saat ini masa
+                  pendaftaran telah berakhir atau sedang dipersiapkan untuk gelombang berikutnya.
+                </p>
+                <p className="text-xs text-slate-600 pt-2">
+                  Untuk informasi lebih lanjut, silakan hubungi kontak panitia pada panel informasi.
+                </p>
+              </Card>
+            ) : (
+              <Card className="rounded-2xl sm:rounded-3xl bg-white border border-slate-200/90 shadow-sm overflow-hidden p-4 sm:p-7 md:p-8">
+                <div className="mb-6 pb-4 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                  <div>
+                    <h2 className="text-lg sm:text-xl font-bold text-[#0F172A]">
+                      Pengisian Formulir Pendaftaran
+                    </h2>
+                    <p className="text-xs text-slate-600 mt-0.5">
+                      Silakan isi data secara berurutan mulai dari Data Siswa, Orang Tua, hingga Pembayaran.
+                    </p>
+                  </div>
+                  <Badge variant="outline" className="self-start sm:self-auto bg-blue-50/70 text-[#1D4ED8] border-blue-200 font-bold text-xs px-2.5 py-1">
+                    Langkah Aktif
+                  </Badge>
+                </div>
+
+                <RegistrationWizard paymentSettings={payment} />
+              </Card>
+            )}
+          </section>
         </div>
-      </header>
-
-      {/* 5. Konten Utama: Formulir Wizard atau Banner Pendaftaran Ditutup */}
-      <main className="px-4 max-w-xl mx-auto">
-        {!isOpen ? (
-          <div className="rounded-card bg-surface shadow-border p-6 text-center space-y-4 animate-enter">
-            <div className="h-12 w-12 rounded-full bg-danger/10 text-danger flex items-center justify-center mx-auto">
-              <AlertCircle className="h-6 w-6" />
-            </div>
-            <h2 className="text-lg font-bold text-foreground">
-              Pendaftaran Saat Ini Sedang Ditutup
-            </h2>
-            <p className="text-xs sm:text-sm text-muted text-pretty max-w-md mx-auto">
-              Sistem Penerimaan Murid Baru dibuka pada bulan September – Juni. Saat ini masa
-              pendaftaran telah berakhir atau sedang dipersiapkan untuk gelombang berikutnya.
-            </p>
-            <p className="text-xs text-muted">
-              Untuk informasi lebih lanjut, silakan hubungi kontak panitia di atas.
-            </p>
-          </div>
-        ) : (
-          <div
-            className="animate-enter"
-            style={{ "--stagger": 7 } as React.CSSProperties}
-          >
-            <RegistrationWizard paymentSettings={payment} />
-          </div>
-        )}
-
-        {/* 6. Penutup (PRD Lampiran A) */}
-        <footer className="mt-12 text-center text-xs text-muted text-pretty space-y-2">
-          <div className="pb-2">
-            <Link
-              href="/"
-              className="inline-flex items-center gap-1.5 text-xs font-medium text-accent hover:underline outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-control p-1"
-            >
-              <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
-              <span>Kembali ke Halaman Beranda</span>
-            </Link>
-          </div>
-          <p className="font-medium text-foreground">
-            Daftarkan segera, dan jadilah bagian dari keluarga kami.
-          </p>
-          <p>Terima kasih, Wassalamualaikum Wr. Wb.</p>
-          <p className="text-[11px] text-muted pt-4">
-            © {new Date().getFullYear()} {SCHOOL_CONFIG.fullName}. All rights reserved.
-          </p>
-        </footer>
       </main>
+
+      {/* Footer Resmi Sekolah */}
+      <HomeFooter />
+
+      {/* Floating WhatsApp Button */}
+      <HomeFloatingWa />
     </div>
   );
 }

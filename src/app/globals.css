@@ -12,6 +12,20 @@
   --color-accent: var(--accent);
   --color-secondary: var(--secondary);
   --color-danger: var(--danger);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
 
   --color-fajar-primary: var(--fajar-primary);
   --color-fajar-primary-dark: var(--fajar-primary-dark);
@@ -26,6 +40,10 @@
   --color-fajar-dark: var(--fajar-dark);
   --color-fajar-muted: var(--fajar-muted);
 
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
   --radius-control: var(--radius-control);
   --radius-card: var(--radius-card);
 
@@ -40,12 +58,27 @@
   /* abu-abu terang hampir putih ≈ #f5f5f5 */
   --foreground: oklch(0.173 0 0);
   --surface: oklch(1 0 0);
-  --muted: oklch(0.44 0 0);
+  --muted: oklch(0.39 0 0);
   --accent: oklch(0.52 0.14 240);
   /* biru langit (primary), kontras >= 4.5:1 terhadap putih dan background */
   --secondary: oklch(0.55 0.16 48);
   /* oren (secondary), kontras >= 4.5:1 terhadap putih dan background */
   --danger: oklch(0.52 0.2 27);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.173 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.173 0 0);
+  --primary: var(--fajar-primary);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary-foreground: oklch(0.173 0 0);
+  --muted-foreground: oklch(0.39 0 0);
+  --accent-foreground: oklch(0.173 0 0);
+  --destructive: oklch(0.52 0.2 27);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(0.92 0 0);
+  --input: oklch(0.92 0 0);
+  --ring: oklch(0.52 0.14 240);
+  --radius: 0.625rem;
 
   /* Playful Tactile Design Tokens (SDIT Fajar Stitch) */
   --fajar-primary: #1D4ED8;
@@ -86,6 +119,20 @@
   --muted: oklch(0.7 0 0);
   --accent: oklch(0.78 0.12 235);
   --secondary: oklch(0.77 0.15 58);
+  --card: oklch(0.21 0 0);
+  --card-foreground: oklch(0.96 0 0);
+  --popover: oklch(0.21 0 0);
+  --popover-foreground: oklch(0.96 0 0);
+  --primary: var(--fajar-primary);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary-foreground: oklch(0.96 0 0);
+  --muted-foreground: oklch(0.7 0 0);
+  --accent-foreground: oklch(0.96 0 0);
+  --destructive: oklch(0.52 0.2 27);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(0.27 0 0);
+  --input: oklch(0.27 0 0);
+  --ring: oklch(0.78 0.12 235);
   --shadow-border: 0 0 0 1px rgb(255 255 255 / 0.08);
   --shadow-border-hover: 0 0 0 1px rgb(255 255 255 / 0.12);
   --image-outline: rgb(255 255 255 / 0.1);
@@ -97,10 +144,25 @@
   --background: oklch(0.97 0 0);
   --foreground: oklch(0.173 0 0);
   --surface: oklch(1 0 0);
-  --muted: oklch(0.44 0 0);
+  --muted: oklch(0.39 0 0);
   --accent: oklch(0.52 0.14 240);
   --secondary: oklch(0.55 0.16 48);
   --danger: oklch(0.52 0.2 27);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.173 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.173 0 0);
+  --primary: var(--fajar-primary);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary-foreground: oklch(0.173 0 0);
+  --muted-foreground: oklch(0.39 0 0);
+  --accent-foreground: oklch(0.173 0 0);
+  --destructive: oklch(0.52 0.2 27);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(0.92 0 0);
+  --input: oklch(0.92 0 0);
+  --ring: oklch(0.52 0.14 240);
+  --radius: 0.625rem;
   --shadow-border:
     0 0 0 1px rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.06), 0 2px 4px 0 rgb(0 0 0 / 0.04);
   --shadow-border-hover:

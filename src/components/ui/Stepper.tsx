@@ -23,21 +23,34 @@ export function Stepper({
   ref,
   ...props
 }: StepperProps) {
+  const activeStep = steps.find((s) => s.number === currentStep) || steps[0];
+  const progressPercent =
+    steps.length > 1
+      ? ((Math.max(1, currentStep) - 1) / (steps.length - 1)) * 100
+      : 100;
+
   return (
     <div
       ref={ref}
-      aria-label="Progres langkah formulir"
+      aria-label="Progres langkah formulir pendaftaran"
       className={cn("w-full py-2", className)}
       {...props}
     >
+      {/* Mobile progress indicator info */}
+      <div className="flex items-center justify-between text-xs mb-2 sm:hidden text-slate-600 font-medium">
+        <span>
+          Langkah {currentStep} dari {steps.length}:{" "}
+          <strong className="text-slate-900">{activeStep.shortTitle || activeStep.title}</strong>
+        </span>
+        <span className="font-semibold text-[#1D4ED8]">{Math.round(progressPercent)}%</span>
+      </div>
+
       {/* Bar progres visual garis atas */}
-      <div className="relative mb-3">
-        <div className="h-1 w-full bg-muted/20 rounded-full overflow-hidden">
+      <div className="relative mb-3.5">
+        <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
           <div
-            className="h-full bg-accent transition-all duration-300 ease-out"
-            style={{
-              width: `${((Math.max(1, currentStep) - 1) / (steps.length - 1)) * 100}%`,
-            }}
+            className="h-full bg-gradient-to-r from-[#1D4ED8] to-[#2563EB] transition-all duration-300 ease-out"
+            style={{ width: `${progressPercent}%` }}
           />
         </div>
       </div>
@@ -53,43 +66,43 @@ export function Stepper({
             <li
               key={step.number}
               className={cn(
-                "flex items-center gap-2 text-left select-none",
-                isClickable && "cursor-pointer"
+                "flex items-center gap-2.5 text-left select-none transition-colors",
+                isClickable && "cursor-pointer group hover:opacity-85"
               )}
               onClick={() => isClickable && onStepClick(step.number)}
             >
               {/* Lingkaran nomor / centang */}
               <div
                 className={cn(
-                  "h-8 w-8 min-w-[32px] rounded-full flex items-center justify-center text-xs font-semibold tabular-nums transition-all duration-200",
+                  "h-8 w-8 sm:h-9 sm:w-9 rounded-full flex items-center justify-center text-xs sm:text-sm font-bold tabular-nums transition-all duration-200",
                   isCompleted
-                    ? "bg-accent text-white dark:text-white"
+                    ? "bg-[#10B981] text-white shadow-xs"
                     : isCurrent
-                    ? "bg-accent text-white shadow-sm ring-4 ring-accent/20 dark:text-white"
-                    : "bg-surface shadow-border text-muted"
+                    ? "bg-[#1D4ED8] text-white shadow-sm ring-4 ring-[#1D4ED8]/15"
+                    : "bg-white border border-slate-200 text-slate-600"
                 )}
                 aria-current={isCurrent ? "step" : undefined}
               >
                 {isCompleted ? (
-                  <Check className="h-4 w-4 stroke-[2.5]" aria-hidden="true" />
+                  <Check className="h-4 w-4 stroke-[3]" aria-hidden="true" />
                 ) : (
                   step.number
                 )}
               </div>
 
-              {/* Judul langkah (disembunyikan pada layar sangat sempit jika tidak aktif) */}
+              {/* Judul langkah */}
               <div className="flex flex-col">
-                <span className="text-[11px] font-medium text-muted uppercase tracking-wider hidden sm:block">
+                <span className="text-[10px] font-semibold text-slate-600 uppercase tracking-wider hidden sm:block">
                   Langkah {step.number}
                 </span>
                 <span
                   className={cn(
-                    "text-xs md:text-sm font-medium transition-colors leading-tight",
+                    "text-xs sm:text-sm font-semibold transition-colors leading-tight",
                     isCurrent
-                      ? "text-foreground font-semibold"
+                      ? "text-[#0F172A]"
                       : isCompleted
-                      ? "text-foreground"
-                      : "text-muted",
+                      ? "text-slate-700"
+                      : "text-slate-600",
                     !isCurrent && "hidden md:inline"
                   )}
                 >

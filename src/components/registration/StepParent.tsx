@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { useFormContext } from "react-hook-form";
+import { User, Heart } from "lucide-react";
 import { Field } from "@/components/ui/Field";
 import { TextInput } from "@/components/ui/TextInput";
 import { Textarea } from "@/components/ui/Textarea";
@@ -38,10 +39,15 @@ export function StepParent() {
   return (
     <div className="space-y-6 text-left">
       {/* Data Ayah */}
-      <div className="space-y-4 rounded-card bg-surface/50 shadow-border p-4 sm:p-5">
-        <h4 className="text-sm font-semibold text-foreground border-b border-muted/15 pb-2">
-          Data Ayah Kandung / Wali
-        </h4>
+      <div className="space-y-4 rounded-2xl bg-white border border-slate-200/90 shadow-2xs p-4 sm:p-6">
+        <div className="flex items-center gap-2 pb-2.5 border-b border-slate-100">
+          <div className="h-7 w-7 rounded-lg bg-blue-50 text-[#1D4ED8] flex items-center justify-center">
+            <User className="h-4 w-4" aria-hidden="true" />
+          </div>
+          <h4 className="text-sm font-bold text-[#0F172A]">
+            Data Ayah Kandung / Wali
+          </h4>
+        </div>
 
         <Field
           label="Nama Lengkap Ayah"
@@ -99,10 +105,15 @@ export function StepParent() {
       </div>
 
       {/* Data Ibu */}
-      <div className="space-y-4 rounded-card bg-surface/50 shadow-border p-4 sm:p-5">
-        <h4 className="text-sm font-semibold text-foreground border-b border-muted/15 pb-2">
-          Data Ibu Kandung / Wali
-        </h4>
+      <div className="space-y-4 rounded-2xl bg-white border border-slate-200/90 shadow-2xs p-4 sm:p-6">
+        <div className="flex items-center gap-2 pb-2.5 border-b border-slate-100">
+          <div className="h-7 w-7 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center">
+            <Heart className="h-4 w-4" aria-hidden="true" />
+          </div>
+          <h4 className="text-sm font-bold text-[#0F172A]">
+            Data Ibu Kandung
+          </h4>
+        </div>
 
         <Field
           label="Nama Lengkap Ibu"
@@ -160,32 +171,44 @@ export function StepParent() {
       </div>
 
       {/* Alamat Orang Tua */}
-      <Field
-        label="Alamat Lengkap Orang Tua"
-        required
-        error={errors.parent_address?.message}
-      >
-        {({ id, "aria-describedby": ariaDescribedby, "aria-invalid": ariaInvalid }) => (
-          <div className="space-y-2">
-            <Checkbox
-              label="Sama dengan alamat siswa"
-              checked={sameAddressChecked}
-              onChange={handleSameAddressToggle}
-              className="py-1"
-            />
+      <div className="space-y-4 rounded-2xl bg-white border border-slate-200/90 shadow-2xs p-4 sm:p-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pb-2.5 border-b border-slate-100">
+          <h4 className="text-sm font-bold text-[#0F172A]">
+            Alamat Tempat Tinggal Orang Tua
+          </h4>
+
+          {/* Opsi Samakan Alamat dengan Calon Siswa */}
+          <Checkbox
+            id="same-address-checkbox"
+            checked={sameAddressChecked}
+            onChange={handleSameAddressToggle}
+            label={
+              <span className="text-xs font-semibold text-slate-700">
+                Sama dengan alamat calon siswa
+              </span>
+            }
+            className="py-0 min-h-0"
+          />
+        </div>
+
+        <Field
+          label="Alamat Lengkap Orang Tua"
+          required
+          hint="Cantumkan nama jalan, RT/RW, kelurahan, dan kecamatan"
+          error={errors.parent_address?.message}
+        >
+          {({ id, "aria-describedby": ariaDescribedby, "aria-invalid": ariaInvalid }) => (
             <Textarea
               id={id}
               rows={3}
               placeholder="Alamat domisili orang tua saat ini..."
-              {...register("parent_address", {
-                onChange: () => setSameAddressChecked(false),
-              })}
+              {...register("parent_address")}
               aria-describedby={ariaDescribedby}
               aria-invalid={ariaInvalid}
             />
-          </div>
-        )}
-      </Field>
+          )}
+        </Field>
+      </div>
     </div>
   );
 }

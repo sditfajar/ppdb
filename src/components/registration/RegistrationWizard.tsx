@@ -13,11 +13,13 @@ import {
 import { cn } from "@/lib/utils";
 import { Stepper, type StepItem } from "@/components/ui/Stepper";
 import { Button } from "@/components/ui/Button";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { StepStudent } from "@/components/registration/StepStudent";
 import { StepParent } from "@/components/registration/StepParent";
 import { StepPayment } from "@/components/registration/StepPayment";
 import {
   registrationSchema,
+  ALLOWED_FILE_TYPES,
   type RegistrationFormData,
 } from "@/lib/validation/registration";
 import { createClient } from "@/lib/supabase/client";
@@ -173,7 +175,6 @@ export function RegistrationWizard({ paymentSettings }: RegistrationWizardProps)
   // Callback pemilihan berkas bukti bayar
   const handleFileSelect = (file: File | null) => {
     setPaymentFile(file);
-    // Jika file diganti, batalkan cache uploaded proof sebelumnya
     if (!file || (uploadedProof && uploadedProof.fileSignature !== `${file.name}-${file.size}-${file.lastModified}`)) {
       setUploadedProof(null);
     }
@@ -183,42 +184,52 @@ export function RegistrationWizard({ paymentSettings }: RegistrationWizardProps)
     });
   };
 
-  // Navigasi langkah berikutnya dengan validasi per langkah
+  // Navigasi ke langkah berikutnya dengan validasi per langkah
   const handleNextStep = async () => {
     setStepErrorSummary(null);
 
-    let isValid = false;
     if (currentStep === 1) {
-      isValid = await trigger(STEP_1_FIELDS, { shouldFocus: true });
+      const isValid = await trigger(STEP_1_FIELDS);
+      if (!isValid) {
+        setStepErrorSummary("Harap periksa kembali isian data calon siswa bertanda merah.");
+        const firstErrorEl = document.querySelector("[aria-invalid='true']");
+        firstErrorEl?.scrollIntoView({ behavior: "smooth", block: "center" });
+        return;
+      }
+      setCurrentStep(2);
+      window.scrollTo({ top: 0, behavior: "smooth" });
     } else if (currentStep === 2) {
-      isValid = await trigger(STEP_2_FIELDS, { shouldFocus: true });
+      const isValid = await trigger(STEP_2_FIELDS);
+      if (!isValid) {
+        setStepErrorSummary("Harap lengkapi seluruh data orang tua kandung / wali yang wajib diisi.");
+        const firstErrorEl = document.querySelector("[aria-invalid='true']");
+        firstErrorEl?.scrollIntoView({ behavior: "smooth", block: "center" });
+        return;
+      }
+      setCurrentStep(3);
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
-
-    if (!isValid) {
-      setStepErrorSummary(
-        "Terdapat beberapa kolom yang belum diisi dengan benar. Silakan periksa tanda merah di bawah."
-      );
-      window.scrollTo({ top: 180, behavior: "smooth" });
-      return;
-    }
-
-    setCurrentStep((prev) => Math.min(prev + 1, 3));
-    window.scrollTo({ top: 120, behavior: "smooth" });
   };
 
+  // Navigasi mundur ke langkah sebelumnya
   const handlePrevStep = () => {
     setStepErrorSummary(null);
-    setCurrentStep((prev) => Math.max(prev - 1, 1));
-    window.scrollTo({ top: 120, behavior: "smooth" });
+    if (currentStep > 1) {
+      setCurrentStep((prev) => prev - 1);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
   };
 
+  // Lompat langsung ke langkah yang sudah pernah diisi
   const handleEditStep = (stepNumber: number) => {
     setStepErrorSummary(null);
-    setCurrentStep(stepNumber);
-    window.scrollTo({ top: 120, behavior: "smooth" });
+    if (stepNumber >= 1 && stepNumber <= 3) {
+      setCurrentStep(stepNumber);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
   };
 
-  // Callback Turnstile
+  // Callback token Turnstile
   const handleTurnstileSuccess = (token: string) => {
     setTurnstileToken(token);
     setTurnstileError(null);
@@ -226,105 +237,95 @@ export function RegistrationWizard({ paymentSettings }: RegistrationWizardProps)
 
   const handleTurnstileExpire = () => {
     setTurnstileToken(null);
-    setTurnstileError("Sesi verifikasi Turnstile kedaluwarsa. Silakan centang kembali.");
+    setTurnstileError("Sesi verifikasi keamanan kadaluarsa. Silakan centang kembali.");
   };
 
   const handleTurnstileError = () => {
     setTurnstileToken(null);
-    setTurnstileError("Gagal memuat verifikasi Cloudflare. Silakan periksa koneksi internet Anda.");
+    setTurnstileError("Gagal memverifikasi Turnstile. Silakan muat ulang halaman.");
   };
 
-  // Pengiriman Formulir Registrasi Lengkap (Fase 4 Backend Publik)
-  const onFormSubmit: SubmitHandler<RegistrationFormData> = async (formData) => {
-    if (isSubmitting) return;
+  // Handler submit utama form pendaftaran (Langkah 3)
+  const onSubmit: SubmitHandler<RegistrationFormData> = async (formData) => {
+    setStepErrorSummary(null);
+    setTurnstileError(null);
 
-    // Pastikan foto bukti transfer dipilih
-    if (!paymentFile) {
-      setStepErrorSummary("Foto bukti pembayaran formulir wajib diunggah.");
-      await trigger("payment_proof_file", { shouldFocus: true });
+    // 1. Validasi keberadaan file bukti pembayaran
+    if (!paymentFile && !uploadedProof) {
+      setError("payment_proof_file", {
+        type: "manual",
+        message: "Bukti transfer pembayaran formulir wajib diunggah.",
+      });
+      setStepErrorSummary("Bukti transfer pembayaran formulir wajib diunggah.");
       return;
     }
 
-    // Pastikan Turnstile token tersedia
+    // 2. Validasi token keamanan Turnstile
     if (!turnstileToken) {
-      setTurnstileError("Verifikasi keamanan Cloudflare Turnstile wajib dilengkapi.");
-      setStepErrorSummary("Silakan lengkapi verifikasi keamanan (Turnstile) sebelum mengirimkan pendaftaran.");
-      window.scrollTo({ top: 400, behavior: "smooth" });
+      setTurnstileError("Silakan selesaikan verifikasi keamanan Turnstile di bawah.");
+      setStepErrorSummary("Silakan selesaikan verifikasi keamanan Turnstile sebelum mengirim.");
       return;
     }
 
     setIsSubmitting(true);
-    setStepErrorSummary(null);
 
     try {
-      const fileSignature = `${paymentFile.name}-${paymentFile.size}-${paymentFile.lastModified}`;
-      let targetProofPath = uploadedProof?.fileSignature === fileSignature ? uploadedProof.path : null;
-      let targetProofMime = uploadedProof?.fileSignature === fileSignature ? uploadedProof.mime : paymentFile.type;
-      let targetProofSize = uploadedProof?.fileSignature === fileSignature ? uploadedProof.size : paymentFile.size;
+      let proofResult: UploadedProofCache;
 
-      // 1. Unggah bukti bayar langsung ke Supabase Storage (bila belum terunggah)
-      if (!targetProofPath) {
-        setUploadProgressText("Mempersiapkan sesi penyimpanan bukti transfer...");
+      if (uploadedProof) {
+        proofResult = uploadedProof;
+      } else {
+        const fileToUpload = paymentFile!;
+        setUploadProgressText("Menyiapkan saluran unggah aman...");
 
-        const uploadUrlRes = await requestUploadUrl({
-          mime: paymentFile.type,
-          size: paymentFile.size,
+        const uploadInit = await requestUploadUrl({
+          mime: fileToUpload.type,
+          size: fileToUpload.size,
         });
 
-        if (!uploadUrlRes.success || !uploadUrlRes.data) {
-          setStepErrorSummary(
-            uploadUrlRes.message || "Gagal memulai sesi pengunggahan bukti bayar. Silakan coba lagi."
-          );
-          setIsSubmitting(false);
-          setUploadProgressText(null);
-          return;
+        if (!uploadInit.success || !uploadInit.data) {
+          throw new Error(uploadInit.message || "Gagal mendapatkan izin unggah berkas.");
         }
 
-        setUploadProgressText("Mengunggah foto bukti transfer ke penyimpanan aman...");
+        const { path, token } = uploadInit.data;
+        setUploadProgressText("Mengunggah foto bukti transfer...");
 
         const supabase = createClient();
         const { error: uploadError } = await supabase.storage
           .from("payment-proofs")
-          .uploadToSignedUrl(uploadUrlRes.data.path, uploadUrlRes.data.token, paymentFile);
+          .uploadToSignedUrl(path, token, fileToUpload, {
+            contentType: fileToUpload.type,
+            upsert: true,
+          });
 
         if (uploadError) {
-          console.error("[UPLOAD_TO_SIGNED_URL] Gagal mengunggah file:", uploadError);
-          setStepErrorSummary("Gagal mengunggah foto bukti bayar. Periksa koneksi internet Anda dan coba lagi.");
-          setIsSubmitting(false);
-          setUploadProgressText(null);
-          return;
+          throw new Error(`Gagal mengunggah ke penyimpanan: ${uploadError.message}`);
         }
 
-        targetProofPath = uploadUrlRes.data.path;
-        targetProofMime = paymentFile.type;
-        targetProofSize = paymentFile.size;
-
-        // Simpan cache agar percobaan submit berikutnya tidak perlu upload ulang
-        setUploadedProof({
-          fileSignature,
-          path: targetProofPath,
-          mime: targetProofMime,
-          size: targetProofSize,
-        });
+        proofResult = {
+          fileSignature: `${fileToUpload.name}-${fileToUpload.size}-${fileToUpload.lastModified}`,
+          path,
+          mime: fileToUpload.type,
+          size: fileToUpload.size,
+        };
+        setUploadedProof(proofResult);
       }
 
-      // 2. Kirim Server Action createRegistration
-      setUploadProgressText("Memverifikasi dan menyimpan data pendaftaran Anda...");
+      setUploadProgressText("Menyimpan data pendaftaran ke sistem...");
 
-      const registrationResult = await createRegistration({
+      const submitResult = await createRegistration({
         student_name: formData.student_name,
         student_nickname: formData.student_nickname,
         birth_place: formData.birth_place,
         birth_date: formData.birth_date,
         gender: formData.gender,
-        siblings_count: Number(formData.siblings_count),
-        birth_order: Number(formData.birth_order),
+        siblings_count: formData.siblings_count,
+        birth_order: formData.birth_order,
         student_address: formData.student_address,
         contact_phone: formData.contact_phone,
         hobby: formData.hobby,
-        achievements: formData.achievements || "-",
-        medical_conditions: formData.medical_conditions || "-",
-
+        achievements: formData.achievements,
+        medical_conditions: formData.medical_conditions,
         father_name: formData.father_name,
         mother_name: formData.mother_name,
         father_education: formData.father_education,
@@ -332,54 +333,45 @@ export function RegistrationWizard({ paymentSettings }: RegistrationWizardProps)
         father_job: formData.father_job,
         mother_job: formData.mother_job,
         parent_address: formData.parent_address,
-
-        payment_proof_path: targetProofPath,
-        payment_proof_mime: targetProofMime as "image/jpeg" | "image/png" | "image/webp",
-        payment_proof_size: targetProofSize,
-
         consented: true,
-        honeypot: formData.honeypot || "",
+        honeypot: formData.honeypot,
+        payment_proof_path: proofResult.path,
+        payment_proof_mime: proofResult.mime as (typeof ALLOWED_FILE_TYPES)[number],
+        payment_proof_size: proofResult.size,
         turnstile_token: turnstileToken,
       });
 
-      if (!registrationResult.success || !registrationResult.id) {
-        if (registrationResult.fieldErrors) {
-          Object.entries(registrationResult.fieldErrors).forEach(([field, msg]) => {
-            setError(field as keyof RegistrationFormData, { message: msg });
-          });
-        }
-        setStepErrorSummary(
-          registrationResult.message || "Pendaftaran belum dapat disimpan. Silakan periksa kembali isian Anda."
-        );
-        window.scrollTo({ top: 140, behavior: "smooth" });
-        setIsSubmitting(false);
-        setUploadProgressText(null);
-        return;
+      if (!submitResult.success || !submitResult.id) {
+        throw new Error(submitResult.message || "Pendaftaran gagal diproses oleh server.");
       }
 
-      // 3. Sukses: Bersihkan draf dan redirect ke /berhasil/[id]
-      localStorage.removeItem(DRAFT_STORAGE_KEY);
-      router.push(`/berhasil/${registrationResult.id}`);
-    } catch (err) {
-      console.error("[FORM_SUBMIT] Terjadi kendala submit:", err);
-      setStepErrorSummary(
-        "Terjadi gangguan pada sambungan jaringan saat mengirimkan pendaftaran. Isian Anda tetap aman, silakan coba kirim ulang."
-      );
+      try {
+        localStorage.removeItem(DRAFT_STORAGE_KEY);
+      } catch (e) {
+        console.warn("Gagal membersihkan draf:", e);
+      }
+
+      router.push(`/berhasil/${submitResult.id}`);
+    } catch (err: unknown) {
+      console.error("[SPMB] Submit Error:", err);
+      const errorMessage =
+        err instanceof Error ? err.message : "Terjadi kesalahan sistem yang tidak terduga.";
+      setStepErrorSummary(errorMessage);
+    } finally {
       setIsSubmitting(false);
       setUploadProgressText(null);
-      window.scrollTo({ top: 140, behavior: "smooth" });
     }
   };
 
   return (
     <FormProvider {...methods}>
       <form
-        onSubmit={handleSubmit(onFormSubmit)}
+        onSubmit={handleSubmit(onSubmit)}
         noValidate
-        className="relative flex flex-col w-full max-w-xl mx-auto"
+        className="relative w-full"
       >
         {/* Indikator Progres Langkah */}
-        <div className="mb-6 px-1">
+        <div className="mb-6">
           <Stepper
             steps={STEPS}
             currentStep={currentStep}
@@ -393,17 +385,18 @@ export function RegistrationWizard({ paymentSettings }: RegistrationWizardProps)
 
         {/* Ringkasan Pesan Error jika Ada Masalah */}
         {stepErrorSummary && (
-          <div
+          <Alert
             role="alert"
-            className="mb-5 p-3.5 rounded-control bg-danger/10 border border-danger/30 text-danger text-xs font-medium flex items-start gap-2.5 text-left animate-enter"
+            variant="destructive"
+            className="mb-5 border-red-200 bg-red-50 text-red-700 text-xs font-semibold flex items-start gap-2.5"
           >
-            <AlertTriangle className="h-4 w-4 shrink-0 mt-0.5" />
-            <span>{stepErrorSummary}</span>
-          </div>
+            <AlertTriangle className="h-4 w-4 shrink-0 text-red-600 mt-0.5" />
+            <AlertDescription>{stepErrorSummary}</AlertDescription>
+          </Alert>
         )}
 
         {/* Konten Langkah Aktif */}
-        <div className="min-h-[420px] transition-opacity duration-200">
+        <div className="min-h-[400px] transition-opacity duration-200">
           {currentStep === 1 && <StepStudent />}
           {currentStep === 2 && <StepParent />}
           {currentStep === 3 && (
@@ -421,75 +414,55 @@ export function RegistrationWizard({ paymentSettings }: RegistrationWizardProps)
           )}
         </div>
 
-        {/* Tombol Aksi Sticky / Floating di Bawah Layar */}
-        <div
-          className={cn(
-            "sticky bottom-0 sm:bottom-4 z-30 mt-8",
-            "-mx-4 sm:mx-0 px-4 py-3 sm:p-4",
-            "bg-surface/95 backdrop-blur-md",
-            "border-t sm:border border-muted/20",
-            "shadow-[0_-4px_16px_rgba(0,0,0,0.05)] sm:shadow-lg sm:rounded-card",
-            "pb-[calc(0.75rem+env(safe-area-inset-bottom))] sm:pb-4",
-            "transition-all duration-200"
+        {/* Tombol Aksi di Bawah Form */}
+        <div className="mt-8 pt-5 border-t border-slate-100 flex flex-col sm:flex-row items-center gap-3">
+          {currentStep > 1 && (
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handlePrevStep}
+              disabled={isSubmitting}
+              iconLeft={<ArrowLeft className="h-4 w-4" />}
+              aria-label="Kembali ke form sebelumnya"
+              className="w-full sm:w-auto h-11 px-5 rounded-xl border-slate-200 text-slate-700 hover:bg-slate-50 font-semibold"
+            >
+              <span>Sebelumnya</span>
+            </Button>
           )}
-        >
-          <div className="flex items-center gap-3 max-w-xl mx-auto w-full">
-            {currentStep > 1 && (
-              <Button
-                type="button"
-                variant="secondary"
-                onClick={handlePrevStep}
-                disabled={isSubmitting}
-                iconLeft={<ArrowLeft className="h-4 w-4" />}
-                aria-label="Kembali ke form sebelumnya"
-                className="flex-1 sm:flex-initial sm:min-w-[170px] h-11 text-sm sm:text-base font-medium"
-              >
-                <span className="hidden sm:inline">Kembali ke Form Sebelumnya</span>
-                <span className="sm:hidden">Sebelumnya</span>
-              </Button>
-            )}
 
-            {currentStep < 3 ? (
-              <Button
-                type="button"
-                variant="primary"
-                onClick={handleNextStep}
-                iconRight={<ArrowRight className="h-4 w-4" />}
-                aria-label={
-                  currentStep === 1
-                    ? "Lanjut ke data orang tua"
-                    : "Lanjut ke form pembayaran dan konfirmasi"
-                }
-                className={cn(
-                  "h-11 text-sm sm:text-base font-semibold shadow-sm",
-                  currentStep === 1
-                    ? "w-full sm:w-auto sm:min-w-[200px] sm:ml-auto"
-                    : "flex-1 sm:flex-initial sm:min-w-[170px] sm:ml-auto"
-                )}
-              >
-                <span className="hidden sm:inline">
-                  {currentStep === 1
-                    ? "Lanjut ke Data Orang Tua"
-                    : "Lanjut ke Pembayaran"}
-                </span>
-                <span className="sm:hidden">
-                  {currentStep === 1 ? "Lanjut ke Data Orang Tua" : "Lanjut"}
-                </span>
-              </Button>
-            ) : (
-              <Button
-                type="submit"
-                variant="primary"
-                loading={isSubmitting}
-                disabled={isSubmitting}
-                iconRight={!isSubmitting ? <Send className="h-4 w-4" /> : undefined}
-                aria-label="Kirim formulir pendaftaran SPMB"
-                className="flex-1 sm:flex-initial sm:min-w-[190px] sm:ml-auto h-11 text-sm sm:text-base font-semibold shadow-sm"
-              >
-                Kirim Pendaftaran
-              </Button>
-            )}
-          </div>
+          {currentStep < 3 ? (
+            <Button
+              type="button"
+              variant="default"
+              onClick={handleNextStep}
+              iconRight={<ArrowRight className="h-4 w-4" />}
+              aria-label={
+                currentStep === 1
+                  ? "Lanjut ke data orang tua"
+                  : "Lanjut ke form pembayaran dan konfirmasi"
+              }
+              className={cn(
+                "w-full sm:w-auto h-11 px-6 rounded-xl bg-[#1D4ED8] hover:bg-[#0037B0] text-white font-bold shadow-sm transition-all sm:ml-auto",
+                currentStep === 1 ? "w-full sm:min-w-[200px]" : "sm:min-w-[170px]"
+              )}
+            >
+              <span>
+                {currentStep === 1 ? "Lanjut ke Data Orang Tua" : "Lanjut"}
+              </span>
+            </Button>
+          ) : (
+            <Button
+              type="submit"
+              variant="default"
+              loading={isSubmitting}
+              disabled={isSubmitting}
+              iconRight={!isSubmitting ? <Send className="h-4 w-4" /> : undefined}
+              aria-label="Kirim formulir pendaftaran SPMB"
+              className="w-full sm:w-auto sm:ml-auto h-11 px-7 rounded-xl bg-[#1D4ED8] hover:bg-[#0037B0] text-white font-bold shadow-sm transition-all"
+            >
+              Kirim Pendaftaran
+            </Button>
+          )}
         </div>
       </form>
     </FormProvider>

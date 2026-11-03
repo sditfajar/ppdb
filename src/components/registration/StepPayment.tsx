@@ -16,7 +16,7 @@ const Turnstile = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="h-[65px] flex items-center justify-center text-xs text-muted">
+      <div className="h-[65px] flex items-center justify-center text-xs text-slate-500">
         Memuat verifikasi keamanan...
       </div>
     ),
@@ -77,38 +77,40 @@ export function StepPayment({
   return (
     <div className="space-y-6 text-left">
       {/* 1. Kartu Rekening Pembayaran */}
-      <div className="rounded-card bg-surface shadow-border p-4 sm:p-5 transition-all">
-        <div className="flex items-center gap-2 mb-3 text-accent">
-          <CreditCard className="h-5 w-5" />
-          <h4 className="text-sm font-semibold text-foreground">
+      <div className="rounded-2xl bg-white border border-slate-200/90 shadow-2xs p-4 sm:p-6 transition-all">
+        <div className="flex items-center gap-2 mb-3 text-[#1D4ED8]">
+          <div className="h-8 w-8 rounded-lg bg-blue-50 text-[#1D4ED8] flex items-center justify-center">
+            <CreditCard className="h-4 w-4" />
+          </div>
+          <h4 className="text-sm font-bold text-[#0F172A]">
             Instruksi Pembayaran Biaya Formulir
           </h4>
         </div>
-        <p className="text-xs text-muted mb-3 text-pretty">
+        <p className="text-xs text-slate-600 mb-3 text-pretty">
           Silakan lakukan transfer biaya pendaftaran formulir ke nomor rekening resmi SDIT Fajar berikut:
         </p>
 
-        <div className="bg-muted/5 rounded-control p-3.5 space-y-2 border border-muted/15 text-xs">
+        <div className="bg-slate-50/80 rounded-xl p-4 space-y-2.5 border border-slate-200/80 text-xs">
           <div className="flex justify-between items-center">
-            <span className="text-muted">Bank Tujuan:</span>
-            <span className="font-semibold text-foreground">{bankName}</span>
+            <span className="text-slate-500 font-medium">Bank Tujuan:</span>
+            <span className="font-bold text-[#0F172A]">{bankName}</span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-muted">Nomor Rekening:</span>
-            <div className="flex items-center gap-1.5">
-              <span className="font-mono font-bold text-foreground tabular-nums text-sm">
+            <span className="text-slate-500 font-medium">Nomor Rekening:</span>
+            <div className="flex items-center gap-2">
+              <span className="font-mono font-extrabold text-[#0F172A] tabular-nums text-sm sm:text-base">
                 {accountNo}
               </span>
               <CopyButton text={accountNo} />
             </div>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-muted">Atas Nama:</span>
-            <span className="font-medium text-foreground">{accountName}</span>
+            <span className="text-slate-500 font-medium">Atas Nama:</span>
+            <span className="font-semibold text-slate-800">{accountName}</span>
           </div>
-          <div className="flex justify-between items-center pt-1 border-t border-muted/15">
-            <span className="text-muted">Nominal Biaya:</span>
-            <span className="font-bold text-accent tabular-nums text-sm">
+          <div className="flex justify-between items-center pt-2 border-t border-slate-200">
+            <span className="text-slate-500 font-medium">Nominal Biaya:</span>
+            <span className="font-black text-[#1D4ED8] tabular-nums text-base">
               {formatRupiah(amount)}
             </span>
           </div>
@@ -116,10 +118,10 @@ export function StepPayment({
       </div>
 
       {/* 2. Upload Bukti Bayar */}
-      <div className="space-y-2">
-        <label className="text-sm font-semibold text-foreground flex items-center justify-between">
+      <div className="space-y-2 rounded-2xl bg-white border border-slate-200/90 shadow-2xs p-4 sm:p-6">
+        <label className="text-sm font-bold text-[#0F172A] flex items-center justify-between">
           <span>
-            Unggah Foto Bukti Transfer <span className="text-danger">*</span>
+            Unggah Foto Bukti Transfer <span className="text-red-500">*</span>
           </span>
         </label>
         <UploadProof
@@ -130,29 +132,31 @@ export function StepPayment({
 
         {/* Indikator Progres Indeterminate */}
         {uploadProgressText && (
-          <div className="flex items-center gap-2 text-xs text-accent bg-accent/5 p-2.5 rounded-control border border-accent/20 animate-pulse">
-            <span className="h-2 w-2 rounded-full bg-accent animate-ping" />
-            <span className="font-medium">{uploadProgressText}</span>
+          <div className="flex items-center gap-2 text-xs text-[#1D4ED8] bg-blue-50/80 p-2.5 rounded-xl border border-blue-200 animate-pulse">
+            <span className="h-2 w-2 rounded-full bg-[#1D4ED8] animate-ping" />
+            <span className="font-semibold">{uploadProgressText}</span>
           </div>
         )}
       </div>
 
       {/* 3. Ringkasan Isian */}
-      <div className="space-y-2 pt-2">
-        <h4 className="text-sm font-semibold text-foreground">
+      <div className="space-y-2 pt-1">
+        <h4 className="text-sm font-bold text-[#0F172A]">
           Periksa Kembali Data Anda
         </h4>
-        <p className="text-xs text-muted text-pretty">
+        <p className="text-xs text-slate-500 text-pretty">
           Pastikan semua informasi sudah benar sebelum mengirimkan pendaftaran.
         </p>
         <ReviewSummary data={currentValues} onEditStep={onEditStep} />
       </div>
 
       {/* 4. Pernyataan Persetujuan & PDP */}
-      <div className="rounded-card bg-surface shadow-border p-4 sm:p-5 space-y-3">
-        <div className="flex items-center gap-2 text-accent">
-          <ShieldCheck className="h-5 w-5" />
-          <h4 className="text-sm font-semibold text-foreground">
+      <div className="rounded-2xl bg-white border border-slate-200/90 shadow-2xs p-4 sm:p-6 space-y-3">
+        <div className="flex items-center gap-2 text-[#10B981]">
+          <div className="h-8 w-8 rounded-lg bg-emerald-50 text-[#10B981] flex items-center justify-center">
+            <ShieldCheck className="h-4 w-4" />
+          </div>
+          <h4 className="text-sm font-bold text-[#0F172A]">
             Pernyataan Kebenaran Data & Privasi
           </h4>
         </div>
@@ -167,7 +171,7 @@ export function StepPayment({
               onChange={(e) => field.onChange(e.target.checked ? true : false)}
               error={!!errors.consented}
               label={
-                <span className="text-xs font-medium text-foreground leading-relaxed">
+                <span className="text-xs font-semibold text-[#0F172A] leading-relaxed">
                   Saya menyatakan data yang diisi benar dan menyetujui data ini diproses oleh
                   SDIT Fajar untuk keperluan SPMB.
                 </span>
@@ -178,43 +182,50 @@ export function StepPayment({
         />
 
         {errors.consented && (
-          <p role="alert" className="text-xs font-medium text-danger mt-1">
-            {errors.consented.message}
-          </p>
+          <div
+            role="alert"
+            className="text-xs text-red-600 font-medium flex items-center gap-1.5 pt-1"
+          >
+            <AlertCircle className="h-4 w-4 shrink-0" />
+            <span>{errors.consented.message}</span>
+          </div>
         )}
       </div>
 
-      {/* 5. Honeypot tersembunyi (Anti-Bot) */}
-      <input
-        type="text"
-        {...register("honeypot")}
-        tabIndex={-1}
-        autoComplete="off"
-        className="sr-only opacity-0 h-0 w-0 absolute pointer-events-none"
-        aria-hidden="true"
-      />
-
-      {/* 6. Cloudflare Turnstile Widget */}
-      <div className="space-y-2">
-        <div className="flex justify-center my-2">
-          <Turnstile
-            siteKey={siteKey}
-            onSuccess={onTurnstileSuccess}
-            onExpire={onTurnstileExpire}
-            onError={onTurnstileError}
-            options={{
-              theme: "auto",
-              size: "normal",
-            }}
-          />
-        </div>
+      {/* 5. Cloudflare Turnstile */}
+      <div className="pt-2 flex flex-col items-center justify-center min-h-[75px]">
+        <Turnstile
+          siteKey={siteKey}
+          onSuccess={onTurnstileSuccess}
+          onExpire={onTurnstileExpire}
+          onError={onTurnstileError}
+          options={{
+            theme: "light",
+            size: "flexible",
+          }}
+        />
 
         {turnstileError && (
-          <div className="flex items-center justify-center gap-1.5 text-xs text-danger text-center">
-            <AlertCircle className="h-3.5 w-3.5" />
+          <div
+            role="alert"
+            className="text-xs text-red-600 font-medium flex items-center gap-1.5 mt-2"
+          >
+            <AlertCircle className="h-4 w-4 shrink-0" />
             <span>{turnstileError}</span>
           </div>
         )}
+      </div>
+
+      {/* Honeypot anti-spam tersembunyi */}
+      <div className="sr-only" aria-hidden="true">
+        <label htmlFor="website-url">Biarkan kolom ini kosong</label>
+        <input
+          id="website-url"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          {...register("honeypot")}
+        />
       </div>
     </div>
   );

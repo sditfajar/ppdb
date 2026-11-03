@@ -56,7 +56,7 @@ export function HomeVisiMisi() {
             aria-hidden="true"
           />
           <div className="max-w-4xl relative z-10 space-y-4">
-            <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white/20 text-white text-xs font-bold backdrop-blur-sm">
+            <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#002C8F] text-white border border-blue-300/30 text-xs font-bold backdrop-blur-sm">
               <Flag className="w-3.5 h-3.5 text-[#FFDBCA]" />
               VISI SDIT FAJAR
             </span>
